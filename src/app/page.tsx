@@ -2,112 +2,177 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main>
+      <header className="flex items-center justify-between p-4 border-b">
+        <div className="flex items-center gap-4">
+          <div className="w-8 h-8 rounded-full overflow-hidden">
+            <Image src="/IBEXhead.png" alt="IBEX Head" width={32} height={32} />
+          </div>
+          <nav className="flex gap-4">
+            <a href="#" className="hover:underline">
+              Discover
+            </a>
+            <a href="#" className="hover:underline">
+              Shop
+            </a>
+            <a href="#" className="hover:underline">
+              About
+            </a>
+            <a href="#" className="hover:underline">
+              More
+            </a>
+          </nav>
         </div>
-      </div>
+        <div className="flex gap-2">
+          <button className="px-4 py-2 border rounded hover:bg-gray-100">
+            Sign Up
+          </button>
+          <button className="px-4 py-2 text-white bg-black rounded hover:bg-gray-800">
+            Learn More
+          </button>
+        </div>
+      </header>
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
+      {/* This is our main section at the top */}
+      <section className="flex items-center justify-center h-[700px] bg-fixed" style={{ backgroundImage: "url('/backgroundNATURE.png')", backgroundSize: '150%', backgroundPosition: 'center' }}>
+        <div className="max-w-2xl text-center text-white mx-auto">
+          <h1 className="mb-4 text-4xl font-bold">
+            Experience the Power of OBEX Today
+          </h1>
+          <p className="mb-4">
+            Discover the ultimate solution for all your organizational needs.
           </p>
-        </a>
+          <div className="flex items-center justify-center gap-4">
+            <button className="px-6 py-2 bg-black text-white rounded hover:bg-gray-800">
+              Order
+            </button>
+            <button className="px-6 py-2 border rounded hover:bg-gray-100">
+              Learn More
+            </button>
+          </div>
+        </div>
+      </section>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+      {/* this is the HERO section */}
+      <section className="flex items-center justify-center h-[500px]">
+        <div className="container mx-auto flex items-center justify-between gap-4">
+          <div className="max-w-2xl text-left text-white">
+            <span className="block mb-2 text-sm text-white">Convenient</span>
+            <h1 className="mb-4 text-4xl font-bold text-white">
+              Experience the Power of OBEX Packets
+            </h1>
+            <p className="mb-4 text-white">
+              OBEX packets are the perfect solution for busy individuals looking
+              for a convenient and effective way to stay healthy. With our
+              specially formulated packets, you can easily incorporate essential
+              nutrients into your daily routine.
+            </p>
+            <div className="flex items-center gap-4">
+              <div>
+                <h3 className="font-semibold text-white">Conveniently Packed</h3>
+                <p className="text-white">
+                  Each OBEX packet contains a powerful blend of vitamins,
+                  minerals, and antioxidants.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-white">Effective Results</h3>
+                <p className="text-white">
+                  Experience the benefits of OBEX packets and boost your overall
+                  well-being.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4 mt-4">
+              <button className="px-6 py-2 border rounded hover:bg-gray-100 text-white">
+                Learn More
+              </button>
+              <button className="px-6 py-2 bg-black text-white rounded hover:bg-gray-800">
+                Order Now
+              </button>
+            </div>
+          </div>
+          <div className="w-1/2 h-[300px]">
+            <Image src="/seaweed.png" alt="Seaweed" width={300} height={300} className="w-full h-full object-cover" />
+          </div>
+        </div>
+      </section>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
+{/* customer reactions to product */}
+      <section className="flex items-center justify-center h-[500px] text-white">
+        <div className="container mx-auto flex items-center justify-between gap-4">
+          <div className="w-1/2 bg-gray-300 h-[300px] flex justify-center items-center">
+            <button className="bg-gray-400 p-4 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                <path fillRule="evenodd" d="M4.5 3.75a3.75 3.75 0 00-3.75 3.75v9a3.75 3.75 0 003.75 3.75h15a3.75 3.75 0 003.75-3.75v-9a3.75 3.75 0 00-3.75-3.75h-15zm7.86 5.22a.75.75 0 01.14 1.06l-2.12 2.12 2.12 2.12a.75.75 0 01-1.06 1.06L8.43 12.94l-2.12 2.12a.75.75 0 11-1.06-1.06l2.12-2.12L7.37 9.97a.75.75 0 011.06-1.06l2.12 2.12 2.12-2.12a.75.75 0 011.06-.14zM9.97 6.75h6.28a1.5 1.5 0 100-3H9.97a1.5 1.5 0 100 3z" clipRule="evenodd" />
+              </svg>
+            </button>
+          </div>
+          <div className="max-w-2xl text-left">
+            <span className="block mb-2 text-sm">Effective</span>
+            <h1 className="mb-4 text-4xl font-bold">
+              Proven Results That Customers Love
+            </h1>
+            <p className="mb-4">
+              Our product has been shown to deliver outstanding results, leaving our
+              customers satisfied and happy. Try it today and experience the difference
+              for yourself.
+            </p>
+            <div className="flex items-center gap-4">
+              <div className="w-1/2">
+                <h3 className="font-semibold">50% Off</h3>
+                <p>
+                  Limited time offer: Get 50% off your first purchase.
+                </p>
+              </div>
+              <div className="w-1/2">
+                <h3 className="font-semibold">50% More</h3>
+                <p>
+                  Get 50% more product for the same price.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4 mt-4">
+              <button className="px-6 py-2 border rounded hover:bg-gray-100">
+                Learn More
+              </button>
+              <button className="px-6 py-2 border rounded hover:bg-gray-100">
+                Sign Up
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+{/* features list */}
+      <section className="w-full max-w-5xl p-4 mx-auto">
+        <div className="flex flex-col items-center text-center">
+          <h2 className="text-3xl font-bold">Features List Section</h2>
+          <p>Detail the four ordering options: Small Pack, Large Pack, 6 Month Subscription, 12 Month Subscription.</p>
+        </div>
+      </section>
+
+{/* About the product */}
+      <section className="w-full max-w-5xl p-4 mx-auto">
+        <div className="flex flex-col items-center text-center">
+          <h2 className="text-3xl font-bold">Stats Section</h2>
+          <p>Display statistics to validate OBEX's efficacy and customer satisfaction.</p>
+        </div>
+      </section>
+
+{/* CTA Section */}
+      <section className="w-full max-w-5xl p-4 mx-auto">
+        <div className="flex flex-col items-center text-center">
+          <h2 className="text-3xl font-bold">CTA Section</h2>
+          <p>Final call-to-action encouraging visitors to make a purchase decision and choose their preferred ordering option.</p>
+        </div>
+      </section>
+
+{/* footer */}
+      <footer className="w-full p-4 border-t border-gray-300 bg-gray-100 dark:bg-gray-800">
+        <p className="text-center">Footer</p>
+      </footer>
+      </main>
   );
 }
+
