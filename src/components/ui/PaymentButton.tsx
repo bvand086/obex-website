@@ -10,37 +10,37 @@ interface PaymentButtonProps {
 export default function PaymentButton({ children }: PaymentButtonProps) {
     const [loading, setLoading] = useState(false);
 
-    const handleClick = async () => {
-        setLoading(true);
-        const stripe = await stripePromise;
-        const response = await fetch('/api/checkout_session', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                items: [
-                    {
-                        price: "price_1PDFsSCzamtkVis606a8dfSD",
-                        quantity: 1,
-                    },
-                ],
-            }),
-        });
+    // const handleClick = async () => {
+    //     setLoading(true);
+    //     const stripe = await stripePromise;
+    //     const response = await fetch('/api/checkout_session', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({
+    //             items: [
+    //                 {
+    //                     price: "price_1PDFsSCzamtkVis606a8dfSD",
+    //                     quantity: 1,
+    //                 },
+    //             ],
+    //         }),
+    //     });
 
-        if (response.ok) {
-            const session = await response.json();
-            await stripe?.redirectToCheckout({ sessionId: session.id });
-        } else {
-            console.error('Failed to create checkout session');
-            alert('Failed to create checkout session');
-        }
-        setLoading(false);
-    };
+    //     if (response.ok) {
+    //         const session = await response.json();
+    //         await stripe?.redirectToCheckout({ sessionId: session.id });
+    //     } else {
+    //         console.error('Failed to create checkout session');
+    //         alert('Failed to create checkout session');
+    //     }
+    //     setLoading(false);
+    // };
 
-    return (
-        <button onClick={handleClick} disabled={loading}>
-            {loading ? 'Processing...' : children || 'Buy Now'}
-        </button>
-    );
+    // return (
+    //     <button onClick={handleClick} disabled={loading}>
+    //         {loading ? 'Processing...' : children || 'Buy Now'}
+    //     </button>
+    // );
 }

@@ -136,12 +136,12 @@ export default function Home() {
               </button>
               <button className="px-6 py-2 bg-black text-white rounded hover:bg-gray-800"
                 onClick={() => scrollToSection("#cta-section")}>
-                Order Now&nbsp;-&gt;
+                Order Now
               </button>
             </div>
           </div>
           <div className="w-1/2 h-[300px]">
-            <img src="./seaweed.png" alt="Seaweed" className="w-full h-full object-cover" />
+            <Image src="/seaweed.png" alt="Seaweed" width={300} height={300} className="w-full h-full object-cover" />
           </div>
         </div>
       </section>
@@ -184,7 +184,7 @@ export default function Home() {
                 Learn More
               </button>
               <button className="px-6 py-2 border rounded hover:bg-gray-100">
-                Sign Up&nbsp;-&gt;
+                Sign Up
               </button>
             </div>
           </div>
@@ -213,12 +213,12 @@ export default function Home() {
             </Collapsible>
             <Collapsible>
             <CollapsibleTrigger>
-              <h2 className="font-bold text-[#839897]">Why Sodium Alginate is Beneficial</h2>
+            <h2 className="font-bold text-[#839897]">Why Sodium Alginate is Beneficial</h2>
               </CollapsibleTrigger>
               <CollapsibleContent>
               <ul>
                 <li className="text-left text-[#839897]"><strong>Rapid Relief:</strong> Sodium alginate works quickly to form a protective barrier, often providing immediate relief from heartburn. This rapid action is beneficial for individuals who experience sudden or severe reflux symptoms.</li>
-                <li className="text-left text-[#839897]"><strong>Natural and Safe:</strong> As a natural extract from seaweed, sodium alginate is generally well-tolerated and considered safe for most people, including pregnant women. Its natural origin also appeals to those who prefer alternative or plant-based remedies.</li>
+                <li className="text-left text-[#839897]"><strong>Natural and Safe:</strong> As a natural extract from seaweed, sodium alginate is generally well-tolerated and considered safe for most people, including pregnant women. It&apos;s natural origin also appeals to those who prefer alternative or plant-based remedies.</li>
                 <li className="text-left text-[#839897]"><strong>Non-Systemic Action:</strong> Unlike proton pump inhibitors or other acid-suppressing medications, sodium alginate does not affect the overall acidity of the stomach. This makes it suitable for intermittent use and helps maintain normal digestive function.</li>
                 <li className="text-left text-[#839897]"><strong>Complementary to Other Treatments:</strong> Sodium alginate can be used alongside other treatments for GERD or heartburn, enhancing their effectiveness or providing additional relief during particularly troublesome episodes.</li>
                 <li className="text-left text-[#839897]"><strong>Versatility:</strong> Sodium alginate is available in various formulations, including liquid suspensions, chewable tablets, and granules, offering convenient options for different preferences and needs.</li>
@@ -240,7 +240,8 @@ export default function Home() {
             </Collapsible>
               <h2 className="font-bold text-[#839897]">Conclusion</h2>
 
-              <p className="text-left text-[#839897] text-left">Sodium alginate offers a natural, effective solution for managing heartburn and reflux. Its unique gel-forming properties, rapid action, and safety make it a valuable tool for individuals seeking relief from digestive discomfort. Whether used alone or in combination with other treatments, sodium alginate provides a soothing solution for a common and often bothersome problem.</p>
+              <p className="text-left text-[#839897] text-left">Sodium alginate offers a natural, effective solution for managing heartburn and reflux. It&apos;s unique gel-forming properties, rapid action, and safety make it a valuable tool for individuals seeking relief from digestive discomfort. Whether used alone or in combination with other treatments, sodium alginate provides a soothing solution for a common and often bothersome problem.</p>
+
 
         </div>
         <Separator className="my-4" style={{ backgroundColor: '#B79941' }} />
@@ -329,7 +330,7 @@ export default function Home() {
       <section id="cta-section" className="w-full max-w-5xl p-4 mx-auto h-screen">
         <div className="flex flex-col items-center text-center">
           <h2 className="text-3xl font-bold pb-4">Experience natural relief from reflux with OBEX—try it now for safe, immediate relief!</h2>
-          <p>Choose the perfect OBEX package for you—try our Small (10 packets), Large (25 packets), or opt for our convenient 6 or 12-month subscriptions. Order now for natural relief!</p>
+          <p>Choose the perfect OBEX package for you — try our Small (10 packets), Large (25 packets), or opt for our convenient 6 or 12-month subscriptions. Order now for natural relief!</p>
         
           <Carousel className="w-11/12 h-[80vh] mx-auto pt-4"
               opts={{
@@ -359,7 +360,7 @@ export default function Home() {
                     <CardFooter className="mt-auto flex justify-between items-center text-lg font-bold">
                       <p>{card.footer}</p>
                       <div className="border border-white rounded-lg p-4 hover:bg-white hover:text-black">
-                        <PaymentButton>Buy Now</PaymentButton>
+                        <Button>Buy Now</Button>
                       </div>
                     </CardFooter>
                   </div>
@@ -390,3 +391,4 @@ export default function Home() {
     </main>
   );
 }
+
