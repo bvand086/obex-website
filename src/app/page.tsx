@@ -83,7 +83,7 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="flex items-center justify-center h-[700px] bg-fixed" style={{ backgroundImage: "url('/backgroundNATURE.png')", backgroundSize: '150%', backgroundPosition: 'center' }}>
+      <section className="flex items-center justify-center h-[700px] bg-fixed" style={{ backgroundImage: "url('/backgroundproduct.jpeg')", backgroundSize: '150%', backgroundPosition: 'center' }}>
         <div className="max-w-2xl text-center text-white mx-auto">
           <h1 className="mb-4 text-4xl font-bold">
             Experience the Power of OBEX Today
