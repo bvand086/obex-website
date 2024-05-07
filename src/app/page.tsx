@@ -141,7 +141,7 @@ export default function Home() {
             </div>
           </div>
           <div className="w-1/2 h-[300px]">
-            <Image src="/seaweedOBEX.png" alt="Seaweed" width={300} height={300} className="w-full h-full object-cover" />
+            <Image src="/seaweedOBEX.jpeg" alt="Seaweed" width={300} height={300} className="w-full h-full object-cover" />
           </div>
         </div>
       </section>
