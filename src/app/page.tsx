@@ -340,10 +340,10 @@ export default function Home() {
           >
             <CarouselContent className="-ml-1">
               {[
-                { title: "Small Pack", description: "Ideal for occasional use", content: "Each small package contains 10 packets, each with a 5mL dose of a single, delightful flavor.", footer: "Starting at $16.99" },
-                { title: "Large Pack", description: "Perfect for regular use", content: "Each large package contains 25 packets, each with a 5mL dose, featuring 3 delightful flavor varieties.", footer: "Starting at $34.99" },
-                { title: "6 Month Subscription", description: "Half-year supply", content: "With our 6-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 10%" },
-                { title: "12 Month Subscription", description: "Full-year supply", content: "With our 12-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 15%" }
+                { title: "Small Pack", description: "Ideal for occasional use", content: "Each small package contains 10 packets, each with a 5mL dose of a single, delightful flavor.", footer: "Starting at $16.99", link: "https://buy.stripe.com/cN2bMb46VcePfMQ8ww" },
+                { title: "Large Pack", description: "Perfect for regular use", content: "Each large package contains 25 packets, each with a 5mL dose, featuring 3 delightful flavor varieties.", footer: "Starting at $34.99", link: "https://buy.stripe.com/9AQdUjcDrdiT9os7st" },
+                { title: "6 Month Subscription", description: "Half-year supply", content: "With our 6-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 10%", link: "https://buy.stripe.com/3cs4jJfPD5Qr8ko3ce" },
+                { title: "12 Month Subscription", description: "Full-year supply", content: "With our 12-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 15%", link: "https://buy.stripe.com/6oEg2rfPD0w7fMQfZ1" }
               ].map((card, index) => (
                 <CarouselItem key={index} className="pl-1 md:basis-3/5 lg:basis-5/12 mx-2">
                   <div className="p-1 h-[70vh] flex flex-col justify-between border border-white rounded-lg">
@@ -360,7 +360,9 @@ export default function Home() {
                     <CardFooter className="mt-auto flex justify-between items-center text-lg font-bold">
                       <p>{card.footer}</p>
                       <div className="border border-white rounded-lg p-4 hover:bg-white hover:text-black">
-                        <Button>Buy Now</Button>
+                        <a href={card.link} className="button">
+                          Buy Now
+                        </a>
                       </div>
                     </CardFooter>
                   </div>
