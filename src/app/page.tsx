@@ -3,6 +3,7 @@
 import Image from "next/image";
 import React from "react";
 import PaymentButton from "@/components/ui/PaymentButton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Card,
   CardContent,
@@ -327,7 +328,7 @@ export default function Home() {
       </section>
 
 {/* CTA Section */}
-      <section id="cta-section" className="w-full max-w-5xl p-4 mx-auto h-screen">
+<section id="cta-section" className="w-full max-w-5xl p-4 mx-auto h-screen">
         <div className="flex flex-col items-center text-center">
           <h2 className="text-3xl font-bold pb-4">Experience natural relief from reflux with OBEX—try it now for safe, immediate relief!</h2>
           <p>Choose the perfect OBEX package for you — try our Small (10 packets), Large (25 packets), or opt for our convenient 6 or 12-month subscriptions. Order now for natural relief!</p>
@@ -342,25 +343,31 @@ export default function Home() {
               {[
                 { title: "Small Pack", description: "Ideal for occasional use", content: "Each small package contains 10 packets, each with a 5mL dose of a single, delightful flavor.", footer: "Starting at $16.99", link: "https://buy.stripe.com/cN2bMb46VcePfMQ8ww" },
                 { title: "Large Pack", description: "Perfect for regular use", content: "Each large package contains 25 packets, each with a 5mL dose, featuring 3 delightful flavor varieties.", footer: "Starting at $34.99", link: "https://buy.stripe.com/9AQdUjcDrdiT9os7st" },
-                { title: "6 Month Subscription", description: "Half-year supply", content: "With our 6-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 10%", link: "https://buy.stripe.com/3cs4jJfPD5Qr8ko3ce" },
-                { title: "12 Month Subscription", description: "Full-year supply", content: "With our 12-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 15%", link: "https://buy.stripe.com/6oEg2rfPD0w7fMQfZ1" }
+                { title: "6 Mo Subscription", description: "Half-year supply", content: "With our 6-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 10%", link: "https://buy.stripe.com/3cs4jJfPD5Qr8ko3ce" },
+                { title: "12 Mo Subscription", description: "Full-year supply", content: "With our 12-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 15%", link: "https://buy.stripe.com/6oEg2rfPD0w7fMQfZ1" }
               ].map((card, index) => (
-                <CarouselItem key={index} className="pl-1 md:basis-2/5 lg:basis-4/12 mx-2">
-                  <div className="p-1 h-auto max-h-[65vh] flex flex-col justify-between border border-white rounded-lg">
+                <CarouselItem key={index} className="pl-1 mx-2 basis-full sm:basis-1/2">
+                  <div className="p-1 h-[65vh] flex flex-col justify-between border border-white rounded-lg">
                     <div>
-                      <CardHeader className="text-left">
+                      <CardHeader className="text-left flex items-center">
+                      
                         <CardTitle>{card.title}</CardTitle>
-                        <CardDescription>{card.description}</CardDescription>
+                        
+                        <CardDescription className="ml-4">{card.description}</CardDescription>
                       </CardHeader>
                       <CardContent className="text-left">
-                        <Image src="/IBEXhead.png" alt="Product Image" width={250} height={250} />
+                        
                         <p>{card.content}</p>
+                        
                       </CardContent>
                     </div>
                     <CardFooter className="mt-auto flex justify-between items-center text-lg font-bold">
+                    <div className="flex justify-center items-center h-full">
+                          <Image src="/IBEXhead.png" alt="Product Image" width={75} height={75} className="object-cover object-center" />
+                        </div>
                       <p>{card.footer}</p>
-                      <div className="border border-white rounded-lg p-4 hover:bg-white hover:text-black">
-                        <a href={card.link} className="button">
+                      <div className="border border-white rounded-lg p-4 hover:bg-white hover:text-black text-center" style={{ width: '200px', height: '50px' }}>
+                        <a href={card.link} className="button w-full h-full flex items-center justify-center">
                           Buy Now
                         </a>
                       </div>
@@ -375,6 +382,7 @@ export default function Home() {
         </div>
         
       </section>
+
 
 
 
