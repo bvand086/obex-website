@@ -251,7 +251,7 @@ export default function Home() {
       <section id="research" className="w-full max-w-5xl p-4 mx-auto bg-transparent">
         <div className="flex flex-col items-center text-center">
           <h2 className="text-3xl font-bold pb-4" style={{ color: "#F8E1A9" }}>Medical Research Support of Alginates</h2>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Card style={{ borderColor: '#F8E1A9' }}>
               <CardHeader>
                 <HoverCard>
