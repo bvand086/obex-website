@@ -332,7 +332,7 @@ export default function Home() {
           <h2 className="text-3xl font-bold pb-4">Experience natural relief from reflux with OBEX—try it now for safe, immediate relief!</h2>
           <p>Choose the perfect OBEX package for you — try our Small (10 packets), Large (25 packets), or opt for our convenient 6 or 12-month subscriptions. Order now for natural relief!</p>
         
-          <Carousel className="w-11/12 h-[80vh] mx-auto pt-4"
+          <Carousel className="w-11/12 h-auto max-h-[80vh] mx-auto pt-4"
               opts={{
                 align: "start",
                 loop: true,
@@ -346,7 +346,7 @@ export default function Home() {
                 { title: "12 Month Subscription", description: "Full-year supply", content: "With our 12-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 15%", link: "https://buy.stripe.com/6oEg2rfPD0w7fMQfZ1" }
               ].map((card, index) => (
                 <CarouselItem key={index} className="pl-1 md:basis-3/5 lg:basis-5/12 mx-2">
-                  <div className="p-1 h-[70vh] flex flex-col justify-between border border-white rounded-lg">
+                  <div className="p-1 h-auto max-h-[65vh] flex flex-col justify-between border border-white rounded-lg">
                     <div>
                       <CardHeader className="text-left">
                         <CardTitle>{card.title}</CardTitle>
