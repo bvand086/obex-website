@@ -105,11 +105,9 @@ export default function Home() {
       </section>
 
       <section id="hero" className="flex items-center justify-center h-[500px]">
-        <div className="container mx-auto flex items-center justify-between gap-4">
-          <div className="max-w-2xl text-left text-white">
-            <h1 className="mb-4 text-4xl font-bold text-white">
-              Experience the Power of OBEX Packets
-            </h1>
+        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="max-w-2xl text-left text-[#E0DED4]">
+            <h1 className="mb-4 text-4xl font-bold">Experience the Power of OBEX Packets</h1>
             <p className="mb-4 text-white">
               OBEX packets are the perfect solution for busy individuals looking
               for a convenient and effective way to defend against reflux. With our
@@ -325,7 +323,7 @@ export default function Home() {
       </section>
 
 {/* CTA Section */}
-<section id="cta-section" className="w-full max-w-5xl p-4 mx-auto h-screen">
+<section id="cta-section" className="w-full max-w-5xl p-4 mx-auto h-auto min-h-screen">
         <div className="flex flex-col items-center text-center">
           <h2 className="text-3xl font-bold pb-4">Experience natural relief from reflux with OBEX—try it now for safe, immediate relief!</h2>
           <p>Choose the perfect OBEX package for you — try our Small (10 packets), Large (25 packets), or opt for our convenient 6 or 12-month subscriptions. Order now for natural relief!</p>
@@ -344,26 +342,27 @@ export default function Home() {
                 { title: "12 Mo Subscription", description: "Full-year supply", content: "With our 12-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 15%", link: "https://buy.stripe.com/6oEg2rfPD0w7fMQfZ1" }
               ].map((card, index) => (
                 <CarouselItem key={index} className="pl-1 mx-2 basis-full sm:basis-1/2">
-                  <div className="p-1 h-[65vh] flex flex-col justify-between border border-white rounded-lg">
+                  <div className="p-1 h-[65vh] flex flex-col justify-between border border-gray-700 rounded-lg bg-[#364C43]">
                     <div>
-                      <CardHeader className="text-left flex items-center px-5 py-4 bg-zinc-50">
-                      
-                        <CardTitle className="text-lg font-semibold text-zinc-900">{card.title}</CardTitle>
-                        
-                        <CardDescription className="text-sm text-zinc-600 ml-4">{card.description}</CardDescription>
+                      <CardHeader className="text-left flex items-center px-5 py-4 bg-[#496748]">
+                        <CardTitle className="text-lg font-semibold text-[#E0DED4]">{card.title}</CardTitle>
+                        <CardDescription className="text-sm text-[#A8B18C] ml-4">{card.description}</CardDescription>
                       </CardHeader>
-                      <CardContent className="px-5 py-4 bg-gray-00">
-                        
-                        <p className="text-left text-sm text-zinc-400">{card.content}</p>
+                      <CardContent className="px-5 py-4">
+                      <div className="flex justify-center my-4">
+                          <img src="/IBEXhead.png" alt="Placeholder" className="w-1/4 max-w-xs" />
+                        </div>
+
+                        <p className="text-left text-sm text-[#A8B18C]">{card.content}</p>
                         
                       </CardContent>
                     </div>
-                    <CardFooter className="mt-auto flex justify-between items-center px-5 py-4 bg-zinc-50 text-lg font-bold">
-                    <div className="flex justify-center items-center h-full">
-                          <Image src="/IBEXhead.png" alt="Product Image" width={75} height={75} className="object-cover object-center rounded-full" />
-                        </div>
-                      <p className="text-xl font-semibold text-zinc-900">{card.footer}</p>
-                      <div className="w-full sm:w-auto border border-transparent rounded-lg bg-black text-white p-4 hover:bg-gray-800 text-center">
+                    <CardFooter className="mt-auto flex justify-between items-center px-5 py-4 bg-[#496748] text-lg font-bold">
+                      <div className="flex justify-center items-center h-full">
+                        <Image src="/IBEXhead.png" alt="Product Image" width={75} height={75} className="object-cover object-center rounded-full" />
+                      </div>
+                      <p className="text-xl font-semibold text-[#E0DED4]">{card.footer}</p>
+                      <div className="w-full sm:w-auto border border-transparent rounded-lg bg-[#688B63] text-white p-4 hover:bg-[#496748] text-center">
                         <a href={card.link} className="flex items-center justify-center h-full w-full">
                           Buy Now
                         </a>
@@ -383,12 +382,9 @@ export default function Home() {
 
 
 
-
-      <footer className="w-full p-4 border-t border-gray-300 bg-gray-100">
+      <footer className="w-full p-4 border-t border-[#A8B18C] bg-[#E0DED4] text-[#364C43]">
         <div className="container mx-auto flex items-center justify-between">
-          <p className="text-sm text-gray-600">
-            © 2024 OBEX Corporation. All rights reserved.
-          </p>
+          <p className="text-sm">© 2024 OBEX Corporation. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <a href="#" className="text-sm hover:underline">Privacy Policy</a>
             <a href="#" className="text-sm hover:underline">Terms of Use</a>
