@@ -46,10 +46,12 @@ export default function Home() {
   const scrollToSection = (id: string): void => {
     const section = document.querySelector(id);
     if (section instanceof HTMLElement) {
-        section.scrollIntoView({ behavior: "smooth" });
+      section.scrollIntoView({ behavior: "smooth" });
+    } else {
+      console.error(`Section with ID ${id} not found.`);
     }
-};
-
+  };
+  
 
   return (
     <main className="bg-black text-white"> 
@@ -84,21 +86,18 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="flex items-center justify-center h-[700px] bg-fixed" style={{ backgroundImage: "url('/backgroundproduct.jpeg')", backgroundSize: '150%', backgroundPosition: 'center' }}>
-        <div className="max-w-2xl text-center text-white mx-auto">
-          <h1 className="mb-4 text-4xl font-bold">
-            Experience the Power of OBEX Today
-          </h1>
-          <p className="mb-4">
-          Your Natural Barrier Against Heartburn.
-          </p>
+      <section className="flex items-center justify-center h-[700px] bg-fixed" 
+           style={{ backgroundImage: "url('/backgroundproduct.jpeg')", backgroundSize: '150%', backgroundPosition: 'center' }}>
+        <div className="max-w-2xl text-center text-white mx-auto shadow-lg p-6 bg-black bg-opacity-30 rounded-lg">
+          <h1 className="mb-4 text-5xl font-bold text-[#F0E68C]">Experience the Power of OBEX Today</h1>
+          <p className="mb-4 text-xl text-[#F0E68C]">Your Natural Barrier Against Heartburn.</p>
           <div className="flex items-center justify-center gap-4">
-            <button className="px-6 py-2 bg-black text-white rounded hover:bg-gray-800"
-            onClick={() => scrollToSection("#cta-section")}>
+            <button className="px-6 py-2 bg-[#688B63] text-white rounded hover:bg-[#496748]"
+                    onClick={() => scrollToSection('#cta-section')}>
               Order
             </button>
-            <button className="px-6 py-2 border rounded hover:bg-gray-100"
-            onClick={() => scrollToSection("#product_details")}>
+            <button className="px-6 py-2 border border-white text-white rounded hover:bg-[#688B63] hover:text-white"
+                    onClick={() => scrollToSection('#product_details')}>
               Learn More
             </button>
           </div>
@@ -159,12 +158,10 @@ export default function Home() {
           </div>
           <div className="max-w-2xl text-left">
             <h1 className="mb-4 text-4xl font-bold">
-              Proven Results That Customers Love
+              Results That Customers Love
             </h1>
             <p className="mb-4">
-              Our product has been shown to deliver outstanding results, leaving our
-              customers satisfied and happy. Try it today and experience the difference
-              for yourself.
+              For optimal results, use our product after meals and one hour before bedtime. Experience the difference and enhance your well-being with each use.
             </p>
             <div className="flex items-center gap-4">
               <div className="w-1/2">
@@ -349,25 +346,25 @@ export default function Home() {
                 <CarouselItem key={index} className="pl-1 mx-2 basis-full sm:basis-1/2">
                   <div className="p-1 h-[65vh] flex flex-col justify-between border border-white rounded-lg">
                     <div>
-                      <CardHeader className="text-left flex items-center">
+                      <CardHeader className="text-left flex items-center px-5 py-4 bg-zinc-50">
                       
-                        <CardTitle>{card.title}</CardTitle>
+                        <CardTitle className="text-lg font-semibold text-zinc-900">{card.title}</CardTitle>
                         
-                        <CardDescription className="ml-4">{card.description}</CardDescription>
+                        <CardDescription className="text-sm text-zinc-600 ml-4">{card.description}</CardDescription>
                       </CardHeader>
-                      <CardContent className="text-left">
+                      <CardContent className="px-5 py-4 bg-gray-00">
                         
-                        <p>{card.content}</p>
+                        <p className="text-left text-sm text-zinc-400">{card.content}</p>
                         
                       </CardContent>
                     </div>
-                    <CardFooter className="mt-auto flex justify-between items-center text-lg font-bold">
+                    <CardFooter className="mt-auto flex justify-between items-center px-5 py-4 bg-zinc-50 text-lg font-bold">
                     <div className="flex justify-center items-center h-full">
-                          <Image src="/IBEXhead.png" alt="Product Image" width={75} height={75} className="object-cover object-center" />
+                          <Image src="/IBEXhead.png" alt="Product Image" width={75} height={75} className="object-cover object-center rounded-full" />
                         </div>
-                      <p>{card.footer}</p>
-                      <div className="border border-white rounded-lg p-4 hover:bg-white hover:text-black text-center" style={{ width: '200px', height: '50px' }}>
-                        <a href={card.link} className="button w-full h-full flex items-center justify-center">
+                      <p className="text-xl font-semibold text-zinc-900">{card.footer}</p>
+                      <div className="w-full sm:w-auto border border-transparent rounded-lg bg-black text-white p-4 hover:bg-gray-800 text-center">
+                        <a href={card.link} className="flex items-center justify-center h-full w-full">
                           Buy Now
                         </a>
                       </div>
