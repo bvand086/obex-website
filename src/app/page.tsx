@@ -136,7 +136,7 @@ export default function Home() {
         </button>
       </div>
     </div>
-    <div className="w-1/2 h-[300px]">
+    <div className="w-1/2 h-[300px] pb-4 md:pb-0">
       <Image src="/seaweedOBEX.jpeg" alt="Seaweed" width={300} height={300} className="w-full h-full object-cover" />
     </div>
   </div>
@@ -149,7 +149,7 @@ export default function Home() {
           <div className="max-w-2xl text-left h-full flex flex-col justify-between">
             <div>
               <h1 className="mb-4 text-4xl font-bold text-[#E0DED4]">
-                Developed Right Here in Canada
+                <span className="text-red-600">Developed</span> Right Here in <span className="text-red-600">Canada 🇨🇦</span>
               </h1>
               <p className="mb-4 text-[#A8B18C]">
               Crafted in Hamilton, Ontario, OBEX is the result of a groundbreaking collaboration among an ENT Surgeon, a Speech-Language Pathologist, a Chef, and a Food Scientist. Born from the desire to offer a palatable, natural alternative to traditional reflux remedies, OBEX combines a rich legacy of scientific knowledge with culinary innovation. Utilizing Sodium Alginate, a time-tested ingredient known since the 1880s for its efficacy but poor taste, our team has revolutionized its use. With OBEX, developed right here in Canada, you no longer have to compromise taste for effective reflux and regurgitation relief.
