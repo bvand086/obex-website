@@ -123,7 +123,7 @@ export default function Home() {
         <div>
           <h3 className="font-semibold text-[#E0DED4]">Effective Results</h3>
           <p className="text-[#A8B18C]">
-            Studies indicate sodium alginate is as effective as regular prescription strength medications (PPI) in preventing reflux.
+            Studies indicate sodium alginate is as effective as the gold standard prescription strength medications (Proton Pump Inhibitors (PPI)) in preventing reflux.
           </p>
         </div>
       </div>
@@ -149,7 +149,7 @@ export default function Home() {
           <div className="max-w-2xl text-left h-full flex flex-col justify-between">
             <div>
               <h1 className="mb-4 text-4xl font-bold text-[#E0DED4]">
-                Developed and Made Right Here in Canada
+                Developed Right Here in Canada
               </h1>
               <p className="mb-4 text-[#A8B18C]">
               Crafted in Hamilton, Ontario, OBEX is the result of a groundbreaking collaboration among an ENT Surgeon, a Speech-Language Pathologist, a Chef, and a Food Scientist. Born from the desire to offer a palatable, natural alternative to traditional reflux remedies, OBEX combines a rich legacy of scientific knowledge with culinary innovation. Utilizing Sodium Alginate, a time-tested ingredient known since the 1880s for its efficacy but poor taste, our team has revolutionized its use. With OBEX, developed right here in Canada, you no longer have to compromise taste for effective reflux and regurgitation relief.
@@ -195,7 +195,7 @@ export default function Home() {
               <CollapsibleContent>
               <ul>
                 <li className="text-left text-[#688B63]"><strong>Rapid Relief:</strong> Sodium alginate works quickly to form a protective barrier, often providing immediate relief from heartburn. This rapid action is beneficial for individuals who experience sudden or severe reflux symptoms.</li>
-                <li className="text-left text-[#688B63]"><strong>Natural and Safe:</strong> As a natural extract from seaweed, sodium alginate is generally well-tolerated and considered safe for most people, including pregnant women. It&apos;s natural origin also appeals to those who prefer alternative or plant-based remedies.</li>
+                <li className="text-left text-[#688B63]"><strong>Natural and Safe:</strong> As a natural extract from seaweed, sodium alginate is generally well-tolerated and considered safe for most people, including pregnant women. The natural origin of Sodium Alginate also appeals to those who prefer alternative or plant-based remedies.</li>
                 <li className="text-left text-[#688B63]"><strong>Non-Systemic Action:</strong> Unlike proton pump inhibitors or other acid-suppressing medications, sodium alginate does not affect the overall acidity of the stomach. This makes it suitable for intermittent use and helps maintain normal digestive function.</li>
                 <li className="text-left text-[#688B63]"><strong>Complementary to Other Treatments:</strong> Sodium alginate can be used alongside other treatments for GERD or heartburn, enhancing their effectiveness or providing additional relief during particularly troublesome episodes.</li>
                 <li className="text-left text-[#688B63]"><strong>Versatility:</strong> Sodium alginate is available in various formulations, including liquid suspensions, chewable tablets, and granules, offering convenient options for different preferences and needs.</li>
