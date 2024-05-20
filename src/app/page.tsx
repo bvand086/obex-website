@@ -163,9 +163,28 @@ export default function Home() {
           </div>
         </div>
       </section>
-      
-{/* customer reactions to product */}
-<section id="flavour_options" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-8 text-white">
+
+
+<section id="obex_history" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-2 text-white">
+        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        
+            <div>
+              <h1 className="mb-4 text-4xl font-bold text-white text-center">
+                <span className="text-white">Why We Chose the Name OBEX</span>
+              </h1>
+              <p className="mb-4 text-white">
+              The name "OBEX" is derived from the Latin word for "barrier," a term that perfectly encapsulates the essence of our product. Our primary active ingredient, sodium alginate, works by forming a physical barrier at the top of the stomach. This barrier prevents reflux and regurgitation, ensuring that stomach contents stay where they belong.
+
+              Sodium alginate's unique properties create a protective shield, mimicking the natural barriers of the body. This not only alleviates discomfort but also promotes overall digestive health. By choosing the name OBEX, we highlight our commitment to natural, science-backed remedies that offer a reliable defense against reflux. 
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
+            </div>
+          </div>
+        
+      </section>         
+
+<section id="flavour_options" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-2 text-white">
         <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="max-w-2xl text-left h-full flex flex-col justify-between">
             <div>
