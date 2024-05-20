@@ -138,8 +138,7 @@ export default function Home() {
         </div>
       </section>
 
-{/* customer reactions to product */}
-<section id="madeincanada" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-8 text-white">
+      <section id="madeincanada" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-8 text-white">
         <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <Image src="/canada_white_lines.png" alt="Canada" width={300} height={500} className="w-full sm:w-1/2 bg-black object-cover" />
           <div className="max-w-2xl text-left h-full flex flex-col justify-between">
@@ -164,15 +163,12 @@ export default function Home() {
         </div>
       </section>
 
-
-<section id="obex_history" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-2 text-white">
-        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-        
+      <section id="obex_history" className="flex flex-col items-center justify-center min-h-[300px] pt-2 text-white px-4 sm:px-0">     
             <div>
-              <h1 className="mb-4 text-4xl font-bold text-white text-center">
-                <span className="text-white">Why We Chose the Name OBEX</span>
+              <h1 className="mb-4 text-3xl sm:text-4xl font-bold text-center text-[#A8B18C]">
+                Why We Chose the Name OBEX
               </h1>
-              <p className="mb-4 text-white">
+              <p className="mb-4 text-[#A8B18C] text-center sm:text-left sm:px-24">
               The name "OBEX" is derived from the Latin word for "barrier," a term that perfectly encapsulates the essence of our product. Our primary active ingredient, sodium alginate, works by forming a physical barrier at the top of the stomach. This barrier prevents reflux and regurgitation, ensuring that stomach contents stay where they belong.
 
               Sodium alginate's unique properties create a protective shield, mimicking the natural barriers of the body. This not only alleviates discomfort but also promotes overall digestive health. By choosing the name OBEX, we highlight our commitment to natural, science-backed remedies that offer a reliable defense against reflux. 
@@ -180,18 +176,17 @@ export default function Home() {
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
             </div>
-          </div>
         
       </section>         
 
-<section id="flavour_options" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-2 text-white">
+      <section id="flavour_options" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-2 text-white">
         <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="max-w-2xl text-left h-full flex flex-col justify-between">
             <div>
               <h1 className="mb-4 text-4xl font-bold text-white">
-                <span className="text-white">Chef Developed Flavours</span>
+                <span className="text-[#A8B18C]">Chef Developed Flavours</span>
               </h1>
-              <p className="mb-4 text-white">
+              <p className="mb-4 text-[#A8B18C]">
               <h2>Discover the delicious side of relief with OBEX, now available in three chef-inspired flavours.</h2>
               <br />
               <h2 style={{ color: '#98FB98' }}>Refreshing Mint:</h2>
@@ -213,56 +208,55 @@ export default function Home() {
         </div>
       </section>      
 
-{/* features list */}
       <section id="product_details" className="w-full max-w-5xl p-4 mx-auto">
         <div className="flex flex-col items-center text-center">
           <TooltipProvider>
             <Tooltip>
-          <TooltipTrigger><h2 className="text-3xl font-bold text-[#E0DED4]">About Sodium Alginate</h2></TooltipTrigger>
+          <TooltipTrigger><h2 className="text-3xl font-bold text-[#A8B18C]">About Sodium Alginate</h2></TooltipTrigger>
           <TooltipContent>
-            <p>Click on these frequently asked questions to learn more about sodium alginate</p>
+            <p className="text-[#A8B18C]">Click on these frequently asked questions to learn more about sodium alginate</p>
           </TooltipContent>
           </Tooltip>
           </TooltipProvider>
-          <p className="text-left text-[#688B63]">Sodium alginate, a natural substance derived from seaweed, has become an increasingly popular ingredient in products aimed at managing gastroesophageal reflux disease (GERD) and heartburn. The unique properties of sodium alginate make it especially effective for relieving these common digestive issues.</p>
+          <p className="text-left text-[#A8B18C]">Sodium alginate, a natural substance derived from seaweed, has become an increasingly popular ingredient in products aimed at managing gastroesophageal reflux disease (GERD) and heartburn. The unique properties of sodium alginate make it especially effective for relieving these common digestive issues.</p>
           <Collapsible>
             <CollapsibleTrigger>
-              <h2 className="font-bold text-[#688B63] hover:text-[#E0DED4] cursor-pointer transition-colors duration-100">How Sodium Alginate Works</h2>
+              <h2 className="font-bold text-[#A8B18C] hover:text-[#E0DED4] cursor-pointer transition-colors duration-100">How Sodium Alginate Works</h2>
             </CollapsibleTrigger>
             <CollapsibleContent>
-            <p className="text-left text-[#688B63]">When ingested, sodium alginate reacts with stomach acid to form a gel-like raft that floats on top of the stomach contents. This raft acts as a barrier, preventing acid from rising back up into the esophagus, which is the cause of heartburn and other reflux-related discomfort. This protective mechanism makes sodium alginate particularly useful for addressing the symptoms of GERD, especially post-meal acid reflux episodes.</p>
+            <p className="text-left text-[#A8B18C]">When ingested, sodium alginate reacts with stomach acid to form a gel-like raft that floats on top of the stomach contents. This raft acts as a barrier, preventing acid from rising back up into the esophagus, which is the cause of heartburn and other reflux-related discomfort. This protective mechanism makes sodium alginate particularly useful for addressing the symptoms of GERD, especially post-meal acid reflux episodes.</p>
             </CollapsibleContent>
             </Collapsible>
             <Collapsible>
             <CollapsibleTrigger>
-            <h2 className="font-bold text-[#688B63] hover:text-[#E0DED4] cursor-pointer transition-colors duration-100">Why Sodium Alginate is Beneficial</h2>
+            <h2 className="font-bold text-[#A8B18C] hover:text-[#E0DED4] cursor-pointer transition-colors duration-100">Why Sodium Alginate is Beneficial</h2>
               </CollapsibleTrigger>
               <CollapsibleContent>
               <ul>
-                <li className="text-left text-[#688B63]"><strong>Rapid Relief:</strong> Sodium alginate works quickly to form a protective barrier, often providing immediate relief from heartburn. This rapid action is beneficial for individuals who experience sudden or severe reflux symptoms.</li>
-                <li className="text-left text-[#688B63]"><strong>Natural and Safe:</strong> As a natural extract from seaweed, sodium alginate is generally well-tolerated and considered safe for most people, including pregnant women. The natural origin of Sodium Alginate also appeals to those who prefer alternative or plant-based remedies.</li>
-                <li className="text-left text-[#688B63]"><strong>Non-Systemic Action:</strong> Unlike proton pump inhibitors or other acid-suppressing medications, sodium alginate does not affect the overall acidity of the stomach. This makes it suitable for intermittent use and helps maintain normal digestive function.</li>
-                <li className="text-left text-[#688B63]"><strong>Complementary to Other Treatments:</strong> Sodium alginate can be used alongside other treatments for GERD or heartburn, enhancing their effectiveness or providing additional relief during particularly troublesome episodes.</li>
-                <li className="text-left text-[#688B63]"><strong>Versatility:</strong> Sodium alginate is available in various formulations, including liquid suspensions, chewable tablets, and granules, offering convenient options for different preferences and needs.</li>
+                <li className="text-left text-[#A8B18C]"><strong>Rapid Relief:</strong> Sodium alginate works quickly to form a protective barrier, often providing immediate relief from heartburn. This rapid action is beneficial for individuals who experience sudden or severe reflux symptoms.</li>
+                <li className="text-left text-[#A8B18C]"><strong>Natural and Safe:</strong> As a natural extract from seaweed, sodium alginate is generally well-tolerated and considered safe for most people, including pregnant women. The natural origin of Sodium Alginate also appeals to those who prefer alternative or plant-based remedies.</li>
+                <li className="text-left text-[#A8B18C]"><strong>Non-Systemic Action:</strong> Unlike proton pump inhibitors or other acid-suppressing medications, sodium alginate does not affect the overall acidity of the stomach. This makes it suitable for intermittent use and helps maintain normal digestive function.</li>
+                <li className="text-left text-[#A8B18C]"><strong>Complementary to Other Treatments:</strong> Sodium alginate can be used alongside other treatments for GERD or heartburn, enhancing their effectiveness or providing additional relief during particularly troublesome episodes.</li>
+                <li className="text-left text-[#A8B18C]"><strong>Versatility:</strong> Sodium alginate is available in various formulations, including liquid suspensions, chewable tablets, and granules, offering convenient options for different preferences and needs.</li>
               </ul>
               </CollapsibleContent>
             </Collapsible>
             <Collapsible>
             <CollapsibleTrigger>
-              <h2 className="font-bold text-[#688B63] hover:text-[#E0DED4] cursor-pointer transition-colors duration-100">Applications of Sodium Alginate</h2>
+              <h2 className="font-bold text-[#A8B18C] hover:text-[#E0DED4] cursor-pointer transition-colors duration-100">Applications of Sodium Alginate</h2>
               </CollapsibleTrigger>
               <CollapsibleContent>
               <ul>
-                <li className="text-left text-[#688B63]"><strong>Mild to Moderate GERD:</strong> For individuals with occasional reflux or mild GERD, sodium alginate provides effective, on-the-spot relief.</li>
-                <li className="text-left text-[#688B63]"><strong>Postprandial Heartburn:</strong> Those who experience reflux after meals benefit from sodium alginate, which prevents acid from rising during digestion.</li>
-                <li className="text-left text-[#688B63]"><strong>Pregnancy-Related Heartburn:</strong> Pregnant women, who often experience heartburn, find sodium alginate useful due to its safety profile.</li>
-                <li className="text-left text-[#688B63]"><strong>Nighttime Reflux:</strong> Sodium alginate forms a lasting barrier, making it effective for preventing nighttime reflux when lying down.</li>
+                <li className="text-left text-[#A8B18C]"><strong>Mild to Moderate GERD:</strong> For individuals with occasional reflux or mild GERD, sodium alginate provides effective, on-the-spot relief.</li>
+                <li className="text-left text-[#A8B18C]"><strong>Postprandial Heartburn:</strong> Those who experience reflux after meals benefit from sodium alginate, which prevents acid from rising during digestion.</li>
+                <li className="text-left text-[#A8B18C]"><strong>Pregnancy-Related Heartburn:</strong> Pregnant women, who often experience heartburn, find sodium alginate useful due to its safety profile.</li>
+                <li className="text-left text-[#A8B18C]"><strong>Nighttime Reflux:</strong> Sodium alginate forms a lasting barrier, making it effective for preventing nighttime reflux when lying down.</li>
               </ul>
             </CollapsibleContent>
             </Collapsible>
-              <h2 className="font-bold text-[#688B63]">Conclusion</h2>
+              <h2 className="font-bold text-[#A8B18C]">Conclusion</h2>
 
-              <p className="text-left text-[#688B63] text-left">Sodium alginate offers a natural, effective solution for managing heartburn and reflux. It&apos;s unique gel-forming properties, rapid action, and safety make it a valuable tool for individuals seeking relief from digestive discomfort. Whether used alone or in combination with other treatments, sodium alginate provides a soothing solution for a common and often bothersome problem.</p>
+              <p className="text-left text-[#A8B18C] text-left">Sodium alginate offers a natural, effective solution for managing heartburn and reflux. It&apos;s unique gel-forming properties, rapid action, and safety make it a valuable tool for individuals seeking relief from digestive discomfort. Whether used alone or in combination with other treatments, sodium alginate provides a soothing solution for a common and often bothersome problem.</p>
 
 
         </div>
@@ -271,7 +265,7 @@ export default function Home() {
 
 {/* About the product */}
 <section id="research" className="w-full max-w-5xl p-4 mx-auto bg-transparent">
-  <h2 className="text-3xl font-bold pb-4 text-[#E0DED4] text-center" >Medical Research Support of Alginates</h2>
+  <h2 className="text-3xl font-bold pb-4 text-[#A8B18C] text-center" >Medical Research Support of Alginates</h2>
   <div className="flex flex-col sm:flex-row items-center text-center">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
