@@ -170,7 +170,7 @@ export default function Home() {
         <div className="max-w-2xl text-left h-full flex flex-col justify-between">
             <div>
               <h1 className="mb-4 text-4xl font-bold text-white">
-                <span className="text-white">Local Chef-Inspired Flavours</span>
+                <span className="text-white">Chef Developed Flavours</span>
               </h1>
               <p className="mb-4 text-white">
               <h2>Discover the delicious side of relief with OBEX, now available in three chef-inspired flavours.</h2>
