@@ -179,7 +179,7 @@ export default function Home() {
               <p style={{ color: '#98FB98' }}>Experience the crisp and invigorating taste of refreshing mint. This classic flavour not only soothes your senses but also provides a cooling comforting sensation.</p>
               <br />
               <h2 style={{ color: '#FFD700' }}>Lemon Meringue:</h2>
-              <p style={{ color: '#FFEA00' }}>Indulge in the delightful tang of lemon meringue, reminiscent of a classic dessert. The perfect balance of zesty lemon and sweet meringue creates a delectable treat that will brighten your day while keeping reflux at bay.</p>
+              <p style={{ color: '#FFEA00' }}>Indulge in the delightful tang of lemon meringue, reminiscent of a classic dessert. The perfect balance of zesty lemon and sweet meringue creates a delectable treat that will brighten your day while keeping you comfortable.</p>
               <br />
               <h2 style={{ color: '#FFA500' }}>Orange Creamsicle:</h2>
               <p style={{ color: '#FFA500' }}>Savour the nostalgic blend of creamy vanilla and bright orange with our orange creamsicle flavour. This comforting and luscious option takes you back to childhood summers, offering a soothing and enjoyable way to manage reflux.</p>
