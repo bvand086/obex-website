@@ -173,18 +173,18 @@ export default function Home() {
                 <span className="text-white">Local Chef-Inspired Flavours</span>
               </h1>
               <p className="mb-4 text-white">
-              <h2>Discover the delicious side of relief with OBEX, now available in three chef-inspired flavours that transform your daily anti-reflux routine into a gourmet experience.</h2>
+              <h2>Discover the delicious side of relief with OBEX, now available in three chef-inspired flavours.</h2>
               <br />
               <h2 style={{ color: '#98FB98' }}>Refreshing Mint:</h2>
-              <p style={{ color: '#98FB98' }}>Experience the crisp and invigorating taste of refreshing mint. This classic flavour not only soothes your senses but also provides a cooling sensation, making it perfect for a revitalizing start to your day.</p>
+              <p style={{ color: '#98FB98' }}>Experience the crisp and invigorating taste of refreshing mint. This classic flavour not only soothes your senses but also provides a cooling comforting sensation.</p>
               <br />
               <h2 style={{ color: '#FFD700' }}>Lemon Meringue:</h2>
-              <p style={{ color: '#FFEA00' }}>Indulge in the delightful tang of lemon meringue, reminiscent of your favourite dessert. The perfect balance of zesty lemon and sweet meringue creates a delectable treat that will brighten your day while keeping reflux at bay.</p>
+              <p style={{ color: '#FFEA00' }}>Indulge in the delightful tang of lemon meringue, reminiscent of a classic dessert. The perfect balance of zesty lemon and sweet meringue creates a delectable treat that will brighten your day while keeping reflux at bay.</p>
               <br />
               <h2 style={{ color: '#FFA500' }}>Orange Creamsicle:</h2>
               <p style={{ color: '#FFA500' }}>Savour the nostalgic blend of creamy vanilla and bright orange with our orange creamsicle flavour. This comforting and luscious option takes you back to childhood summers, offering a soothing and enjoyable way to manage reflux.</p>
               <br />
-              Each flavour is crafted with care to provide not only effective relief but also an enjoyable taste experience. Say goodbye to the bland and medicinal, and hello to the delicious and natural with OBEX.
+              Each flavour is crafted with care to provide an enjoyable taste experience. Say goodbye to the bland and medicinal, and hello to the delicious and natural with OBEX.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
@@ -343,7 +343,7 @@ export default function Home() {
           >
             <CarouselContent className="-ml-1">
               {[
-                { title: "Small Pack", description: "Ideal for occasional use", content: "Each small package contains 10 packets, each with a 5mL dose of a single, delightful flavor.", footer: "$16.99+tax", link: "https://buy.stripe.com/cN2bMb46VcePfMQ8ww" },
+                { title: "Small Pack", description: "Ideal for occasional use", content: "Small package contains a single flavour of 10 packets (5 mL per packet).", footer: "$16.99+tax", link: "https://buy.stripe.com/cN2bMb46VcePfMQ8ww" },
                 { title: "Large Pack", description: "Perfect for regular use", content: "Each large package contains 25 packets, each with a 5mL dose, featuring 3 delightful flavor varieties.", footer: "$34.99+tax", link: "https://buy.stripe.com/9AQdUjcDrdiT9os7st" },
                 { title: "6 Mo Subscription", description: "Half-year supply", content: "With our 6-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 10%", footer2: "$178.50+tax", link: "https://buy.stripe.com/3cs4jJfPD5Qr8ko3ce" },
                 { title: "12 Mo Subscription", description: "Full-year supply", content: "With our 12-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 15%", footer2: "$336.00+tax", link: "https://buy.stripe.com/6oEg2rfPD0w7fMQfZ1" }
