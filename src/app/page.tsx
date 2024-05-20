@@ -179,14 +179,15 @@ export default function Home() {
           <p className="text-left text-[#688B63]">Sodium alginate, a natural substance derived from seaweed, has become an increasingly popular ingredient in products aimed at managing gastroesophageal reflux disease (GERD) and heartburn. The unique properties of sodium alginate make it especially effective for relieving these common digestive issues.</p>
           <Collapsible>
             <CollapsibleTrigger>
-            <h2 className="font-bold text-[#688B63]">How Sodium Alginate Works</h2></CollapsibleTrigger>
+              <h2 className="font-bold text-[#688B63] hover:text-[#E0DED4] cursor-pointer transition-colors duration-100">How Sodium Alginate Works</h2>
+            </CollapsibleTrigger>
             <CollapsibleContent>
             <p className="text-left text-[#688B63]">When ingested, sodium alginate reacts with stomach acid to form a gel-like raft that floats on top of the stomach contents. This raft acts as a barrier, preventing acid from rising back up into the esophagus, which is the cause of heartburn and other reflux-related discomfort. This protective mechanism makes sodium alginate particularly useful for addressing the symptoms of GERD, especially post-meal acid reflux episodes.</p>
             </CollapsibleContent>
             </Collapsible>
             <Collapsible>
             <CollapsibleTrigger>
-            <h2 className="font-bold text-[#688B63]">Why Sodium Alginate is Beneficial</h2>
+            <h2 className="font-bold text-[#688B63] hover:text-[#E0DED4] cursor-pointer transition-colors duration-100">Why Sodium Alginate is Beneficial</h2>
               </CollapsibleTrigger>
               <CollapsibleContent>
               <ul>
@@ -200,7 +201,7 @@ export default function Home() {
             </Collapsible>
             <Collapsible>
             <CollapsibleTrigger>
-              <h2 className="font-bold text-[#688B63]">Applications of Sodium Alginate</h2>
+              <h2 className="font-bold text-[#688B63] hover:text-[#E0DED4] cursor-pointer transition-colors duration-100">Applications of Sodium Alginate</h2>
               </CollapsibleTrigger>
               <CollapsibleContent>
               <ul>
@@ -313,10 +314,10 @@ export default function Home() {
           >
             <CarouselContent className="-ml-1">
               {[
-                { title: "Small Pack", description: "Ideal for occasional use", content: "Each small package contains 10 packets, each with a 5mL dose of a single, delightful flavor.", footer: "Starting at $16.99", link: "https://buy.stripe.com/cN2bMb46VcePfMQ8ww" },
-                { title: "Large Pack", description: "Perfect for regular use", content: "Each large package contains 25 packets, each with a 5mL dose, featuring 3 delightful flavor varieties.", footer: "Starting at $34.99", link: "https://buy.stripe.com/9AQdUjcDrdiT9os7st" },
-                { title: "6 Mo Subscription", description: "Half-year supply", content: "With our 6-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 10%", link: "https://buy.stripe.com/3cs4jJfPD5Qr8ko3ce" },
-                { title: "12 Mo Subscription", description: "Full-year supply", content: "With our 12-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 15%", link: "https://buy.stripe.com/6oEg2rfPD0w7fMQfZ1" }
+                { title: "Small Pack", description: "Ideal for occasional use", content: "Each small package contains 10 packets, each with a 5mL dose of a single, delightful flavor.", footer: "$16.99+tax", link: "https://buy.stripe.com/cN2bMb46VcePfMQ8ww" },
+                { title: "Large Pack", description: "Perfect for regular use", content: "Each large package contains 25 packets, each with a 5mL dose, featuring 3 delightful flavor varieties.", footer: "$34.99+tax", link: "https://buy.stripe.com/9AQdUjcDrdiT9os7st" },
+                { title: "6 Mo Subscription", description: "Half-year supply", content: "With our 6-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 10%", footer2: "$178.50+tax", link: "https://buy.stripe.com/3cs4jJfPD5Qr8ko3ce" },
+                { title: "12 Mo Subscription", description: "Full-year supply", content: "With our 12-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 15%", footer2: "$336.00+tax", link: "https://buy.stripe.com/6oEg2rfPD0w7fMQfZ1" }
               ].map((card, index) => (
                 <CarouselItem key={index} className="pl-1 mx-2 basis-full sm:basis-1/2">
                   <div className="p-1 h-[65vh] flex flex-col justify-between border border-gray-700 rounded-lg bg-[#364C43]">
@@ -327,9 +328,8 @@ export default function Home() {
                       </CardHeader>
                       <CardContent className="px-5 py-4">
                       <div className="flex justify-center my-4">
-                          <img src="/IBEXhead.png" alt="Placeholder" className="w-1/4 max-w-xs" />
+                          <img src="/productimage.png" alt="Product image" className="w-1/2 max-w-lg" />
                         </div>
-
                         <p className="text-left text-sm text-[#A8B18C]">{card.content}</p>
                         
                       </CardContent>
@@ -339,6 +339,7 @@ export default function Home() {
                         <Image src="/IBEXhead.png" alt="Product Image" width={75} height={75} className="object-cover object-center rounded-full" />
                       </div>
                       <p className="text-xl font-semibold text-[#E0DED4]">{card.footer}</p>
+                      <p className="text-sm font-semibold text-[#E0DED4]">{card.footer2}</p>
                       <div className="w-full sm:w-auto border border-transparent rounded-lg bg-[#688B63] text-white p-4 hover:bg-[#496748] text-center">
                         <a href={card.link} className="flex items-center justify-center h-full w-full">
                           Buy Now
