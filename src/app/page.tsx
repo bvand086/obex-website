@@ -139,7 +139,7 @@ export default function Home() {
       </section>
 
 {/* customer reactions to product */}
-<section id="customer_reactions" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-8 text-white">
+<section id="madeincanada" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-8 text-white">
         <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <Image src="/canada_white_lines.png" alt="Canada" width={300} height={500} className="w-full sm:w-1/2 bg-black object-cover" />
           <div className="max-w-2xl text-left h-full flex flex-col justify-between">
@@ -164,6 +164,35 @@ export default function Home() {
         </div>
       </section>
       
+{/* customer reactions to product */}
+<section id="flavour_options" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-8 text-white">
+        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="max-w-2xl text-left h-full flex flex-col justify-between">
+            <div>
+              <h1 className="mb-4 text-4xl font-bold text-white">
+                <span className="text-white">Local Chef-Inspired Flavors</span>
+              </h1>
+              <p className="mb-4 text-white">
+              <h2>Discover the delicious side of relief with OBEX, now available in three chef-inspired flavours that transform your daily anti-reflux routine into a gourmet experience.</h2>
+              <br />
+              <h2 style={{ color: '#98FB98' }}>Refreshing Mint:</h2>
+              <p style={{ color: '#98FB98' }}>Experience the crisp and invigorating taste of refreshing mint. This classic flavour not only soothes your senses but also provides a cooling sensation, making it perfect for a revitalizing start to your day.</p>
+              <br />
+              <h2 style={{ color: '#FFD700' }}>Lemon Meringue:</h2>
+              <p style={{ color: '#FFEA00' }}>Indulge in the delightful tang of lemon meringue, reminiscent of your favourite dessert. The perfect balance of zesty lemon and sweet meringue creates a delectable treat that will brighten your day while keeping reflux at bay.</p>
+              <br />
+              <h2 style={{ color: '#FFA500' }}>Orange Creamsicle:</h2>
+              <p style={{ color: '#FFA500' }}>Savour the nostalgic blend of creamy vanilla and bright orange with our orange creamsicle flavour. This comforting and luscious option takes you back to childhood summers, offering a soothing and enjoyable way to manage reflux.</p>
+              <br />
+              Each flavour is crafted with care to provide not only effective relief but also an enjoyable taste experience. Say goodbye to the bland and medicinal, and hello to the delicious and natural with OBEX.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
+            </div>
+          </div>
+          <Image src="/flavourphoto.jpeg" alt="flavours stylised" width={300} height={500} className="w-full sm:w-1/2 bg-black object-cover" />
+        </div>
+      </section>      
 
 {/* features list */}
       <section id="product_details" className="w-full max-w-5xl p-4 mx-auto">
