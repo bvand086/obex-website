@@ -38,9 +38,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-
-
-
 export default function Home() {
 
   const scrollToSection = (id: string): void => {
@@ -52,16 +49,14 @@ export default function Home() {
     }
   };
   
-
   return (
-    <main className="bg-black text-white"> 
-      <header className="flex items-center justify-between p-4 border-b">
-        <div className="flex items-center gap-4">
+    <main className="bg-black text-white p-4 sm:p-0"> 
+      <header className="flex flex-col sm:flex-row items-center justify-between p-4 border-b">
+        <div className="flex flex-col sm:flex-row items-center gap-4">
           <div className="w-8 h-8 rounded-full overflow-hidden">
             <Image src="/IBEXhead.png" alt="IBEX Head" width={32} height={32} />
           </div>
           <nav className="flex gap-4">
-  
             <a href="#" className="hover:underline"
             onClick={(e) => {
               e.preventDefault();
@@ -86,12 +81,13 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="flex items-center justify-center h-[700px] bg-fixed" 
+      <section className="flex flex-col sm:flex-row items-center justify-center h-[700px] bg-black" 
            style={{ backgroundImage: "url('/backgroundproduct.jpeg')", backgroundSize: '150%', backgroundPosition: 'center' }}>
-        <div className="max-w-2xl text-center text-white mx-auto shadow-lg p-6 bg-black bg-opacity-30 rounded-lg">
+        <div className="max-w-2xl text-center text-white mx-auto shadow-lg p-6 bg-black bg-opacity-30 rounded-lg"
+             style={{ paddingLeft: '16px', paddingRight: '16px' }}>
           <h1 className="mb-4 text-5xl font-bold text-[#F0E68C]">Experience the Power of OBEX Today</h1>
           <p className="mb-4 text-xl text-[#F0E68C]">Your Natural Barrier Against Heartburn.</p>
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button className="px-6 py-2 bg-[#688B63] text-white rounded hover:bg-[#496748]"
                     onClick={() => scrollToSection('#cta-section')}>
               Order
@@ -104,48 +100,48 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="hero" className="flex items-center justify-center h-[500px] pb-8">
-  <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-    <div className="max-w-2xl text-left text-[#E0DED4]">
-      <h1 className="mb-4 text-4xl font-bold text-[#E0DED4]">Experience the Power of OBEX Packets</h1>
-      <p className="mb-4 text-[#A8B18C]">
-        OBEX packets are the perfect solution for busy individuals looking
-        for a convenient and effective way to defend against reflux. With our
-        specially formulated packets, you can easily avoid the discomfort on the go.
-      </p>
-      <div className="flex items-center gap-4">
-        <div>
-          <h3 className="font-semibold text-[#E0DED4]">Conveniently Packed</h3>
-          <p className="text-[#A8B18C]">
-            Each OBEX packet contains a single 5mL dose of our proprietary blend.
-          </p>
+      <section id="hero" className="flex flex-col sm:flex-row items-center justify-center h-[500px] pb-8">
+        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="max-w-2xl text-left text-[#E0DED4]">
+            <h1 className="mb-4 text-4xl font-bold text-[#E0DED4]">Experience the Power of OBEX Packets</h1>
+            <p className="mb-4 text-[#A8B18C]">
+              OBEX packets are the perfect solution for busy individuals looking
+              for a convenient and effective way to defend against reflux. With our
+              specially formulated packets, you can easily avoid the discomfort on the go.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <div>
+                <h3 className="font-semibold text-[#E0DED4]">Conveniently Packed</h3>
+                <p className="text-[#A8B18C]">
+                  Each OBEX packet contains a single 5mL dose of our proprietary blend.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-[#E0DED4]">Effective Results</h3>
+                <p className="text-[#A8B18C]">
+                  Studies indicate sodium alginate is as effective as the gold standard prescription strength medications (Proton Pump Inhibitors (PPI)) in preventing reflux.
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
+              <button className="px-6 py-2 border rounded text-[#E0DED4] border-[#E0DED4] hover:bg-[#496748]" onClick={() => scrollToSection("#product_details")}>
+                Learn More
+              </button>
+              <button className="px-6 py-2 bg-[#688B63] text-white rounded hover:bg-[#496748]" onClick={() => scrollToSection("#cta-section")}>
+                Order Now
+              </button>
+            </div>
+          </div>
+          <div className="w-full sm:w-1/2 h-[300px] pb-4 md:pb-0">
+            <Image src="/seaweedOBEX.jpeg" alt="Seaweed" width={300} height={300} className="w-full h-full object-cover" />
+          </div>
         </div>
-        <div>
-          <h3 className="font-semibold text-[#E0DED4]">Effective Results</h3>
-          <p className="text-[#A8B18C]">
-            Studies indicate sodium alginate is as effective as the gold standard prescription strength medications (Proton Pump Inhibitors (PPI)) in preventing reflux.
-          </p>
-        </div>
-      </div>
-      <div className="flex items-center gap-4 mt-4">
-        <button className="px-6 py-2 border rounded text-[#E0DED4] border-[#E0DED4] hover:bg-[#496748]" onClick={() => scrollToSection("#product_details")}>
-          Learn More
-        </button>
-        <button className="px-6 py-2 bg-[#688B63] text-white rounded hover:bg-[#496748]" onClick={() => scrollToSection("#cta-section")}>
-          Order Now
-        </button>
-      </div>
-    </div>
-    <div className="w-1/2 h-[300px] pb-4 md:pb-0">
-      <Image src="/seaweedOBEX.jpeg" alt="Seaweed" width={300} height={300} className="w-full h-full object-cover" />
-    </div>
-  </div>
-</section>
+      </section>
 
 {/* customer reactions to product */}
-<section id="customer_reactions" className="flex items-center justify-center h-[500px] pt-8 text-white">
-        <div className="container mx-auto flex items-center justify-between gap-4">
-          <Image src="/canada_white_lines.png" alt="Canada" width={300} height={500} className="w-1/2 bg-black object-cover" />
+<section id="customer_reactions" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-8 text-white">
+        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <Image src="/canada_white_lines.png" alt="Canada" width={300} height={500} className="w-full sm:w-1/2 bg-black object-cover" />
           <div className="max-w-2xl text-left h-full flex flex-col justify-between">
             <div>
               <h1 className="mb-4 text-4xl font-bold text-[#E0DED4]">
@@ -155,7 +151,7 @@ export default function Home() {
               Crafted in Hamilton, Ontario, OBEX is the result of a groundbreaking collaboration among an ENT Surgeon, a Speech-Language Pathologist, a Chef, and a Food Scientist. Born from the desire to offer a palatable, natural alternative to traditional reflux remedies, OBEX combines a rich legacy of scientific knowledge with culinary innovation. Utilizing Sodium Alginate, a time-tested ingredient known since the 1880s for its efficacy but poor taste, our team has revolutionized its use. With OBEX, developed right here in Canada, you no longer have to compromise taste for effective reflux and regurgitation relief.
               </p>
             </div>
-            <div className="flex items-center gap-4 mt-4">
+            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
               <button className="px-6 py-2 border rounded hover:bg-[#496748]"
               onClick={() => scrollToSection("#product_details")}>
                 Learn More
@@ -225,10 +221,11 @@ export default function Home() {
       </section>
 
 {/* About the product */}
-      <section id="research" className="w-full max-w-5xl p-4 mx-auto bg-transparent">
-        <div className="flex flex-col items-center text-center">
-          <h2 className="text-3xl font-bold pb-4 text-[#E0DED4]" >Medical Research Support of Alginates</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+<section id="research" className="w-full max-w-5xl p-4 mx-auto bg-transparent">
+  <h2 className="text-3xl font-bold pb-4 text-[#E0DED4] text-center" >Medical Research Support of Alginates</h2>
+  <div className="flex flex-col sm:flex-row items-center text-center">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
             <Card style={{ borderColor: '#A8B18C' }}>
               <CardHeader>
                 <HoverCard>
@@ -304,11 +301,10 @@ export default function Home() {
       </section>
 
 {/* CTA Section */}
-<section id="cta-section" className="w-full max-w-5xl p-4 mx-auto h-auto min-h-screen">
-        <div className="flex flex-col items-center text-center">
-          <h2 className="text-3xl font-bold pb-4 text-[#E0DED4]">Experience natural relief from reflux with OBEX—try it now for safe, immediate relief!</h2>
-          <p className="text-[#E0DED4]">Choose the perfect OBEX package for you — try our Small (10 packets), Large (25 packets), or opt for our convenient 6 or 12-month subscriptions. Order now for natural relief!</p>
-        
+<section id="cta-section" className="w-full max-w-5xl p-4 mx-auto h-auto min-h-screen text-center">
+  <h2 className="text-3xl font-bold pb-4 text-[#E0DED4]">Experience natural relief from reflux with OBEX—try it now for safe, immediate relief!</h2>
+    <p className="text-[#E0DED4]">Choose the perfect OBEX package for you — try our Small (10 packets), Large (25 packets), or opt for our convenient 6 or 12-month subscriptions. Order now for natural relief!</p>
+      <div className="flex flex-col sm:flex-row items-center"> 
           <Carousel className="w-11/12 h-auto max-h-[80vh] mx-auto pt-4 pb-8"
               opts={{
                 align: "start",
@@ -353,8 +349,8 @@ export default function Home() {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious />
             <CarouselNext />
+            <CarouselPrevious />
           </Carousel>
         </div>
         
@@ -366,13 +362,14 @@ export default function Home() {
       <footer className="w-full p-4 border-t border-[#A8B18C] bg-[#E0DED4] text-[#364C43]">
         <div className="container mx-auto flex items-center justify-between">
           <p className="text-sm">© 2024 OBEX Corporation. All rights reserved.</p>
-          <div className="flex items-center gap-4">
+          {/* <div className="flex items-center gap-4">
             <a href="#" className="text-sm hover:underline">Privacy Policy</a>
             <a href="#" className="text-sm hover:underline">Terms of Use</a>
-          </div>
+          </div> */}
         </div>
       </footer>
     </main>
   );
 }
+
 
