@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import React from "react";
-import PaymentButton from "@/components/ui/PaymentButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Card,
@@ -81,12 +80,13 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="flex flex-col sm:flex-row items-center justify-center h-[700px] bg-black" 
-           style={{ backgroundImage: "url('/backgroundproduct.jpeg')", backgroundSize: '150%', backgroundPosition: 'center' }}>
+      <section className="flex flex-col sm:flex-row items-center justify-center h-[700px]" 
+           style={{ backgroundColor: '#E7A423' }}>
         <div className="max-w-2xl text-center text-white mx-auto shadow-lg p-6 bg-black bg-opacity-30 rounded-lg"
              style={{ paddingLeft: '16px', paddingRight: '16px' }}>
-          <h1 className="mb-4 text-5xl font-bold text-[#F0E68C]">Experience the Power of OBEX Today</h1>
-          <p className="mb-4 text-xl text-[#F0E68C]">Your Natural Barrier Against Heartburn.</p>
+          <h1 className="mb-4 text-5xl font-bold text-[#F0E68C]">Experience the Power of</h1>
+          <h1 className="mb-4 text-9xl font-bold text-[#F0E68C]">OBEX</h1>
+          <p className="mb-4 text-xl text-[#F0E68C]">Your Natural Barrier Against Heartburn</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button className="px-6 py-2 bg-[#688B63] text-white rounded hover:bg-[#496748]"
                     onClick={() => scrollToSection('#cta-section')}>
@@ -103,10 +103,9 @@ export default function Home() {
       <section id="hero" className="flex flex-col sm:flex-row items-center justify-center h-[500px] pb-8">
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="max-w-2xl text-left text-[#E0DED4]">
-            <h1 className="mb-4 text-4xl font-bold text-[#E0DED4]">Experience the Power of OBEX Packets</h1>
+            <h1 className="mb-4 text-4xl font-bold text-[#E0DED4]">Feel the Impact of OBEX</h1>
             <p className="mb-4 text-[#A8B18C]">
-              OBEX packets are the perfect solution for busy individuals looking
-              for a convenient and effective way to defend against reflux. With our
+              OBEX is the perfect solution for a convenient and effective way to defend against reflux. With our
               specially formulated packets, you can easily avoid the discomfort on the go.
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-4">
@@ -138,130 +137,48 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="madeincanada" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-8 text-white">
-        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <Image src="/canada_white_lines.png" alt="Canada" width={300} height={500} className="w-full sm:w-1/2 bg-black object-cover" />
-          <div className="max-w-2xl text-left h-full flex flex-col justify-between">
-            <div>
-              <h1 className="mb-4 text-4xl font-bold text-[#E0DED4]">
-                <span className="text-red-600">Developed</span> Right Here in <span className="text-red-600">Canada 🇨🇦</span>
-              </h1>
-              <p className="mb-4 text-[#A8B18C]">
-              Crafted in Hamilton, Ontario, OBEX is the result of a groundbreaking collaboration among an ENT Surgeon, a Speech-Language Pathologist, a Chef, and a Food Scientist. Born from the desire to offer a palatable, natural alternative to traditional reflux remedies, OBEX combines a rich legacy of scientific knowledge with culinary innovation. Utilizing Sodium Alginate, a time-tested ingredient known since the 1880s for its efficacy but poor taste, our team has revolutionized its use. With OBEX, developed right here in Canada, you no longer have to compromise taste for effective reflux and regurgitation relief.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
-              <button className="px-6 py-2 border rounded hover:bg-[#496748]"
-              onClick={() => scrollToSection("#product_details")}>
-                Learn More
-              </button>
-              <button className="px-6 py-2 bg-[#688B63] text-white rounded hover:bg-[#496748]" onClick={() => scrollToSection("#cta-section")}>
-          Order Now
-        </button>
-            </div>
-          </div>
-        </div>
-      </section>
+<section id="product_details" className="w-full max-w-7xl p-4 mx-auto">
+  <div className="flex flex-col items-center text-center">
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <h2 className="text-3xl font-bold text-[#A8B18C]">About Sodium Alginate</h2>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p className="text-[#A8B18C]">Click on these frequently asked questions to learn more about sodium alginate</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  
+  
+    <p className="text-left text-[#A8B18C] py-4">Sodium alginate, a natural substance derived from seaweed, has become an increasingly popular ingredient in products aimed at managing gastroesophageal reflux disease (GERD) and heartburn. The unique properties of sodium alginate make it especially effective for relieving these common digestive issues.</p>
+  
 
-      <section id="obex_history" className="flex flex-col items-center justify-center min-h-[300px] pt-2 text-white px-4 sm:px-0">     
-            <div>
-              <h1 className="mb-4 text-3xl sm:text-4xl font-bold text-center text-[#A8B18C]">
-                Why We Chose the Name OBEX
-              </h1>
-              <p className="mb-4 text-[#A8B18C] text-center sm:text-left sm:px-24">
-              The name "OBEX" is derived from the Latin word for "barrier," a term that perfectly encapsulates the essence of our product. Our primary active ingredient, sodium alginate, works by forming a physical barrier at the top of the stomach. This barrier prevents reflux and regurgitation, ensuring that stomach contents stay where they belong.
-
-              Sodium alginate's unique properties create a protective shield, mimicking the natural barriers of the body. This not only alleviates discomfort but also promotes overall digestive health. By choosing the name OBEX, we highlight our commitment to natural, science-backed remedies that offer a reliable defense against reflux. 
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
-            </div>
-        
-      </section>         
-
-      <section id="flavour_options" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-2 text-white">
-        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="max-w-2xl text-left h-full flex flex-col justify-between">
-            <div>
-              <h1 className="mb-4 text-4xl font-bold text-white">
-                <span className="text-[#A8B18C]">Chef Developed Flavours</span>
-              </h1>
-              <p className="mb-4 text-[#A8B18C]">
-              <h2>Discover the delicious side of relief with OBEX, now available in three chef-inspired flavours.</h2>
-              <br />
-              <h2 style={{ color: '#98FB98' }}>Refreshing Mint:</h2>
-              <p style={{ color: '#98FB98' }}>Experience the crisp and invigorating taste of refreshing mint. This classic flavour not only soothes your senses but also provides a cooling comforting sensation.</p>
-              <br />
-              <h2 style={{ color: '#FFD700' }}>Lemon Meringue:</h2>
-              <p style={{ color: '#FFEA00' }}>Indulge in the delightful tang of lemon meringue, reminiscent of a classic dessert. The perfect balance of zesty lemon and sweet meringue creates a delectable treat that will brighten your day while keeping you comfortable.</p>
-              <br />
-              <h2 style={{ color: '#FFA500' }}>Orange Creamsicle:</h2>
-              <p style={{ color: '#FFA500' }}>Savour the nostalgic blend of creamy vanilla and bright orange with our orange creamsicle flavour. This comforting and luscious option takes you back to childhood summers, offering a soothing and enjoyable way to manage reflux.</p>
-              <br />
-              Each flavour is crafted with care to provide an enjoyable taste experience. Say goodbye to the bland and medicinal, and hello to the delicious and natural with OBEX.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
-            </div>
-          </div>
-          <Image src="/flavourphoto.jpeg" alt="flavours stylised" width={300} height={500} className="w-full sm:w-1/2 bg-black object-cover" />
-        </div>
-      </section>      
-
-      <section id="product_details" className="w-full max-w-5xl p-4 mx-auto">
-        <div className="flex flex-col items-center text-center">
-          <TooltipProvider>
-            <Tooltip>
-          <TooltipTrigger><h2 className="text-3xl font-bold text-[#A8B18C]">About Sodium Alginate</h2></TooltipTrigger>
-          <TooltipContent>
-            <p className="text-[#A8B18C]">Click on these frequently asked questions to learn more about sodium alginate</p>
-          </TooltipContent>
-          </Tooltip>
-          </TooltipProvider>
-          <p className="text-left text-[#A8B18C]">Sodium alginate, a natural substance derived from seaweed, has become an increasingly popular ingredient in products aimed at managing gastroesophageal reflux disease (GERD) and heartburn. The unique properties of sodium alginate make it especially effective for relieving these common digestive issues.</p>
-          <Collapsible>
-            <CollapsibleTrigger>
-              <h2 className="font-bold text-[#A8B18C] hover:text-[#E0DED4] cursor-pointer transition-colors duration-100">How Sodium Alginate Works</h2>
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-            <p className="text-left text-[#A8B18C]">When ingested, sodium alginate reacts with stomach acid to form a gel-like raft that floats on top of the stomach contents. This raft acts as a barrier, preventing acid from rising back up into the esophagus, which is the cause of heartburn and other reflux-related discomfort. This protective mechanism makes sodium alginate particularly useful for addressing the symptoms of GERD, especially post-meal acid reflux episodes.</p>
-            </CollapsibleContent>
-            </Collapsible>
-            <Collapsible>
-            <CollapsibleTrigger>
-            <h2 className="font-bold text-[#A8B18C] hover:text-[#E0DED4] cursor-pointer transition-colors duration-100">Why Sodium Alginate is Beneficial</h2>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-              <ul>
-                <li className="text-left text-[#A8B18C]"><strong>Rapid Relief:</strong> Sodium alginate works quickly to form a protective barrier, often providing immediate relief from heartburn. This rapid action is beneficial for individuals who experience sudden or severe reflux symptoms.</li>
-                <li className="text-left text-[#A8B18C]"><strong>Natural and Safe:</strong> As a natural extract from seaweed, sodium alginate is generally well-tolerated and considered safe for most people, including pregnant women. The natural origin of Sodium Alginate also appeals to those who prefer alternative or plant-based remedies.</li>
-                <li className="text-left text-[#A8B18C]"><strong>Non-Systemic Action:</strong> Unlike proton pump inhibitors or other acid-suppressing medications, sodium alginate does not affect the overall acidity of the stomach. This makes it suitable for intermittent use and helps maintain normal digestive function.</li>
-                <li className="text-left text-[#A8B18C]"><strong>Complementary to Other Treatments:</strong> Sodium alginate can be used alongside other treatments for GERD or heartburn, enhancing their effectiveness or providing additional relief during particularly troublesome episodes.</li>
-                <li className="text-left text-[#A8B18C]"><strong>Versatility:</strong> Sodium alginate is available in various formulations, including liquid suspensions, chewable tablets, and granules, offering convenient options for different preferences and needs.</li>
-              </ul>
-              </CollapsibleContent>
-            </Collapsible>
-            <Collapsible>
-            <CollapsibleTrigger>
-              <h2 className="font-bold text-[#A8B18C] hover:text-[#E0DED4] cursor-pointer transition-colors duration-100">Applications of Sodium Alginate</h2>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-              <ul>
-                <li className="text-left text-[#A8B18C]"><strong>Mild to Moderate GERD:</strong> For individuals with occasional reflux or mild GERD, sodium alginate provides effective, on-the-spot relief.</li>
-                <li className="text-left text-[#A8B18C]"><strong>Postprandial Heartburn:</strong> Those who experience reflux after meals benefit from sodium alginate, which prevents acid from rising during digestion.</li>
-                <li className="text-left text-[#A8B18C]"><strong>Pregnancy-Related Heartburn:</strong> Pregnant women, who often experience heartburn, find sodium alginate useful due to its safety profile.</li>
-                <li className="text-left text-[#A8B18C]"><strong>Nighttime Reflux:</strong> Sodium alginate forms a lasting barrier, making it effective for preventing nighttime reflux when lying down.</li>
-              </ul>
-            </CollapsibleContent>
-            </Collapsible>
-              <h2 className="font-bold text-[#A8B18C]">Conclusion</h2>
-
-              <p className="text-left text-[#A8B18C] text-left">Sodium alginate offers a natural, effective solution for managing heartburn and reflux. It&apos;s unique gel-forming properties, rapid action, and safety make it a valuable tool for individuals seeking relief from digestive discomfort. Whether used alone or in combination with other treatments, sodium alginate provides a soothing solution for a common and often bothersome problem.</p>
-
-
-        </div>
-        <Separator className="my-4" style={{ backgroundColor: '#E0DED4' }} />
-      </section>
+    <h2 className="font-bold text-[#A8B18C] py-4">How Sodium Alginate Works</h2>
+    <p className="text-left text-[#A8B18C] py-4">When ingested, sodium alginate reacts with stomach acid to form a gel-like raft that floats on top of the stomach contents. This raft acts as a barrier, preventing acid from rising back up into the esophagus, which is the cause of heartburn and other reflux-related discomfort. This protective mechanism makes sodium alginate particularly useful for addressing the symptoms of GERD, especially post-meal acid reflux episodes.</p>
+    <h2 className="font-bold text-[#A8B18C] py-4">Why Sodium Alginate is Beneficial</h2>
+    <div className="flex flex-col">
+      <ul className="w-full">
+        <li className="text-left text-[#A8B18C] py-2"><strong>Rapid Relief:</strong> Sodium alginate works quickly to form a protective barrier, often providing immediate relief from heartburn. This rapid action is beneficial for individuals who experience sudden or severe reflux symptoms.</li>
+        <li className="text-left text-[#A8B18C] py-2"><strong>Natural and Safe:</strong> As a natural extract from seaweed, sodium alginate is generally well-tolerated and considered safe for most people, including pregnant women. The natural origin of Sodium Alginate also appeals to those who prefer alternative or plant-based remedies.</li>
+        <li className="text-left text-[#A8B18C] py-2"><strong>Non-Systemic Action:</strong> Unlike proton pump inhibitors or other acid-suppressing medications, sodium alginate does not affect the overall acidity of the stomach. This makes it suitable for intermittent use and helps maintain normal digestive function.</li>
+        <li className="text-left text-[#A8B18C] py-2"><strong>Complementary to Other Treatments:</strong> Sodium alginate can be used alongside other treatments for GERD or heartburn, enhancing their effectiveness or providing additional relief during particularly troublesome episodes.</li>
+        <li className="text-left text-[#A8B18C] py-2"><strong>Versatility:</strong> Sodium alginate is available in various formulations, including liquid suspensions, chewable tablets, and granules, offering convenient options for different preferences and needs.</li>
+      </ul>
+    </div>
+    <h2 className="font-bold text-[#A8B18C] py-4">Applications of Sodium Alginate</h2>
+<div className="flex flex-col w-full">
+  <ul className="w-full">
+    <li className="text-left text-[#A8B18C] py-2 w-full"><strong>Mild to Moderate GERD:</strong> For individuals with occasional reflux or mild GERD, sodium alginate provides effective, on-the-spot relief.</li>
+    <li className="text-left text-[#A8B18C] py-2 w-full"><strong>Postprandial Heartburn:</strong> Those who experience reflux after meals benefit from sodium alginate, which prevents acid from rising during digestion.</li>
+    <li className="text-left text-[#A8B18C] py-2 w-full"><strong>Pregnancy-Related Heartburn:</strong> Pregnant women, who often experience heartburn, find sodium alginate useful due to its safety profile.</li>
+    <li className="text-left text-[#A8B18C] py-2 w-full"><strong>Nighttime Reflux:</strong> Sodium alginate forms a lasting barrier, making it effective for preventing nighttime reflux when lying down.</li>
+  </ul>
+</div>
+    
+  </div>
+  <Separator className="my-4" style={{ backgroundColor: '#E0DED4' }} />
+</section>
 
 {/* About the product */}
 <section id="research" className="w-full max-w-5xl p-4 mx-auto bg-transparent">
@@ -342,6 +259,78 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <section id="madeincanada" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-8 text-white">
+        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <Image src="/canada_white_lines.png" alt="Canada" width={300} height={500} className="w-full sm:w-1/2 bg-black object-cover" />
+          <div className="max-w-2xl text-left h-full flex flex-col justify-between">
+            <div>
+              <h1 className="mb-4 text-4xl font-bold text-[#E0DED4]">
+                <span className="text-red-600">Developed</span> Right Here in <span className="text-red-600">Canada 🇨🇦</span>
+              </h1>
+              <p className="mb-4 text-[#A8B18C]">
+              Crafted in Hamilton, Ontario, OBEX is the result of a groundbreaking collaboration among an ENT Surgeon, a Speech-Language Pathologist, a Chef, and a Food Scientist. Born from the desire to offer a palatable, natural alternative to traditional reflux remedies, OBEX combines a rich legacy of scientific knowledge with culinary innovation. Utilizing Sodium Alginate, a time-tested ingredient known since the 1880s for its efficacy but poor taste, our team has revolutionized its use. With OBEX, developed right here in Canada, you no longer have to compromise taste for effective reflux and regurgitation relief.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
+              <button className="px-6 py-2 border rounded hover:bg-[#496748]"
+              onClick={() => scrollToSection("#product_details")}>
+                Learn More
+              </button>
+              <button className="px-6 py-2 bg-[#688B63] text-white rounded hover:bg-[#496748]" onClick={() => scrollToSection("#cta-section")}>
+          Order Now
+        </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="obex_history" className="flex flex-col items-center justify-center min-h-[300px] pt-2 text-white px-4 sm:px-0">     
+            <div>
+              <h1 className="mb-4 text-3xl sm:text-4xl font-bold text-center text-[#A8B18C]">
+                Why We Chose the Name OBEX
+              </h1>
+              <p className="mb-4 text-[#A8B18C] text-center sm:text-left sm:px-24">
+              The name "OBEX" is derived from the Latin word for "barrier," a term that perfectly encapsulates the essence of our product. Our primary active ingredient, sodium alginate, works by forming a physical barrier at the top of the stomach. This barrier prevents reflux and regurgitation, ensuring that stomach contents stay where they belong.
+
+              Sodium alginate's unique properties create a protective shield, mimicking the natural barriers of the body. This not only alleviates discomfort but also promotes overall digestive health. By choosing the name OBEX, we highlight our commitment to natural, science-backed remedies that offer a reliable defense against reflux. 
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
+            </div>
+        
+      </section>         
+
+      <section id="flavour_options" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-2 text-white">
+        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="max-w-2xl text-left h-full flex flex-col justify-between">
+            <div>
+              <h1 className="mb-4 text-4xl font-bold text-white">
+                <span className="text-[#A8B18C]">Chef Developed Flavours</span>
+              </h1>
+              <p className="mb-4 text-[#A8B18C]">
+              <h2>Discover the delicious side of relief with OBEX, now available in three chef-inspired flavours.</h2>
+              <br />
+              <h2 style={{ color: '#98FB98' }}>Refreshing Mint:</h2>
+              <p style={{ color: '#98FB98' }}>Experience the crisp and invigorating taste of refreshing mint. This classic flavour not only soothes your senses but also provides a cooling comforting sensation.</p>
+              <br />
+              <h2 style={{ color: '#FFD700' }}>Lemon Meringue:</h2>
+              <p style={{ color: '#FFEA00' }}>Indulge in the delightful tang of lemon meringue, reminiscent of a classic dessert. The perfect balance of zesty lemon and sweet meringue creates a delectable treat that will brighten your day while keeping you comfortable.</p>
+              <br />
+              <h2 style={{ color: '#FFA500' }}>Orange Creamsicle:</h2>
+              <p style={{ color: '#FFA500' }}>Savour the nostalgic blend of creamy vanilla and bright orange with our orange creamsicle flavour. This comforting and luscious option takes you back to childhood summers, offering a soothing and enjoyable way to manage reflux.</p>
+              <br />
+              Each flavour is crafted with care to provide an enjoyable taste experience. Say goodbye to the bland and medicinal, and hello to the delicious and natural with OBEX.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
+            </div>
+          </div>
+          <Image src="/flavourphoto.jpeg" alt="flavours stylised" width={300} height={500} className="w-full sm:w-1/2 bg-black object-cover" />
+        </div>
+      </section>      
+
+      
 
 {/* CTA Section */}
 <section id="cta-section" className="w-full max-w-5xl p-4 mx-auto h-auto min-h-screen text-center">
