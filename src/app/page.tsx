@@ -49,66 +49,53 @@ export default function Home() {
   };
   
   return (
-    <main className="bg-black text-white p-4 sm:p-0"> 
+    <main className="bg-black text-white p-4">
       <header className="flex flex-col sm:flex-row items-center justify-between p-4 border-b">
-        <div className="flex flex-col sm:flex-row items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center gap-4 mb-4 sm:mb-0">
           <div className="w-8 h-8 rounded-full overflow-hidden">
             <Image src="/IBEXhead.png" alt="IBEX Head" width={32} height={32} />
           </div>
-          <nav className="flex gap-4">
-            <a href="#" className="hover:underline"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection("#product_details");
-            }}>
+          <nav className="flex gap-4 mt-4 sm:mt-0">
+            <a href="#" className="hover:underline" onClick={(e) => { e.preventDefault(); scrollToSection("#product_details"); }}>
               About
             </a>
-            <a href="#research" className="hover:underline"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection("#research");
-            }}>
+            <a href="#research" className="hover:underline" onClick={(e) => { e.preventDefault(); scrollToSection("#research"); }}>
               Research
             </a>
           </nav>
         </div>
-        <div className="flex gap-2">
-          <button className="px-4 py-2 border rounded hover:bg-gray-100" 
-            onClick={() => scrollToSection("#cta-section")}>
+        <div className="flex gap-2 mt-4 sm:mt-0">
+          <button className="px-4 py-2 border rounded hover:bg-gray-100" onClick={() => scrollToSection("#cta-section")}>
             Order
           </button>
         </div>
       </header>
 
-      <section className="flex flex-col sm:flex-row items-center justify-center h-[700px]" 
-           style={{ backgroundColor: '#E7A423' }}>
-        <div className="max-w-2xl text-center text-white mx-auto shadow-lg p-6 bg-black bg-opacity-30 rounded-lg"
-             style={{ paddingLeft: '16px', paddingRight: '16px' }}>
-          <h1 className="mb-4 text-5xl font-bold text-[#F0E68C]">Experience the Power of</h1>
-          <h1 className="mb-4 text-9xl font-bold text-[#F0E68C]">OBEX</h1>
-          <p className="mb-4 text-xl text-[#F0E68C]">Your Natural Barrier Against Heartburn</p>
+      <section className="flex flex-col items-center justify-center min-h-[500px] py-8 px-4" style={{ backgroundColor: '#E7A423' }}>
+        <div className="max-w-2xl text-center text-white mx-auto shadow-lg p-6 bg-black bg-opacity-30 rounded-lg">
+          <h1 className="mb-4 text-4xl sm:text-5xl font-bold text-[#F0E68C]">Experience the Power of</h1>
+          <h1 className="mb-4 text-6xl sm:text-9xl font-bold text-[#F0E68C]">OBEX</h1>
+          <p className="mb-4 text-lg sm:text-xl text-[#F0E68C]">Your Natural Barrier Against Heartburn</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="px-6 py-2 bg-[#688B63] text-white rounded hover:bg-[#496748]"
-                    onClick={() => scrollToSection('#cta-section')}>
+            <button className="w-full sm:w-auto px-6 py-2 bg-[#688B63] text-white rounded hover:bg-[#496748]" onClick={() => scrollToSection('#cta-section')}>
               Order
             </button>
-            <button className="px-6 py-2 border border-white text-white rounded hover:bg-[#688B63] hover:text-white"
-                    onClick={() => scrollToSection('#product_details')}>
+            <button className="w-full sm:w-auto px-6 py-2 border border-white text-white rounded hover:bg-[#688B63] hover:text-white" onClick={() => scrollToSection('#product_details')}>
               Learn More
             </button>
           </div>
         </div>
       </section>
 
-      <section id="hero" className="flex flex-col sm:flex-row items-center justify-center h-[500px] pb-8">
-        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <section id="hero" className="flex flex-col items-center justify-center min-h-[500px] py-8 px-4">
+        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="max-w-2xl text-left text-[#E0DED4]">
-            <h1 className="mb-4 text-4xl font-bold text-[#E0DED4]">Feel the Impact of OBEX</h1>
+            <h1 className="mb-4 text-3xl sm:text-4xl font-bold text-[#E0DED4]">Feel the Impact of OBEX</h1>
             <p className="mb-4 text-[#A8B18C]">
               OBEX is the perfect solution for a convenient and effective way to defend against reflux. With our
               specially formulated packets, you can easily avoid the discomfort on the go.
             </p>
-            <div className="flex flex-col sm:flex-row items-center gap-4">
+            <div className="flex flex-col gap-4">
               <div>
                 <h3 className="font-semibold text-[#E0DED4]">Conveniently Packed</h3>
                 <p className="text-[#A8B18C]">
@@ -123,15 +110,15 @@ export default function Home() {
               </div>
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
-              <button className="px-6 py-2 border rounded text-[#E0DED4] border-[#E0DED4] hover:bg-[#496748]" onClick={() => scrollToSection("#product_details")}>
+              <button className="w-full sm:w-auto px-6 py-2 border rounded text-[#E0DED4] border-[#E0DED4] hover:bg-[#496748]" onClick={() => scrollToSection("#product_details")}>
                 Learn More
               </button>
-              <button className="px-6 py-2 bg-[#688B63] text-white rounded hover:bg-[#496748]" onClick={() => scrollToSection("#cta-section")}>
+              <button className="w-full sm:w-auto px-6 py-2 bg-[#688B63] text-white rounded hover:bg-[#496748]" onClick={() => scrollToSection("#cta-section")}>
                 Order Now
               </button>
             </div>
           </div>
-          <div className="w-full sm:w-1/2 h-[300px] pb-4 md:pb-0">
+          <div className="w-full md:w-1/2 h-[300px] mt-8 md:mt-0">
             <Image src="/seaweedOBEX.jpeg" alt="Seaweed" width={300} height={300} className="w-full h-full object-cover" />
           </div>
         </div>
@@ -403,5 +390,6 @@ export default function Home() {
     </main>
   );
 }
+
 
 
