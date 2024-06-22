@@ -17,7 +17,9 @@ const CustomerReview: React.FC<CustomerReviewProps> = ({ name, review }) => (
     <p className="text-[#364C43] text-center mb-4">{review}</p>
     <div className="flex items-center">
       <div className="w-12 h-12 bg-[#496748] rounded-full mr-4 flex items-center justify-center">
-        <span className="text-[#E7A423] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">S</span>
+        <span className="text-[#E7A423] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
+          {name.charAt(0)}
+        </span>
       </div>
       <div>
         <h3 className="font-bold text-[#364C43]">{name}</h3>
@@ -41,11 +43,11 @@ const CustomerReviews: React.FC = () => {
             
             I highly recommend this wonderful godsend to anyone who experiences any form of heartburn, whether it’s just beginning or severe. My choice forever."
           />
-          {/* <CustomerReview 
-            name="Jane Smith"
-            review="I love how natural OBEX is. It's effective and doesn't have any side effects. Highly recommend!"
+          <CustomerReview 
+            name="Anonymous"
+            review="I had some spicy burps after eating Thai food. I took a packet, and it worked! The burps got better right away and stopped after 15-20 minutes. The burning feeling in my stomach also got much better. Highly recommend!"
             // followers="5,678"
-          /> */}
+          />
         </div>
       </div>
     </section>
