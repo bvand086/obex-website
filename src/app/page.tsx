@@ -36,6 +36,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import CustomerReviews from '@/app/customerReview';
 
 export default function Home() {
 
@@ -85,6 +86,7 @@ export default function Home() {
             </button>
           </div>
         </div>
+        <CustomerReviews />
       </section>
 
       <section id="hero" className="flex flex-col items-center justify-center min-h-[500px] py-8 px-4">
@@ -390,6 +392,3 @@ export default function Home() {
     </main>
   );
 }
-
-
-
