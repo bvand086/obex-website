@@ -16,7 +16,9 @@ const CustomerReview: React.FC<CustomerReviewProps> = ({ name, review }) => (
     </div>
     <p className="text-[#364C43] text-center mb-4">{review}</p>
     <div className="flex items-center">
-      <div className="w-12 h-12 bg-[#496748] rounded-full mr-4"></div>
+      <div className="w-12 h-12 bg-[#496748] rounded-full mr-4 flex items-center justify-center">
+        <span className="text-[#E7A423] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">S</span>
+      </div>
       <div>
         <h3 className="font-bold text-[#364C43]">{name}</h3>
         {/* <p className="text-sm text-[#496748]">{followers} followers on X</p> */}
