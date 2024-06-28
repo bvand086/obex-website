@@ -7,6 +7,8 @@ interface CustomerReviewProps {
   // followers: string;
 }
 
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+
 const CustomerReview: React.FC<CustomerReviewProps> = ({ name, review }) => (
   <div className="flex flex-col items-center bg-[#E7A423] p-6 rounded-lg shadow-md max-w-sm mx-auto">
     <div className="flex mb-2">
@@ -27,6 +29,20 @@ const CustomerReview: React.FC<CustomerReviewProps> = ({ name, review }) => (
       </div>
     </div>
   </div>
+);
+
+const CustomerReviewsCarousel: React.FC<{ reviews: CustomerReviewProps[] }> = ({ reviews }) => (
+  <Carousel className="w-full">
+    <CarouselContent className="flex">
+      {reviews.map((review, index) => (
+        <CarouselItem key={index} className="w-1/2 p-2">
+          <CustomerReview name={review.name} review={review.review} />
+        </CarouselItem>
+      ))}
+    </CarouselContent>
+    <CarouselNext />
+    <CarouselPrevious />
+  </Carousel>
 );
 
 const CustomerReviews: React.FC = () => {
