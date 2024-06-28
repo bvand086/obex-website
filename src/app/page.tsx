@@ -324,7 +324,7 @@ export default function Home() {
 {/* CTA Section */}
 <section id="cta-section" className="w-full max-w-5xl p-4 mx-auto h-auto min-h-screen text-center">
   <h2 className="text-3xl font-bold pb-4 text-[#E0DED4]">Experience natural relief from reflux with OBEX—try it now for safe, immediate relief!</h2>
-    <p className="text-[#E0DED4]">Choose the perfect OBEX package for you — try our Small (10 packets), Large (25 packets), or opt for our convenient 6 or 12-month subscriptions. Order now for natural relief!</p>
+    <p className="text-[#E0DED4]">Choose the perfect OBEX package for you — our Large pack contains 24 packets with 3 delightful flavours. Order now for natural relief!</p>
       <div className="flex flex-col sm:flex-row items-center"> 
           <Carousel className="w-11/12 h-auto max-h-[80vh] mx-auto pt-4 pb-8"
               opts={{
@@ -335,7 +335,7 @@ export default function Home() {
             <CarouselContent className="-ml-1">
               {[
                 // { title: "Small Pack", description: "Ideal for occasional use", content: "Small package contains a single flavour of 10 packets (5 mL per packet).", footer: "$16.99+tax", link: "https://buy.stripe.com/cN2bMb46VcePfMQ8ww" },
-                { title: "Large Pack", description: "Perfect for regular use", content: "Each large package contains 25 packets, each with a 5mL dose, featuring 3 delightful flavor varieties.", footer: "$34.99+tax", link: "https://buy.stripe.com/9AQdUjcDrdiT9os7st" },
+                { title: "Large Pack", description: "Perfect for regular use", content: "Each large package contains 24 packets, each with a 5mL dose, featuring 3 delightful flavor varieties.", footer: "$34.99+tax", link: "https://buy.stripe.com/9AQdUjcDrdiT9os7st" },
                 // { title: "6 Mo Subscription", description: "Half-year supply", content: "With our 6-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 10%", footer2: "$178.50+tax", link: "https://buy.stripe.com/3cs4jJfPD5Qr8ko3ce" },
                 // { title: "12 Mo Subscription", description: "Full-year supply", content: "With our 12-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 15%", footer2: "$336.00+tax", link: "https://buy.stripe.com/6oEg2rfPD0w7fMQfZ1" }
               ].map((card, index) => (
