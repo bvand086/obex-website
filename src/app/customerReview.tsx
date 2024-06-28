@@ -1,6 +1,5 @@
 import React from 'react';
 import { Star } from 'lucide-react';
-import { Carousel } from "@/components/ui/carousel";
 
 interface CustomerReviewProps {
   name: string;
@@ -31,30 +30,32 @@ const CustomerReview: React.FC<CustomerReviewProps> = ({ name, review }) => (
 );
 
 const CustomerReviews: React.FC = () => {
+  const reviews = [
+    {
+      name: "Sandy G.",
+      review: "I have suffered from acid reflux, aka heartburn, for over 30 years and have never found a product that works so instantly to relieve my severe heartburn. I wake up throughout the night or can't even begin to sleep for hours sometimes because my chest is burning. Every product I've used has always worked in an almost gone way. This product works in an almost instant way. I say almost because, in truth, it takes just a second to move down the esophagus to do its 'amazing job.' I highly recommend this wonderful godsend to anyone who experiences any form of heartburn, whether it’s just beginning or severe. My choice forever."
+    },
+    {
+      name: "Darcy M.",
+      review: "Flavour was amazing and it gave me a more soothing and immediate relief vs tablet style heartburn medications."
+      // followers: "5,678"
+    },
+    {
+      name: "Sarah R.",
+      review: "I had some spicy burps after eating Thai food. I took a packet, and it worked! The burps got better right away and stopped after 15-20 minutes. The burning feeling in my stomach also got much better. Highly recommend!"
+      // followers: "5,678"
+    }
+  ];
+
   return (
     <section className="bg-[#E7A423] py-12">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center text-[#364C43] mb-8">What Our Customers Say</h2>
-        <Carousel className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <CustomerReview 
-            name="Sandy G."
-            review="I have suffered from acid reflux, aka heartburn, for over 30 years and have never found a product that works so instantly to relieve my severe heartburn. I wake up throughout the night or can't even begin to sleep for hours sometimes because my chest is burning.
-
-            Every product I've used has always worked in an almost gone way. This product works in an almost instant way. I say almost because, in truth, it takes just a second to move down the esophagus to do its 'amazing job.'
-            
-            I highly recommend this wonderful godsend to anyone who experiences any form of heartburn, whether it’s just beginning or severe. My choice forever."
-          />
-          <CustomerReview 
-            name="Darcy M."
-            review="Flavour was amazing and it gave me a more soothing and immediate relief vs tablet style heartburn medications."
-            // followers="5,678"
-          />
-          <CustomerReview 
-            name="Anonymous"
-            review="I had some spicy burps after eating Thai food. I took a packet, and it worked! The burps got better right away and stopped after 15-20 minutes. The burning feeling in my stomach also got much better. Highly recommend!"
-            // followers="5,678"
-          />
-        </Carousel>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {reviews.map((review, index) => (
+            <CustomerReview key={index} name={review.name} review={review.review} />
+          ))}
+        </div>
       </div>
     </section>
   );
