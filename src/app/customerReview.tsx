@@ -44,6 +44,11 @@ const CustomerReviews: React.FC = () => {
             I highly recommend this wonderful godsend to anyone who experiences any form of heartburn, whether it’s just beginning or severe. My choice forever."
           />
           <CustomerReview 
+            name="Darcy M."
+            review="Flavour was amazing and it gave me a more soothing and immediate relief vs tablet style heartburn medications."
+            // followers="5,678"
+          />
+          <CustomerReview 
             name="Anonymous"
             review="I had some spicy burps after eating Thai food. I took a packet, and it worked! The burps got better right away and stopped after 15-20 minutes. The burning feeling in my stomach also got much better. Highly recommend!"
             // followers="5,678"
