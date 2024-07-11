@@ -13,23 +13,11 @@ import {
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel"
-import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
 import { Separator } from "@/components/ui/separator"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
 import {
   Tooltip,
   TooltipContent,
@@ -39,7 +27,6 @@ import {
 import CustomerReviews from '@/app/customerReview';
 
 export default function Home() {
-
   const scrollToSection = (id: string): void => {
     const section = document.querySelector(id);
     if (section instanceof HTMLElement) {
@@ -50,343 +37,170 @@ export default function Home() {
   };
   
   return (
-    <main className="bg-black text-white p-4">
-      <header className="flex flex-col sm:flex-row items-center justify-between p-4 border-b">
-        <div className="flex flex-col sm:flex-row items-center gap-4 mb-4 sm:mb-0">
+    <main className="bg-[#FAFAF9] text-[#264653]">
+      {/* Header */}
+      <header className="flex flex-col items-center justify-between p-4 border-b border-green-200 max-w-4xl mx-auto ">
+        <div className="flex items-center gap-4 mb-4">
           <div className="w-8 h-8 rounded-full overflow-hidden">
-            <Image src="/IBEXhead.png" alt="IBEX Head" width={32} height={32} />
+            <Image src="/IBEXhead.png" alt="OBEX Head" width={32} height={32} />
           </div>
-          <nav className="flex gap-4 mt-4 sm:mt-0">
-            <a href="#" className="hover:underline" onClick={(e) => { e.preventDefault(); scrollToSection("#product_details"); }}>
-              About
-            </a>
-            <a href="#research" className="hover:underline" onClick={(e) => { e.preventDefault(); scrollToSection("#research"); }}>
-              Research
-            </a>
-          </nav>
+          <h1 className="text-2xl font-bold text-green-800">OBEX</h1>
         </div>
-        <div className="flex gap-2 mt-4 sm:mt-0">
-          <button className="px-4 py-2 border rounded hover:bg-gray-100" onClick={() => scrollToSection("#cta-section")}>
+        <nav className="flex gap-4 items-center">
+          <a href="#" className="px-4 py-2 text-green-700 hover:text-green-900 hover:bg-green-100 rounded transition-colors" onClick={(e) => { e.preventDefault(); scrollToSection("#product_details"); }}>
+            About
+          </a>
+          <a href="#research" className="px-4 py-2 text-green-700 hover:text-green-900 hover:bg-green-100 rounded transition-colors" onClick={(e) => { e.preventDefault(); scrollToSection("#research"); }}>
+            Research
+          </a>
+          <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors" onClick={() => scrollToSection("#cta-section")}>
             Order
           </button>
-        </div>
+        </nav>
       </header>
 
-      <section className="flex flex-col items-center justify-center min-h-[500px] py-8 px-4" style={{ backgroundColor: '#E7A423' }}>
-        <div className="max-w-2xl text-center text-white mx-auto shadow-lg p-6 bg-black bg-opacity-30 rounded-lg">
-          <h1 className="mb-4 text-4xl sm:text-5xl font-bold text-[#F0E68C]">Experience the Power of</h1>
-          <h1 className="mb-4 text-6xl sm:text-9xl font-bold text-[#F0E68C]">OBEX</h1>
-          <p className="mb-4 text-lg sm:text-xl text-[#F0E68C]">Your Natural Barrier Against Heartburn</p>
+      {/* Hero Section */}
+      <section className="flex flex-col items-center justify-center min-h-screen py-16 px-4 bg-gradient-to-b from-[#F4A261] to-[#E9C46A] text-white py-16">
+        <div className="max-w-2xl text-center mx-auto">
+          <h1 className="mb-4 text-4xl sm:text-5xl font-bold text-green-800">Experience the Power of</h1>
+          <h1 className="mb-4 text-7xl sm:text-[10rem] font-bold text-green-700 tracking-widest">OBEX</h1>
+          <p className="mb-8 text-lg sm:text-xl text-green-600">Your Natural Barrier Against Heartburn</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="w-full sm:w-auto px-6 py-2 bg-[#688B63] text-white rounded hover:bg-[#496748]" onClick={() => scrollToSection('#cta-section')}>
+            <button className="w-full sm:w-auto px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600" onClick={() => scrollToSection('#cta-section')}>
               Order
             </button>
-            <button className="w-full sm:w-auto px-6 py-2 border border-white text-white rounded hover:bg-[#688B63] hover:text-white" onClick={() => scrollToSection('#product_details')}>
+            <button className="w-full sm:w-auto px-6 py-2 border border-green-600 text-green-600 rounded hover:bg-green-100" onClick={() => scrollToSection('#product_details')}>
               Learn More
             </button>
           </div>
         </div>
-        <CustomerReviews />
       </section>
 
-      <section id="hero" className="flex flex-col items-center justify-center min-h-[500px] py-8 px-4">
-        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="max-w-2xl text-left text-[#E0DED4]">
-            <h1 className="mb-4 text-3xl sm:text-4xl font-bold text-[#E0DED4]">Feel the Impact of OBEX</h1>
-            <p className="mb-4 text-[#A8B18C]">
-              OBEX is the perfect solution for a convenient and effective way to defend against reflux. With our
-              specially formulated packets, you can easily avoid the discomfort on the go.
-            </p>
-            <div className="flex flex-col gap-4">
-              <div>
-                <h3 className="font-semibold text-[#E0DED4]">Conveniently Packed</h3>
-                <p className="text-[#A8B18C]">
-                  Each OBEX packet contains a single 5mL dose of our proprietary blend.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-[#E0DED4]">Effective Results</h3>
-                <p className="text-[#A8B18C]">
-                  Studies indicate sodium alginate is as effective as the gold standard prescription strength medications (Proton Pump Inhibitors (PPI)) in preventing reflux.
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
-              <button className="w-full sm:w-auto px-6 py-2 border rounded text-[#E0DED4] border-[#E0DED4] hover:bg-[#496748]" onClick={() => scrollToSection("#product_details")}>
-                Learn More
-              </button>
-              <button className="w-full sm:w-auto px-6 py-2 bg-[#688B63] text-white rounded hover:bg-[#496748]" onClick={() => scrollToSection("#cta-section")}>
-                Order Now
-              </button>
-            </div>
-          </div>
-          <div className="w-full md:w-1/2 h-[300px] mt-8 md:mt-0">
-            <Image src="/product_photo.png" alt="Product Photo" width={300} height={300} className="w-full h-full object-cover" />
-          </div>
+      {/* Customer Reviews */}
+      <CustomerReviews />
+
+      {/* Product Details */}
+      <section className="bg-[#E9EDe9] py-16">
+        <div className="max-w-2xl mx-auto">
+        <h2 className="text-3xl font-bold text-[#2A9D8F] mb-4">About Sodium Alginate</h2>
+          <p className="mb-8 text-gray-700">Sodium alginate, a natural substance derived from seaweed, has become an increasingly popular ingredient in products aimed at managing gastroesophageal reflux disease (GERD) and heartburn. The unique properties of sodium alginate make it especially effective for relieving these common digestive issues.</p>
+          
+          <h3 className="text-2xl font-bold mb-4 text-green-600">How Sodium Alginate Works</h3>
+          <p className="mb-8 text-gray-700">When ingested, sodium alginate reacts with stomach acid to form a gel-like raft that floats on top of the stomach contents. This raft acts as a barrier, preventing acid from rising back up into the esophagus, which is the cause of heartburn and other reflux-related discomfort.</p>
+          
+          <h3 className="text-2xl font-bold mb-4 text-green-600">Why Sodium Alginate is Beneficial</h3>
+          <ul className="list-disc pl-5 mb-8 text-gray-700">
+            <li className="mb-2"><strong className="text-green-700">Rapid Relief:</strong> Sodium alginate works quickly to form a protective barrier, often providing immediate relief from heartburn.</li>
+            <li className="mb-2"><strong className="text-green-700">Natural and Safe:</strong> As a natural extract from seaweed, sodium alginate is generally well-tolerated and considered safe for most people, including pregnant women.</li>
+            <li className="mb-2"><strong className="text-green-700">Non-Systemic Action:</strong> Unlike proton pump inhibitors or other acid-suppressing medications, sodium alginate does not affect the overall acidity of the stomach.</li>
+            <li className="mb-2"><strong className="text-green-700">Complementary to Other Treatments:</strong> Sodium alginate can be used alongside other treatments for GERD or heartburn.</li>
+            <li><strong className="text-green-700">Versatility:</strong> Sodium alginate is available in various formulations, including liquid suspensions, chewable tablets, and granules.</li>
+          </ul>
         </div>
       </section>
 
-<section id="product_details" className="w-full max-w-7xl p-4 mx-auto">
-  <div className="flex flex-col items-center text-center">
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger>
-          <h2 className="text-3xl font-bold text-[#A8B18C]">About Sodium Alginate</h2>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p className="text-[#A8B18C]">Click on these frequently asked questions to learn more about sodium alginate</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  
-  
-    <p className="text-left text-[#A8B18C] py-4">Sodium alginate, a natural substance derived from seaweed, has become an increasingly popular ingredient in products aimed at managing gastroesophageal reflux disease (GERD) and heartburn. The unique properties of sodium alginate make it especially effective for relieving these common digestive issues.</p>
-  
+      {/* Research Section */}
+      <section className="bg-white py-16">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-[#2A9D8F] mb-4">Medical Research Support</h2>
+          
+          <Card className="mb-8 border-yellow-300">
+            <CardHeader className="bg-yellow-100">
+              <CardTitle className="text-yellow-800">Comparative Study of Alginate and Omeprazole in Symptomatic Treatment of Non-erosive Gastroesophageal Reflux Disease</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="mb-4 text-gray-700">This study compared the effectiveness of sodium alginate and omeprazole in treating heartburn. The results showed that sodium alginate works just as well as omeprazole for treating heartburn, providing a new option for people who might want an alternative to traditional heartburn medications.</p>
+              <p className="text-yellow-700"><strong>Bottom Line:</strong> If you suffer from heartburn, sodium alginate could be a great alternative to consider, especially if you're interested in a natural remedy.</p>
+            </CardContent>
+          </Card>
+          
+          <Card className="border-yellow-300">
+            <CardHeader className="bg-yellow-100">
+              <CardTitle className="text-yellow-800">Alginate on demand as add-on for patients with gastro-oesophageal reflux disease and insufficient PPI effect</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="mb-4 text-gray-700">This study looked at adding alginate to the treatment plan of GERD patients who were already on PPIs but still had symptoms. After adding alginate, 72% of the patients felt better about their treatment, with many showing significant improvement.</p>
+              <p className="text-yellow-700"><strong>What This Means:</strong> For people with chronic acid reflux who aren't satisfied with their current treatment, adding alginate can be an effective and safe way to manage symptoms.</p>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
 
-    <h2 className="font-bold text-[#A8B18C] py-4">How Sodium Alginate Works</h2>
-    <p className="text-left text-[#A8B18C] py-4">When ingested, sodium alginate reacts with stomach acid to form a gel-like raft that floats on top of the stomach contents. This raft acts as a barrier, preventing acid from rising back up into the esophagus, which is the cause of heartburn and other reflux-related discomfort. This protective mechanism makes sodium alginate particularly useful for addressing the symptoms of GERD, especially post-meal acid reflux episodes.</p>
-    <h2 className="font-bold text-[#A8B18C] py-4">Why Sodium Alginate is Beneficial</h2>
-    <div className="flex flex-col">
-      <ul className="w-full">
-        <li className="text-left text-[#A8B18C] py-2"><strong>Rapid Relief:</strong> Sodium alginate works quickly to form a protective barrier, often providing immediate relief from heartburn. This rapid action is beneficial for individuals who experience sudden or severe reflux symptoms.</li>
-        <li className="text-left text-[#A8B18C] py-2"><strong>Natural and Safe:</strong> As a natural extract from seaweed, sodium alginate is generally well-tolerated and considered safe for most people, including pregnant women. The natural origin of Sodium Alginate also appeals to those who prefer alternative or plant-based remedies.</li>
-        <li className="text-left text-[#A8B18C] py-2"><strong>Non-Systemic Action:</strong> Unlike proton pump inhibitors or other acid-suppressing medications, sodium alginate does not affect the overall acidity of the stomach. This makes it suitable for intermittent use and helps maintain normal digestive function.</li>
-        <li className="text-left text-[#A8B18C] py-2"><strong>Complementary to Other Treatments:</strong> Sodium alginate can be used alongside other treatments for GERD or heartburn, enhancing their effectiveness or providing additional relief during particularly troublesome episodes.</li>
-        <li className="text-left text-[#A8B18C] py-2"><strong>Versatility:</strong> Sodium alginate is available in various formulations, including liquid suspensions, chewable tablets, and granules, offering convenient options for different preferences and needs.</li>
-      </ul>
-    </div>
-    <h2 className="font-bold text-[#A8B18C] py-4">Applications of Sodium Alginate</h2>
-<div className="flex flex-col w-full">
-  <ul className="w-full">
-    <li className="text-left text-[#A8B18C] py-2 w-full"><strong>Mild to Moderate GERD:</strong> For individuals with occasional reflux or mild GERD, sodium alginate provides effective, on-the-spot relief.</li>
-    <li className="text-left text-[#A8B18C] py-2 w-full"><strong>Postprandial Heartburn:</strong> Those who experience reflux after meals benefit from sodium alginate, which prevents acid from rising during digestion.</li>
-    <li className="text-left text-[#A8B18C] py-2 w-full"><strong>Pregnancy-Related Heartburn:</strong> Pregnant women, who often experience heartburn, find sodium alginate useful due to its safety profile.</li>
-    <li className="text-left text-[#A8B18C] py-2 w-full"><strong>Nighttime Reflux:</strong> Sodium alginate forms a lasting barrier, making it effective for preventing nighttime reflux when lying down.</li>
-  </ul>
-</div>
-    
-  </div>
-  <Separator className="my-4" style={{ backgroundColor: '#E0DED4' }} />
-</section>
-
-{/* About the product */}
-<section id="research" className="w-full max-w-5xl p-4 mx-auto bg-transparent">
-  <h2 className="text-3xl font-bold pb-4 text-[#A8B18C] text-center" >Medical Research Support of Alginates</h2>
-  <div className="flex flex-col sm:flex-row items-center text-center">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-            <Card style={{ borderColor: '#A8B18C' }}>
-              <CardHeader>
-                <HoverCard>
-                  <HoverCardTrigger>
-                    <CardTitle style={{ color: "#A8B18C" }}>Comparative Study of Alginate and Omeprazole in Symptomatic Treatment of Non-erosive Gastroesophageal Reflux Disease</CardTitle>
-                  </HoverCardTrigger>
-                  <HoverCardContent className="bg-white text-black">
-                    <a href="https://pubmed.ncbi.nlm.nih.gov/30487493/" target="_blank" className="text-left underline hover:text-blue-600">
-                      Saifullah, A. M., Ahmed, F., Shil, B. C., Banik, R. K., Saha, S. K., Chowdhury, M., ... & Akhter, A. (2018). Comparative Study of Alginate and Omeprazole in Symptomatic Treatment of Non-erosive Gastroesophageal Reflux Disease. Mymensingh medical journal: MMJ, 27(4), 771-775.
-                    </a>
-                  </HoverCardContent>
-                </HoverCard>
-              </CardHeader>
-              <CardContent>
-                <p className="font-bold text-[#A8B18C]">A New Way to Treat Heartburn: Alginates Work as Well as Omeprazole</p>
-                <p className="text-left text-[#A8B18C]">Many people experience heartburn or acid reflux, which can be uncomfortable and bothersome. This condition, known as non-erosive gastroesophageal reflux disease (NERD), is often treated with medications like omeprazole. However, a new study suggests that sodium alginate, a natural substance found in seaweed, might be just as effective.</p>
-                <p className="font-bold text-[#A8B18C]">What Was the Study About?</p>
-                <p className="text-left text-[#A8B18C]">Researchers in Taiwan wanted to compare the effectiveness of two treatments for heartburn: sodium alginate and omeprazole. They recruited 195 adults with NERD and divided them into two groups. One group took sodium alginate, while the other group took omeprazole for four weeks.</p>
-                <p className="font-bold text-[#A8B18C]">What Did the Study Find?</p>
-                <p className="text-left text-[#A8B18C]">At the end of the study, over half of the participants in both groups reported relief from heartburn symptoms. Both treatments were safe and well-tolerated, with few side effects.</p>
-                <p className="font-bold text-[#A8B18C]">What Does This Mean for People with Heartburn?</p>
-                <p className="text-left text-[#A8B18C]">The results show that sodium alginate works just as well as omeprazole for treating heartburn. This provides a new option for people who might want an alternative to traditional heartburn medications. Sodium alginate is a natural product and might appeal to those looking for more natural treatment options.</p>
-                <p className="font-bold text-[#A8B18C]">Bottom Line</p>
-                <p className="text-left text-[#A8B18C]">If you suffer from heartburn, sodium alginate could be a great alternative to consider, especially if you're interested in a natural remedy. Always talk to your doctor to figure out the best treatment for you.</p>
-              </CardContent>
-            </Card>
-            <Card style={{ borderColor: '#A8B18C' }}>
-              <CardHeader>
-              <HoverCard>
-                  <HoverCardTrigger>
-                <CardTitle style={{ color: "#A8B18C" }}>Alginate on demand as add-on for patients with gastro-oesophageal reflux disease and insufficient PPI effect</CardTitle>
-              </HoverCardTrigger>
-              <HoverCardContent className="bg-white text-black">
-              <a href="https://pubmed.ncbi.nlm.nih.gov/30466131/" target="_blank" className="text-left underline hover:text-blue-600">
-              Müller, M., Labenz, G., Borkenstein, D. P., & Labenz, J. (2018). Alginate on demand as add-on for patients with gastro-oesophageal reflux disease and insufficient PPI effect. Deutsche Medizinische Wochenschrift (1946), 144(4), e30-e35.
-                    </a>
-              </HoverCardContent>
-              </HoverCard>
-              </CardHeader>
-              <CardContent>
-                 <p className="font-bold text-[#A8B18C]"><strong>Helping Heartburn: Alginate and PPI Therapy</strong></p>
-
-                  <p className="text-left text-[#A8B18C]">Many people who suffer from chronic acid reflux, also known as GERD, take proton pump inhibitors (PPIs) for relief. However, even with these medications, some patients continue to have symptoms. This could be due to something called the "acid pocket," which is an area of acid in the stomach that can cause discomfort. Luckily, a natural remedy called alginate can help.</p>
-
-                  <h2 className="font-bold text-[#A8B18C]">Study Details</h2>
-
-                  <p className="text-left text-[#A8B18C]">Researchers wanted to see if adding alginate to the treatment plan of GERD patients who were already on PPIs but still had symptoms would help. The study involved patients who had been on PPIs for at least a year and were unhappy with their treatment. These patients used alginate for 14 days, taking it up to four times a day when needed.</p>
-
-                  <h3 className="font-bold text-[#A8B18C]">What the Researchers Did</h3>
-
-                  <ul>
-                    <li className="text-left text-[#A8B18C]"><strong>Participants:</strong> 155 patients participated, with 54% being women and an average age of 57 years.</li>
-                    <li className="text-left text-[#A8B18C]"><strong>Treatment:</strong> Patients took alginate in addition to their usual PPIs.</li>
-                    <li className="text-left text-[#A8B18C]"><strong>Assessment:</strong> The patients filled out a survey about their symptoms before and after the treatment. The main goal was to see if their satisfaction with the therapy improved.</li>
-                  </ul>
-
-                  <h3 className="font-bold text-[#A8B18C]">What They Found</h3>
-
-                  <ul>
-                    <li className="text-left text-[#A8B18C]"><strong>Improved Satisfaction:</strong> After adding alginate, 72% of the patients felt better about their treatment, with many showing significant improvement.</li>
-                    <li className="text-left text-[#A8B18C]"><strong>Symptom Relief:</strong> The patients experienced relief from typical reflux symptoms and sleep disturbances.</li>
-                    <li className="text-left text-[#A8B18C]"><strong>Safe to Use:</strong> The treatment was generally well-tolerated.</li>
-                  </ul>
-
-                  <h2 className="font-bold text-[#A8B18C]">What This Means</h2>
-
-                  <p className="text-left text-[#A8B18C]">For people with chronic acid reflux who aren't satisfied with their current treatment, adding alginate can be an effective and safe way to manage symptoms. It's a natural remedy that acts as a barrier, blocking reflux and providing relief.</p>
-
-              </CardContent>
-            </Card>
+      {/* Made in Canada Section */}
+      <section className="bg-[#F4A261] text-white py-16">
+        <div className="max-w-2xl mx-auto text-center">
+          <Image src="/canada_white_lines.png" alt="Canada" width={300} height={300} className="mx-auto mb-8" />
+          <h2 className="text-4xl font-bold mb-4 text-white">
+            <span className="text-red-500">Developed</span> Right Here in <span className="text-red-500">Canada 🇨🇦</span>
+          </h2>
+          <p className="mb-8 text-gray-700">
+            Crafted in Hamilton, Ontario, OBEX is the result of a groundbreaking collaboration among an ENT Surgeon, a Speech-Language Pathologist, a Chef, and a Food Scientist. Born from the desire to offer a palatable, natural alternative to traditional reflux remedies, OBEX combines a rich legacy of scientific knowledge with culinary innovation.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button className="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700" onClick={() => scrollToSection("#product_details")}>
+              Learn More
+            </button>
+            <button className="px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600" onClick={() => scrollToSection("#cta-section")}>
+              Order Now
+            </button>
           </div>
         </div>
       </section>
 
-      <section id="madeincanada" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-8 text-white">
-        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <Image src="/canada_white_lines.png" alt="Canada" width={300} height={500} className="w-full sm:w-1/2 bg-black object-cover" />
-          <div className="max-w-2xl text-left h-full flex flex-col justify-between">
-            <div>
-              <h1 className="mb-4 text-4xl font-bold text-[#E0DED4]">
-                <span className="text-red-600">Developed</span> Right Here in <span className="text-red-600">Canada 🇨🇦</span>
-              </h1>
-              <p className="mb-4 text-[#A8B18C]">
-              Crafted in Hamilton, Ontario, OBEX is the result of a groundbreaking collaboration among an ENT Surgeon, a Speech-Language Pathologist, a Chef, and a Food Scientist. Born from the desire to offer a palatable, natural alternative to traditional reflux remedies, OBEX combines a rich legacy of scientific knowledge with culinary innovation. Utilizing Sodium Alginate, a time-tested ingredient known since the 1880s for its efficacy but poor taste, our team has revolutionized its use. With OBEX, developed right here in Canada, you no longer have to compromise taste for effective reflux and regurgitation relief.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
-              <button className="px-6 py-2 border rounded hover:bg-[#496748]"
-              onClick={() => scrollToSection("#product_details")}>
-                Learn More
-              </button>
-              <button className="px-6 py-2 bg-[#688B63] text-white rounded hover:bg-[#496748]" onClick={() => scrollToSection("#cta-section")}>
-          Order Now
-        </button>
-            </div>
+      {/* Flavor Options Section */}
+      <section className="bg-[#E9EDe9] py-16">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-[#2A9D8F] mb-4">Chef Developed Flavours</h2>
+          <p className="mb-8 text-center text-gray-700">Discover the delicious side of relief with OBEX, now available in three chef-inspired flavours.</p>
+          
+          <div className="mb-8 p-4 bg-green-100 rounded-lg">
+            <h3 className="text-2xl font-bold mb-2 text-green-700">Refreshing Mint</h3>
+            <p className="text-gray-700">Experience the crisp and invigorating taste of refreshing mint. This classic flavour not only soothes your senses but also provides a cooling comforting sensation.</p>
           </div>
+          
+          <div className="mb-8 p-4 bg-yellow-100 rounded-lg">
+            <h3 className="text-2xl font-bold mb-2 text-yellow-700">Lemon Meringue</h3>
+            <p className="text-gray-700">Indulge in the delightful tang of lemon meringue, reminiscent of a classic dessert. The perfect balance of zesty lemon and sweet meringue creates a delectable treat that will brighten your day while keeping you comfortable.</p>
+          </div>
+          
+          <div className="mb-8 p-4 bg-orange-100 rounded-lg">
+            <h3 className="text-2xl font-bold mb-2 text-orange-700">Orange Creamsicle</h3>
+            <p className="text-gray-700">Savour the nostalgic blend of creamy vanilla and bright orange with our orange creamsicle flavour. This comforting and luscious option takes you back to childhood summers, offering a soothing and enjoyable way to manage reflux.</p>
+          </div>
+          
+          <p className="text-center text-gray-700">Each flavour is crafted with care to provide an enjoyable taste experience. Say goodbye to the bland and medicinal, and hello to the delicious and natural with OBEX.</p>
         </div>
       </section>
 
-      <section id="obex_history" className="flex flex-col items-center justify-center min-h-[300px] pt-2 text-white px-4 sm:px-0">     
-            <div>
-              <h1 className="mb-4 text-3xl sm:text-4xl font-bold text-center text-[#A8B18C]">
-                Why We Chose the Name OBEX
-              </h1>
-              <p className="mb-4 text-[#A8B18C] text-center sm:text-left sm:px-24">
-              The name "OBEX" is derived from the Latin word for "barrier," a term that perfectly encapsulates the essence of our product. Our primary active ingredient, sodium alginate, works by forming a physical barrier at the top of the stomach. This barrier prevents reflux and regurgitation, ensuring that stomach contents stay where they belong.
-
-              Sodium alginate's unique properties create a protective shield, mimicking the natural barriers of the body. This not only alleviates discomfort but also promotes overall digestive health. By choosing the name OBEX, we highlight our commitment to natural, science-backed remedies that offer a reliable defense against reflux. 
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
-            </div>
-        
-      </section>         
-
-      <section id="flavour_options" className="flex flex-col sm:flex-row items-center justify-center min-h-[500px] pt-2 text-white">
-        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="max-w-2xl text-left h-full flex flex-col justify-between">
-            <div>
-              <h1 className="mb-4 text-4xl font-bold text-white">
-                <span className="text-[#A8B18C]">Chef Developed Flavours</span>
-              </h1>
-              <p className="mb-4 text-[#A8B18C]">
-              <h2>Discover the delicious side of relief with OBEX, now available in three chef-inspired flavours.</h2>
-              <br />
-              <h2 style={{ color: '#98FB98' }}>Refreshing Mint:</h2>
-              <p style={{ color: '#98FB98' }}>Experience the crisp and invigorating taste of refreshing mint. This classic flavour not only soothes your senses but also provides a cooling comforting sensation.</p>
-              <br />
-              <h2 style={{ color: '#FFD700' }}>Lemon Meringue:</h2>
-              <p style={{ color: '#FFEA00' }}>Indulge in the delightful tang of lemon meringue, reminiscent of a classic dessert. The perfect balance of zesty lemon and sweet meringue creates a delectable treat that will brighten your day while keeping you comfortable.</p>
-              <br />
-              <h2 style={{ color: '#FFA500' }}>Orange Creamsicle:</h2>
-              <p style={{ color: '#FFA500' }}>Savour the nostalgic blend of creamy vanilla and bright orange with our orange creamsicle flavour. This comforting and luscious option takes you back to childhood summers, offering a soothing and enjoyable way to manage reflux.</p>
-              <br />
-              Each flavour is crafted with care to provide an enjoyable taste experience. Say goodbye to the bland and medicinal, and hello to the delicious and natural with OBEX.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
-            </div>
-          </div>
-          <Image src="/flavourphoto.jpeg" alt="flavours stylised" width={300} height={500} className="w-full sm:w-1/2 bg-black object-cover" />
+      {/* CTA Section */}
+      <section className="bg-[#2A9D8F] text-white py-16">
+        <div className="max-w-2xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-4">Experience natural relief from reflux with OBEX</h2>
+          <p className="mb-8">Choose the perfect OBEX package for you — our Large pack contains 24 packets with 3 delightful flavours. Order now for natural relief!</p>
+          
+          <Card className="mb-8 bg-white text-gray-900">
+            <CardHeader className="bg-green-100">
+              <CardTitle className="text-green-800">Large Pack</CardTitle>
+              <CardDescription className="text-green-600">Perfect for regular use</CardDescription>
+            </CardHeader>
+            <CardContent className="p-4">
+              <Image src="/productimage.png" alt="Product image" width={200} height={200} className="mx-auto mb-4" />
+              <p className="mb-4 text-gray-700">Each large package contains 24 packets, each with a 5mL dose, featuring 3 delightful flavor varieties.</p>
+              <p className="text-xl font-semibold text-green-700">$34.99+tax</p>
+            </CardContent>
+            <CardFooter className="bg-green-100">
+              <a href="https://buy.stripe.com/9AQdUjcDrdiT9os7st" className="w-full py-2 bg-orange-500 text-white rounded hover:bg-orange-600 text-center">
+                Buy Now
+              </a>
+            </CardFooter>
+          </Card>
         </div>
-      </section>      
-
-      
-
-{/* CTA Section */}
-<section id="cta-section" className="w-full max-w-5xl p-4 mx-auto h-auto min-h-screen text-center">
-  <h2 className="text-3xl font-bold pb-4 text-[#E0DED4]">Experience natural relief from reflux with OBEX—try it now for safe, immediate relief!</h2>
-    <p className="text-[#E0DED4]">Choose the perfect OBEX package for you — our Large pack contains 24 packets with 3 delightful flavours. Order now for natural relief!</p>
-      <div className="flex flex-col sm:flex-row items-center"> 
-          <Carousel className="w-11/12 h-auto max-h-[80vh] mx-auto pt-4 pb-8"
-              opts={{
-                align: "start",
-                loop: true,
-              }}
-          >
-            <CarouselContent className="-ml-1">
-              {[
-                // { title: "Small Pack", description: "Ideal for occasional use", content: "Small package contains a single flavour of 10 packets (5 mL per packet).", footer: "$16.99+tax", link: "https://buy.stripe.com/cN2bMb46VcePfMQ8ww" },
-                { title: "Large Pack", description: "Perfect for regular use", content: "Each large package contains 24 packets, each with a 5mL dose, featuring 3 delightful flavor varieties.", footer: "$34.99+tax", link: "https://buy.stripe.com/9AQdUjcDrdiT9os7st" },
-                // { title: "6 Mo Subscription", description: "Half-year supply", content: "With our 6-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 10%", footer2: "$178.50+tax", link: "https://buy.stripe.com/3cs4jJfPD5Qr8ko3ce" },
-                // { title: "12 Mo Subscription", description: "Full-year supply", content: "With our 12-month subscription, you'll receive a large variety pack of 3 different flavors every 30 days, each pack containing 25 convenient packets.", footer: "Save 15%", footer2: "$336.00+tax", link: "https://buy.stripe.com/6oEg2rfPD0w7fMQfZ1" }
-              ].map((card, index) => (
-                <CarouselItem key={index} className="pl-1 mx-2 basis-full sm:basis-1/2">
-                  <div className="p-1 h-[65vh] flex flex-col justify-between border border-gray-700 rounded-lg bg-[#364C43]">
-                    <div>
-                      <CardHeader className="text-left flex items-center px-5 py-4 bg-[#496748]">
-                        <CardTitle className="text-lg font-semibold text-[#E0DED4]">{card.title}</CardTitle>
-                        <CardDescription className="text-sm text-[#A8B18C] ml-4">{card.description}</CardDescription>
-                      </CardHeader>
-                      <CardContent className="px-5 py-4">
-                      <div className="flex justify-center my-4">
-                          <img src="/productimage.png" alt="Product image" className="w-1/2 max-w-lg" />
-                        </div>
-                        <p className="text-left text-sm text-[#A8B18C]">{card.content}</p>
-                        
-                      </CardContent>
-                    </div>
-                    <CardFooter className="mt-auto flex justify-between items-center px-5 py-4 bg-[#496748] text-lg font-bold">
-                      <div className="flex justify-center items-center h-full">
-                        <Image src="/IBEXhead.png" alt="Product Image" width={75} height={75} className="object-cover object-center rounded-full" />
-                      </div>
-                      <p className="text-xl font-semibold text-[#E0DED4]">{card.footer}</p>
-                      {/* <p className="text-sm font-semibold text-[#E0DED4]">{card.footer2}</p> */}
-                      <div className="w-full sm:w-auto border border-transparent rounded-lg bg-[#688B63] text-white p-4 hover:bg-[#496748] text-center">
-                        <a href={card.link} className="flex items-center justify-center h-full w-full">
-                          Buy Now
-                        </a>
-                      </div>
-                    </CardFooter>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselNext />
-            <CarouselPrevious />
-          </Carousel>
-        </div>
-        
       </section>
 
-
-
-
-      <footer className="w-full p-4 border-t border-[#A8B18C] bg-[#E0DED4] text-[#364C43]">
-        <div className="container mx-auto flex items-center justify-between">
-          <p className="text-sm">© 2024 OBEX Corporation. All rights reserved.</p>
-          {/* <div className="flex items-center gap-4">
-            <a href="#" className="text-sm hover:underline">Privacy Policy</a>
-            <a href="#" className="text-sm hover:underline">Terms of Use</a>
-          </div> */}
+      {/* Footer */}
+      <footer className="bg-[#264653] text-white py-8">
+        <div className="max-w-2xl mx-auto text-center">
+          <p>© 2024 OBEX Corporation. All rights reserved.</p>
         </div>
       </footer>
     </main>
