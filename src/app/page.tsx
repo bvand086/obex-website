@@ -94,7 +94,6 @@ export default function Home() {
             <li className="mb-2"><strong className="text-green-700">Natural and Safe:</strong> As a natural extract from seaweed, sodium alginate is generally well-tolerated and considered safe for most people, including pregnant women.</li>
             <li className="mb-2"><strong className="text-green-700">Non-Systemic Action:</strong> Unlike proton pump inhibitors or other acid-suppressing medications, sodium alginate does not affect the overall acidity of the stomach.</li>
             <li className="mb-2"><strong className="text-green-700">Complementary to Other Treatments:</strong> Sodium alginate can be used alongside other treatments for GERD or heartburn.</li>
-            <li><strong className="text-green-700">Versatility:</strong> Sodium alginate is available in various formulations, including liquid suspensions, chewable tablets, and granules.</li>
           </ul>
         </div>
       </section>
@@ -147,7 +146,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Flavor Options Section */}
+      {/* Flavour Options Section */}
       <section className="bg-[#E9EDe9] py-16">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-3xl font-bold text-[#2A9D8F] mb-4">Chef Developed Flavours</h2>
@@ -185,7 +184,7 @@ export default function Home() {
             </CardHeader>
             <CardContent className="p-4">
               <Image src="/productimage.png" alt="Product image" width={200} height={200} className="mx-auto mb-4" />
-              <p className="mb-4 text-gray-700">Each large package contains 24 packets, each with a 5mL dose, featuring 3 delightful flavor varieties.</p>
+              <p className="mb-4 text-gray-700">Each large package contains 24 packets, each with a 5mL dose, featuring 3 delightful flavour varieties.</p>
               <p className="text-xl font-semibold text-green-700">$34.99+tax</p>
             </CardContent>
             <CardFooter className="bg-green-100">
