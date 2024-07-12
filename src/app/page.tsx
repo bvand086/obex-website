@@ -105,7 +105,16 @@ export default function Home() {
           
           <Card className="mb-8 border-yellow-300">
             <CardHeader className="bg-yellow-100">
-              <CardTitle className="text-yellow-800">Comparative Study of Alginate and Omeprazole in Symptomatic Treatment of Non-erosive Gastroesophageal Reflux Disease</CardTitle>
+              <HoverCard>
+                <HoverCardTrigger>
+                  <CardTitle className="mb-4 text-yellow-800">Comparative Study of Alginate and Omeprazole in Symptomatic Treatment of Non-erosive Gastroesophageal Reflux Disease</CardTitle>
+                </HoverCardTrigger>
+                <HoverCardContent className="bg-white text-black">
+                  <a href="https://pubmed.ncbi.nlm.nih.gov/30487493/" target="_blank" className="text-left underline hover:text-blue-600">
+                    Saifullah, A. M., Ahmed, F., Shil, B. C., Banik, R. K., Saha, S. K., Chowdhury, M., ... & Akhter, A. (2018). Comparative Study of Alginate and Omeprazole in Symptomatic Treatment of Non-erosive Gastroesophageal Reflux Disease. Mymensingh medical journal: MMJ, 27(4), 771-775.
+                  </a>
+                </HoverCardContent>
+              </HoverCard>
             </CardHeader>
             <CardContent>
               <p className="mb-4 text-gray-700">This study compared the effectiveness of sodium alginate and omeprazole in treating heartburn. The results showed that sodium alginate works just as well as omeprazole for treating heartburn, providing a new option for people who might want an alternative to traditional heartburn medications.</p>
@@ -115,7 +124,16 @@ export default function Home() {
           
           <Card className="border-yellow-300">
             <CardHeader className="bg-yellow-100">
-              <CardTitle className="text-yellow-800">Alginate on demand as add-on for patients with gastro-oesophageal reflux disease and insufficient PPI effect</CardTitle>
+              <HoverCard>
+                <HoverCardTrigger>
+                  <CardTitle className="mb-4 text-yellow-800">Alginate on demand as add-on for patients with gastro-oesophageal reflux disease and insufficient PPI effect</CardTitle>
+                </HoverCardTrigger>
+                <HoverCardContent className="bg-white text-black">
+                  <a href="https://pubmed.ncbi.nlm.nih.gov/30466131/" target="_blank" className="text-left underline hover:text-blue-600">
+                    Müller, M., Labenz, G., Borkenstein, D. P., & Labenz, J. (2018). Alginate on demand as add-on for patients with gastro-oesophageal reflux disease and insufficient PPI effect. Deutsche Medizinische Wochenschrift (1946), 144(4), e30-e35.
+                  </a>
+                </HoverCardContent>
+              </HoverCard>
             </CardHeader>
             <CardContent>
               <p className="mb-4 text-gray-700">This study looked at adding alginate to the treatment plan of GERD patients who were already on PPIs but still had symptoms. After adding alginate, 72% of the patients felt better about their treatment, with many showing significant improvement.</p>
@@ -150,7 +168,7 @@ export default function Home() {
       <section className="bg-[#E9EDe9] py-16">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-3xl font-bold text-[#2A9D8F] mb-4">Chef Developed Flavours</h2>
-          <p className="mb-8 text-center text-gray-700">Discover the delicious side of relief with OBEX, now available in three chef-inspired flavours.</p>
+          <p className="mb-8 text-left text-gray-700">Discover the delicious side of relief with OBEX, now available in three chef-inspired flavours.</p>
           
           <div className="mb-8 p-4 bg-green-100 rounded-lg">
             <h3 className="text-2xl font-bold mb-2 text-green-700">Refreshing Mint</h3>
@@ -167,7 +185,7 @@ export default function Home() {
             <p className="text-gray-700">Savour the nostalgic blend of creamy vanilla and bright orange with our orange creamsicle flavour. This comforting and luscious option takes you back to childhood summers, offering a soothing and enjoyable way to manage reflux.</p>
           </div>
           
-          <p className="text-center text-gray-700">Each flavour is crafted with care to provide an enjoyable taste experience. Say goodbye to the bland and medicinal, and hello to the delicious and natural with OBEX.</p>
+          <p className="text-left text-gray-700">Each flavour is crafted with care to provide an enjoyable taste experience. Say goodbye to the bland and medicinal, and hello to the delicious and natural with OBEX.</p>
         </div>
       </section>
 
