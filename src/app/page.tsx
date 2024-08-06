@@ -26,21 +26,12 @@ import {
 } from "@/components/ui/tooltip"
 import CustomerReviews from '@/app/customerReview';
 import { Input } from '@/components/ui/input'
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { useToast } from "@/components/ui/use-toast"
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null);
-
-  useEffect(() => {
-    if (notification) {
-      const timer = setTimeout(() => {
-        setNotification(null);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [notification]);
+  const { toast } = useToast()
 
   const scrollToSection = (id: string): void => {
     const section = document.getElementById(id);
@@ -67,13 +58,20 @@ export default function Home() {
       const data = await response.json();
 
       if (response.ok) {
-        setNotification({ type: 'success', message: "You've been successfully subscribed to our product updates." });
+        toast({
+          title: "Success!",
+          description: "You've been successfully subscribed to our product updates.",
+        })
         setEmail("");
       } else {
         throw new Error(data.error || 'Subscription failed');
       }
     } catch (error) {
-      setNotification({ type: 'error', message: error instanceof Error ? error.message : "Failed to subscribe. Please try again later." });
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to subscribe. Please try again later.",
+        variant: "destructive",
+      })
     } finally {
       setIsSubmitting(false);
     }
@@ -81,13 +79,6 @@ export default function Home() {
   
   return (
     <main className="bg-[#FAFAF9] text-[#264653]">
-      {notification && (
-        <Alert variant={notification.type === 'success' ? "default" : "destructive"} className="mb-4">
-          <AlertTitle>{notification.type === 'success' ? "Success!" : "Error"}</AlertTitle>
-          <AlertDescription>{notification.message}</AlertDescription>
-        </Alert>
-      )}
-
       {/* Header */}
       <header className="flex flex-col items-center justify-between p-4 border-b border-green-200 max-w-4xl mx-auto ">
         <div className="flex items-center gap-4 mb-4">
