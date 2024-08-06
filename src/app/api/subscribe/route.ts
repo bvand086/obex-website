@@ -5,9 +5,12 @@ const API_KEY = process.env.MAILCHIMP_API_KEY;
 const SERVER_PREFIX = process.env.MAILCHIMP_SERVER_PREFIX;
 
 export async function POST(request: Request) {
+  console.log('API_KEY:', API_KEY ? 'Set' : 'Not set');
+  console.log('SERVER_PREFIX:', SERVER_PREFIX ? 'Set' : 'Not set');
+
   if (!API_KEY || !SERVER_PREFIX) {
     console.error('Mailchimp configuration is missing');
-    return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
+    return NextResponse.json({ error: 'Server configuration error', details: { API_KEY: !!API_KEY, SERVER_PREFIX: !!SERVER_PREFIX } }, { status: 500 });
   }
 
   const { email } = await request.json();
