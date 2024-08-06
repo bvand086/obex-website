@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Card,
@@ -25,8 +25,23 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import CustomerReviews from '@/app/customerReview';
+import { Input } from '@/components/ui/input'
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 export default function Home() {
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [notification, setNotification] = useState<{ type: 'success' | 'error', message: string } | null>(null);
+
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => {
+        setNotification(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [notification]);
+
   const scrollToSection = (id: string): void => {
     const section = document.getElementById(id);
     if (section) {
@@ -36,8 +51,43 @@ export default function Home() {
     }
   };
   
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setNotification({ type: 'success', message: "You've been successfully subscribed to our product updates." });
+        setEmail("");
+      } else {
+        throw new Error(data.error || 'Subscription failed');
+      }
+    } catch (error) {
+      setNotification({ type: 'error', message: error instanceof Error ? error.message : "Failed to subscribe. Please try again later." });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
   return (
     <main className="bg-[#FAFAF9] text-[#264653]">
+      {notification && (
+        <Alert variant={notification.type === 'success' ? "default" : "destructive"} className="mb-4">
+          <AlertTitle>{notification.type === 'success' ? "Success!" : "Error"}</AlertTitle>
+          <AlertDescription>{notification.message}</AlertDescription>
+        </Alert>
+      )}
+
       {/* Header */}
       <header className="flex flex-col items-center justify-between p-4 border-b border-green-200 max-w-4xl mx-auto ">
         <div className="flex items-center gap-4 mb-4">
@@ -72,6 +122,21 @@ export default function Home() {
             <button className="w-full sm:w-auto px-6 py-2 border border-green-600 text-green-600 rounded hover:bg-green-100" onClick={() => scrollToSection('product_details')}>
               Learn More
             </button>
+          </div>
+          <div className="mt-8 max-w-md mx-auto">
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-2">
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                className="w-full sm:w-auto text-green-700"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <Button type="submit" className="bg-green-700 text-white w-full sm:w-auto" disabled={isSubmitting}>
+                {isSubmitting ? "Signing up..." : "Sign up for product updates"}
+              </Button>
+            </form>
           </div>
         </div>
       </section>
