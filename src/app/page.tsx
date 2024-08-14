@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Card,
   CardContent,
@@ -17,13 +16,6 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
-import { Separator } from "@/components/ui/separator"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 import CustomerReviews from '@/app/customerReview';
 import { Input } from '@/components/ui/input'
 import { useToast } from "@/components/ui/use-toast"
@@ -82,8 +74,8 @@ export default function Home() {
       {/* Header */}
       <header className="flex flex-col items-center justify-between p-4 border-b border-green-200 max-w-4xl mx-auto ">
         <div className="flex items-center gap-4 mb-4">
-          <div className="w-8 h-8 rounded-full overflow-hidden">
-            <Image src="/IBEXhead.png" alt="OBEX Head" width={32} height={32} />
+          <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-black">
+            <Image src="/OSlashLogo.png" alt="OBEX Head" width={28} height={28} className="object-cover" />
           </div>
           <h1 className="text-2xl font-bold text-green-800">OBEX</h1>
         </div>
@@ -237,7 +229,7 @@ export default function Home() {
           </div>
           
           <div className="mb-8 p-4 bg-orange-100 rounded-lg">
-            <h3 className="text-2xl font-bold mb-2 text-orange-700">Orange Creamsicle</h3>
+            <h3 className="text-2xl font-bold mb-2 text-orange-700">Orange Cream</h3>
             <p className="text-gray-700">Savour the nostalgic blend of creamy vanilla and bright orange with our orange creamsicle flavour. This comforting and luscious option takes you back to childhood summers, offering a soothing and enjoyable way to manage reflux.</p>
           </div>
           
