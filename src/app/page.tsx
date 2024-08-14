@@ -6,7 +6,7 @@ export default function Home() {
       <header className="flex items-center justify-between p-4 border-b">
         <div className="flex items-center gap-4">
           <div className="w-8 h-8 rounded-full overflow-hidden">
-            <Image src="/IBEXhead.png" alt="IBEX Head" width={32} height={32} />
+            <Image src="/OSlashLogo.png" alt="OBEX Logo" width={32} height={32} />
           </div>
           <nav className="flex gap-4">
             <a href="#" className="hover:underline">
