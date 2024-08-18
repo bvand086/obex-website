@@ -57,7 +57,7 @@ export default function Home() {
         setEmail("");
       } else {
         throw new Error(data.error || 'Subscription failed');
-      }
+      } 
     } catch (error) {
       toast({
         title: "Error",
