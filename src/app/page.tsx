@@ -96,7 +96,7 @@ export default function Home() {
       <section className="flex flex-col items-center justify-center min-h-screen py-16 px-4 bg-gradient-to-b from-[#F4A261] to-[#E9C46A] text-white py-16">
         <div className="max-w-2xl text-center mx-auto">
           <h1 className="mb-4 text-4xl sm:text-5xl font-bold text-green-800">Experience the Power of</h1>
-          <h1 className="mb-4 text-7xl sm:text-[10rem] font-bold text-green-700 tracking-widest">OBEX</h1>
+          <h1 className="mb-4 text-7xl sm:text-[10rem] font-extrabold text-green-800 tracking-widest">ØBEX</h1>
           <p className="mb-8 text-lg sm:text-xl text-green-600">Your Natural Barrier Against Heartburn</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button className="w-full sm:w-auto px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600" onClick={() => scrollToSection('cta-section')}>
