@@ -72,8 +72,8 @@ export default function Home() {
   return (
     <main className="bg-[#FAFAF9] text-[#264653]">
       {/* Header */}
-      <header className="flex flex-col items-center justify-between p-4 border-b border-green-200 max-w-4xl mx-auto ">
-        <div className="flex items-center gap-4 mb-4">
+      <header className="flex flex-col sm:flex-row items-center justify-between p-4 border-b border-green-200 max-w-4xl mx-auto">
+        <div className="flex items-center gap-4 mb-4 sm:mb-0">
           <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-black">
             <Image src="/OSlashLogo.png" alt="OBEX Head" width={28} height={28} className="object-cover" />
           </div>
