@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Raleway, Open_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import "./typography.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const raleway = Raleway({ subsets: ["latin"], display: "swap", variable: "--font-raleway" });
+const openSans = Open_Sans({ subsets: ["latin"], display: "swap", variable: "--font-open-sans" });
+const playfairDisplay = Playfair_Display({ subsets: ["latin"], display: "swap", variable: "--font-playfair" });
 
 export const metadata: Metadata = {
   title: "ØBEX Incorporated",
@@ -24,7 +27,9 @@ export default function RootLayout({
         <link rel="icon" href="/new-favicon.ico" sizes="any" />
         <link rel="shortcut icon" href="/new-favicon.ico" type="image/x-icon" />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={`${raleway.variable} ${openSans.variable} ${playfairDisplay.variable} font-sans`}>
+        {children}
+      </body>
     </html>
   );
 }

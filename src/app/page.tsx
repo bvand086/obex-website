@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import CustomerReviews from '@/app/customerReview';
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,16 +9,16 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+} from "@/components/ui/card";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/hover-card"
-import CustomerReviews from '@/app/customerReview';
-import { Input } from '@/components/ui/input'
-import { useToast } from "@/components/ui/use-toast"
+} from "@/components/ui/hover-card";
+import { Input } from '@/components/ui/input';
+import { useToast } from "@/components/ui/use-toast";
+import Image from "next/image";
+import React, { useState } from "react";
 
 export default function Home() {
   const [email, setEmail] = useState("");

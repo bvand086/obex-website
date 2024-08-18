@@ -1,0 +1,47 @@
+:root {
+  --font-raleway: var(--font-raleway);
+  --font-open-sans: var(--font-open-sans);
+  --font-playfair: var(--font-playfair);
+}
+
+body {
+  font-family: var(--font-open-sans), sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+h1 {
+  font-family: var(--font-raleway), sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+}
+
+h2 {
+  font-family: var(--font-raleway), sans-serif;
+  font-weight: 500;
+  font-size: 24px;
+}
+
+h3 {
+  font-family: var(--font-raleway), sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.body-copy {
+  font-family: var(--font-open-sans), sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.caption, .small-print {
+  font-family: var(--font-open-sans), sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.product-name {
+  font-family: var(--font-playfair), serif;
+  font-weight: 400;
+  font-size: 20px;
+}
