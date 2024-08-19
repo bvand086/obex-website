@@ -33,7 +33,7 @@ export default function Home() {
       console.error(`Section with ID ${id} not found.`);
     }
   };
-  
+  // Handle the submit function here
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
