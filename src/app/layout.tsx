@@ -10,10 +10,6 @@ const playfairDisplay = Playfair_Display({ subsets: ["latin"], display: "swap", 
 export const metadata: Metadata = {
   title: "ØBEX Incorporated",
   description: "Natural, Safe, and Effective Anti-Reflux Products",
-  icons: {
-    icon: '/new-favicon.ico',
-    shortcut: '/new-favicon.ico',
-  },
 };
 
 export default function RootLayout({

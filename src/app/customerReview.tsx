@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Star } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 interface CustomerReviewProps {
   name: string;
@@ -28,29 +30,56 @@ const CustomerReview: React.FC<CustomerReviewProps> = ({ name, review }) => (
 );
 
 const CustomerReviews: React.FC = () => {
-  const reviews = [
-    {
-      name: "Sandy G.",
-      review: "I have suffered from acid reflux for over 30 years and have never found a product that works so instantly to relieve my severe heartburn. This product works in an almost instant way. My choice forever."
-    },
-    {
-      name: "Darcy M.",
-      review: "Flavour was amazing and it gave me a more soothing and immediate relief vs tablet style heartburn medications."
-    },
-    {
-      name: "Sarah R.",
-      review: "I had some spicy burps after eating Thai food. I took a packet, and it worked! The burps got better right away and stopped after 15-20 minutes. Highly recommend!"
-    }
+  const [showAll, setShowAll] = useState(false);
+  const [displayedReviews, setDisplayedReviews] = useState<CustomerReviewProps[]>([]);
+
+  const allReviews = [
+    { name: "Sandy G.", review: "I have suffered from acid reflux for over 30 years and have never found a product that works so instantly to relieve my severe heartburn. This product works in an almost instant way. My choice forever." },
+    { name: "Darcy M.", review: "Flavour was amazing and it gave me a more soothing and immediate relief vs tablet style heartburn medications." },
+    { name: "Sarah R.", review: "I had some spicy burps after eating Thai food. I took a packet, and it worked! The burps got better right away and stopped after 15-20 minutes. Highly recommend!" },
+    { name: "Nicole C.", review: "Amazing product providing 100% relief of my heartburn and indigestion even at 37 weeks pregnant after eating a spicy and acidic meal. Have tried other types of antacids throughout my pregnancy and this has been the most effective by far! The flavours are great and in very convenient packaging which makes it easy to take with me in my purse/hospital bags." },
   ];
+
+  const getRandomReviews = (count: number) => {
+    const shuffled = [...allReviews].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  };
+
+  useEffect(() => {
+    setDisplayedReviews(getRandomReviews(3));
+  }, []);
 
   return (
     <section className="bg-[#E9EDe9] py-12">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center text-[#2A9D8F] mb-8">What Our Customers Say</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {reviews.map((review, index) => (
-            <CustomerReview key={index} name={review.name} review={review.review} />
-          ))}
+        {!showAll && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            {displayedReviews.map((review, index) => (
+              <CustomerReview key={index} name={review.name} review={review.review} />
+            ))}
+          </div>
+        )}
+        {showAll && (
+          <Carousel className="w-full max-w-4xl mx-auto">
+            <CarouselContent>
+              {allReviews.map((review, index) => (
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                  <CustomerReview name={review.name} review={review.review} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        )}
+        <div className="text-center mt-8">
+          <Button
+            onClick={() => setShowAll(!showAll)}
+            className="bg-[#2A9D8F] text-white hover:bg-[#238276]"
+          >
+            {showAll ? "Show Less" : "See All Testimonials"}
+          </Button>
         </div>
       </div>
     </section>
