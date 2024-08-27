@@ -38,6 +38,7 @@ const CustomerReviews: React.FC = () => {
     { name: "Darcy M.", review: "Flavour was amazing and it gave me a more soothing and immediate relief vs tablet style heartburn medications." },
     { name: "Sarah R.", review: "I had some spicy burps after eating Thai food. I took a packet, and it worked! The burps got better right away and stopped after 15-20 minutes. Highly recommend!" },
     { name: "Nicole C.", review: "Amazing product providing 100% relief of my heartburn and indigestion even at 37 weeks pregnant after eating a spicy and acidic meal. Have tried other types of antacids throughout my pregnancy and this has been the most effective by far! The flavours are great and in very convenient packaging which makes it easy to take with me in my purse/hospital bags." },
+    { name: "Wilma M.", review: "Very effective product in treating my reflux as I go through chemotherapy. This worked considerably better than Nexium for me and I was grateful for a safe alternative. The relief it provides during this challenging time is truly appreciated." },
   ];
 
   const getRandomReviews = (count: number) => {
