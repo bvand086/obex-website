@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Star } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import BlurFade from '@/components/magicui/blur-fade';
 
 interface CustomerReviewProps {
   name: string;
@@ -9,24 +10,26 @@ interface CustomerReviewProps {
 }
 
 const CustomerReview: React.FC<CustomerReviewProps> = ({ name, review }) => (
-  <div className="flex flex-col items-center bg-white p-6 rounded-lg shadow-md max-w-sm mx-auto">
-    <div className="flex mb-2">
-      {[...Array(5)].map((_, i) => (
-        <Star key={i} className="text-[#E9C46A] fill-[#E9C46A]" size={24} />
-      ))}
-    </div>
-    <p className="text-[#264653] text-center mb-4">{review}</p>
-    <div className="flex items-center">
-      <div className="w-12 h-12 bg-[#2A9D8F] rounded-full mr-4 flex items-center justify-center">
-        <span className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
-          {name.charAt(0)}
-        </span>
+  <BlurFade>
+    <div className="flex flex-col items-center bg-white p-6 rounded-lg shadow-md max-w-sm mx-auto">
+      <div className="flex mb-2">
+        {[...Array(5)].map((_, i) => (
+          <Star key={i} className="text-[#E9C46A] fill-[#E9C46A]" size={24} />
+        ))}
       </div>
-      <div>
-        <h3 className="font-bold text-[#2A9D8F]">{name}</h3>
+      <p className="text-[#264653] text-center mb-4">{review}</p>
+      <div className="flex items-center">
+        <div className="w-12 h-12 bg-[#2A9D8F] rounded-full mr-4 flex items-center justify-center">
+          <span className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
+            {name.charAt(0)}
+          </span>
+        </div>
+        <div>
+          <h3 className="font-bold text-[#2A9D8F]">{name}</h3>
+        </div>
       </div>
     </div>
-  </div>
+  </BlurFade>
 );
 
 const CustomerReviews: React.FC = () => {

@@ -18,12 +18,17 @@ import {
 import { Input } from '@/components/ui/input';
 import { useToast } from "@/components/ui/use-toast";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const { toast } = useToast()
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const scrollToSection = (id: string): void => {
     const section = document.getElementById(id);
@@ -33,7 +38,7 @@ export default function Home() {
       console.error(`Section with ID ${id} not found.`);
     }
   };
-  // Handle the submit function here
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -69,6 +74,10 @@ export default function Home() {
     }
   };
   
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <main className="bg-[#FAFAF9] text-[#264653]">
       {/* Header */}
@@ -93,10 +102,10 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center min-h-screen py-16 px-4 bg-gradient-to-b from-[#F4A261] to-[#E9C46A] text-white py-16">
-        <div className="max-w-2xl text-center mx-auto">
-          <h1 className="mb-4 text-4xl sm:text-5xl font-bold text-green-800">Experience the Power of</h1>
-          <h1 className="mb-4 text-7xl sm:text-[10rem] font-extrabold text-green-800 tracking-widest">ØBEX</h1>
+      <section className="flex flex-col items-center justify-center min-h-screen py-16 px-4 bg-gradient-to-b from-[#F4A261] to-[#E9C46A] text-white">
+        <div className="max-w-xs sm:max-w-2xl text-center mx-auto">
+          <h2 className="mb-4 text-4xl sm:text-5xl font-bold text-green-800">Experience the Power of</h2>
+          <h1 className="mb-4 text-6xl sm:text-[10rem] font-extrabold text-green-800 tracking-widest">ØBEX</h1>
           <p className="mb-8 text-lg sm:text-xl text-green-600">Your Natural Barrier Against Heartburn</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button className="w-full sm:w-auto px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600" onClick={() => scrollToSection('cta-section')}>
@@ -106,7 +115,7 @@ export default function Home() {
               Learn More
             </button>
           </div>
-          <div className="mt-8 max-w-md mx-auto">
+          <div className="mt-8 w-full max-w-xs sm:max-w-md mx-auto">
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-2">
               <Input
                 type="email"
@@ -129,7 +138,7 @@ export default function Home() {
 
       {/* Product Details */}
       <section id="product_details" className="bg-[#E9EDe9] py-16">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-[#2A9D8F] mb-4">About Sodium Alginate</h2>
           <p className="mb-8 text-gray-700">Sodium alginate, a natural substance derived from seaweed, has become an increasingly popular ingredient in products aimed at managing gastroesophageal reflux disease (GERD) and heartburn. The unique properties of sodium alginate make it especially effective for relieving these common digestive issues.</p>
           
@@ -148,7 +157,7 @@ export default function Home() {
 
       {/* Research Section */}
       <section id="research" className="bg-white py-16">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-[#2A9D8F] mb-4">Medical Research Support</h2>
           
           <Card className="mb-8 border-yellow-300">
@@ -193,7 +202,7 @@ export default function Home() {
 
       {/* Made in Canada Section */}
       <section className="bg-[#F4A261] text-white py-16">
-        <div className="max-w-2xl mx-auto text-center">
+        <div className="max-w-2xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <Image src="/canada_white_lines.png" alt="Canada" width={300} height={300} className="mx-auto mb-8" />
           <h2 className="text-4xl font-bold mb-4 text-white">
             <span className="text-red-500">Developed</span> Right Here in <span className="text-red-500">Canada 🇨🇦</span>
@@ -214,7 +223,7 @@ export default function Home() {
 
       {/* Flavour Options Section */}
       <section className="bg-[#E9EDe9] py-16">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-[#2A9D8F] mb-4">Chef Developed Flavours</h2>
           <p className="mb-8 text-left text-gray-700">Discover the delicious side of relief with OBEX, now available in three chef-inspired flavours.</p>
           
@@ -239,7 +248,7 @@ export default function Home() {
 
       {/* CTA Section */}
       <section id="cta-section" className="bg-[#2A9D8F] text-white py-16">
-        <div className="max-w-2xl mx-auto text-center">
+        <div className="max-w-2xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold mb-4">Experience natural relief from reflux with OBEX</h2>
           <p className="mb-8">Choose the perfect OBEX package for you — our Large pack contains 24 packets with 3 delightful flavours. Order now for natural relief!</p>
           
