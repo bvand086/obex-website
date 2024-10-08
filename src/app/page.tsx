@@ -19,6 +19,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from "@/components/ui/use-toast";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
+import Link from 'next/link'; // Add this import at the top of the file
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -95,6 +96,9 @@ export default function Home() {
           <a href="#research" className="px-4 py-2 text-green-700 hover:text-green-900 hover:bg-green-100 rounded transition-colors" onClick={(e) => { e.preventDefault(); scrollToSection("research"); }}>
             Research
           </a>
+          <Link href="/blog" className="px-4 py-2 text-green-700 hover:text-green-900 hover:bg-green-100 rounded transition-colors">
+            Blog
+          </Link>
           <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors" onClick={() => scrollToSection("cta-section")}>
             Order
           </button>
