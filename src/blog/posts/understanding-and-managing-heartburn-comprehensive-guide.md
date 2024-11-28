@@ -1,6 +1,6 @@
 ---
 title: "Understanding and Managing Heartburn: A Comprehensive Guide"
-date: "2024-03-20"
+date: "2024-11-28"
 description: "Learn about heartburn causes, symptoms, and effective management strategies including natural remedies and lifestyle changes."
 ---
 
