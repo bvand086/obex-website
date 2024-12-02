@@ -38,6 +38,7 @@ const CustomerReviews: React.FC = () => {
     { name: "Sarah R.", review: "I had some spicy burps after eating Thai food. I took a packet, and it worked! The burps got better right away and stopped after 15-20 minutes. Highly recommend!" },
     { name: "Nicole C.", review: "Amazing product providing 100% relief of my heartburn and indigestion even at 37 weeks pregnant after eating a spicy and acidic meal. Have tried other types of antacids throughout my pregnancy and this has been the most effective by far! The flavours are great and in very convenient packaging which makes it easy to take with me in my purse/hospital bags." },
     { name: "Wilma M.", review: "Very effective product in treating my reflux as I go through chemotherapy. This worked considerably better than Nexium for me and I was grateful for a safe alternative. The relief it provides during this challenging time is truly appreciated." },
+    { name: "Dawn J.", review: "Before discovering Obex, I experienced a severe acid reflux episode that kept me awake until 4 AM in terrible pain. I'm incredibly thankful to have found this product - it works quickly and effectively to provide relief. The pleasant taste is an added bonus. I highly recommend giving Obex a try - you'll see the difference for yourself." },
   ], []);
 
   const getRandomReviews = useCallback(() => 
