@@ -19,7 +19,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from "@/components/ui/use-toast";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import Link from 'next/link'; // Add this import at the top of the file
+import Link from 'next/link'; 
 
 export default function Home() {
   const [email, setEmail] = useState("");
