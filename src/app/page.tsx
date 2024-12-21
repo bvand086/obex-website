@@ -20,6 +20,7 @@ import { useToast } from "@/components/ui/use-toast";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Link from 'next/link'; 
+import { Instagram } from 'lucide-react';
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -99,6 +100,15 @@ export default function Home() {
           <Link href="/blog" className="px-4 py-2 text-green-700 hover:text-green-900 hover:bg-green-100 rounded transition-colors">
             Blog
           </Link>
+          <a 
+            href="https://www.instagram.com/obexcanada/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-green-700 hover:text-green-900 transition-colors"
+            aria-label="Follow us on Instagram"
+          >
+            <Instagram size={24} />
+          </a>
           <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors" onClick={() => scrollToSection("cta-section")}>
             Order
           </button>
