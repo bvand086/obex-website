@@ -22,17 +22,16 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { Input } from '@/components/ui/input';
 import { useToast } from "@/components/ui/use-toast";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Link from 'next/link'; 
-import { Instagram } from 'lucide-react';
+import { Instagram, Menu, X } from 'lucide-react';
 
 export default function Home() {
-  const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { toast } = useToast()
 
   useEffect(() => {
@@ -47,41 +46,6 @@ export default function Home() {
       console.error(`Section with ID ${id} not found.`);
     }
   };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-      const response = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        toast({
-          title: "Success!",
-          description: "You've been successfully subscribed to our product updates.",
-        })
-        setEmail("");
-      } else {
-        throw new Error(data.error || 'Subscription failed');
-      } 
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to subscribe. Please try again later.",
-        variant: "destructive",
-      })
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
   
   if (!isMounted) {
     return null;
@@ -90,26 +54,40 @@ export default function Home() {
   return (
     <main className="bg-[#FAFAF9] text-[#264653]">
       {/* Header */}
-      <header className="flex flex-col sm:flex-row items-center justify-between p-4 bg-gradient-to-r from-[#e6dd58] via-[#dda742] to-[#57a779] max-w-full mx-auto">
-        <div className="flex items-center gap-4 mb-4 sm:mb-0">
-          <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-black">
-            <Image src="/white_transparent_OSlashLogo.png" alt="OBEX Logo" width={28} height={28} className="object-cover" />
+      <header className="relative flex flex-col sm:flex-row items-center justify-between p-4 bg-gradient-to-r from-[#e6dd58] via-[#dda742] to-[#57a779] max-w-full mx-auto">
+        <div className="flex items-center justify-between w-full sm:w-auto">
+          <div className="flex items-center gap-4">
+            <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-black">
+              <Image src="/white_transparent_OSlashLogo.png" alt="OBEX Logo" width={28} height={28} className="object-cover" />
+            </div>
+            <h1 className="text-2xl font-bold text-white">OBEX</h1>
           </div>
-          <h1 className="text-2xl font-bold text-white">OBEX</h1>
+          <button 
+            className="sm:hidden text-white hover:text-[#e6dd58] transition-colors"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
-        <nav className="flex gap-4 items-center">
-          <a href="#" className="px-4 py-2 text-white hover:text-[#e6dd58] hover:bg-black/10 rounded transition-colors" onClick={(e) => { e.preventDefault(); scrollToSection("product_details"); }}>
+        
+        <nav className={`${
+          isMenuOpen ? 'flex' : 'hidden'
+        } sm:flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto mt-4 sm:mt-0 ${
+          isMenuOpen ? 'absolute top-full left-0 right-0 bg-gradient-to-r from-[#e6dd58] via-[#dda742] to-[#57a779] p-4 z-50' : ''
+        }`}>
+          <a href="#" className="w-full sm:w-auto text-center px-4 py-2 text-white hover:text-[#e6dd58] hover:bg-black/10 rounded transition-colors" onClick={(e) => { e.preventDefault(); scrollToSection("product_details"); setIsMenuOpen(false); }}>
             About
           </a>
-          <a href="#research" className="px-4 py-2 text-white hover:text-[#e6dd58] hover:bg-black/10 rounded transition-colors" onClick={(e) => { e.preventDefault(); scrollToSection("research"); }}>
+          <a href="#research" className="w-full sm:w-auto text-center px-4 py-2 text-white hover:text-[#e6dd58] hover:bg-black/10 rounded transition-colors" onClick={(e) => { e.preventDefault(); scrollToSection("research"); setIsMenuOpen(false); }}>
             Research
           </a>
-          <Link href="/blog" className="px-4 py-2 text-white hover:text-[#e6dd58] hover:bg-black/10 rounded transition-colors">
+          <Link href="/blog" className="w-full sm:w-auto text-center px-4 py-2 text-white hover:text-[#e6dd58] hover:bg-black/10 rounded transition-colors" onClick={() => setIsMenuOpen(false)}>
             Blog
           </Link>
           <Dialog>
             <DialogTrigger asChild>
-              <button className="px-4 py-2 text-white hover:text-[#e6dd58] hover:bg-black/10 rounded transition-colors">
+              <button className="w-full sm:w-auto text-center px-4 py-2 text-white hover:text-[#e6dd58] hover:bg-black/10 rounded transition-colors" onClick={() => setIsMenuOpen(false)}>
                 Feedback
               </button>
             </DialogTrigger>
@@ -134,12 +112,16 @@ export default function Home() {
             href="https://www.instagram.com/obexcanada/" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="text-white hover:text-[#e6dd58] transition-colors"
+            className="w-full sm:w-auto text-center px-4 py-2 text-white hover:text-[#e6dd58] transition-colors flex items-center justify-center"
             aria-label="Follow us on Instagram"
+            onClick={() => setIsMenuOpen(false)}
           >
             <Instagram size={24} />
           </a>
-          <button className="px-4 py-2 bg-[#57a779] text-white rounded hover:bg-[#4a8f68] transition-colors" onClick={() => scrollToSection("cta-section")}>
+          <button 
+            className="w-full sm:w-auto text-center px-4 py-2 bg-[#57a779] text-white rounded hover:bg-[#4a8f68] transition-colors" 
+            onClick={() => { scrollToSection("cta-section"); setIsMenuOpen(false); }}
+          >
             Order
           </button>
         </nav>
@@ -158,21 +140,6 @@ export default function Home() {
             <button className="w-full sm:w-auto px-6 py-2 border border-green-600 text-green-600 rounded hover:bg-green-100" onClick={() => scrollToSection('product_details')}>
               Learn More
             </button>
-          </div>
-          <div className="mt-8 w-full max-w-xs sm:max-w-md mx-auto">
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-2">
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full sm:w-auto text-green-700"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <Button type="submit" className="bg-green-700 text-white w-full sm:w-auto" disabled={isSubmitting}>
-                {isSubmitting ? "Signing up..." : "Sign up for product updates"}
-              </Button>
-            </form>
           </div>
         </div>
       </section>
