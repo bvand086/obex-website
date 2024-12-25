@@ -83,33 +83,33 @@ export default function Home() {
   return (
     <main className="bg-[#FAFAF9] text-[#264653]">
       {/* Header */}
-      <header className="flex flex-col sm:flex-row items-center justify-between p-4 border-b border-green-200 max-w-4xl mx-auto">
+      <header className="flex flex-col sm:flex-row items-center justify-between p-4 bg-gradient-to-r from-[#e6dd58] via-[#dda742] to-[#57a779] max-w-full mx-auto">
         <div className="flex items-center gap-4 mb-4 sm:mb-0">
           <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-black">
             <Image src="/white_transparent_OSlashLogo.png" alt="OBEX Logo" width={28} height={28} className="object-cover" />
           </div>
-          <h1 className="text-2xl font-bold text-green-800">OBEX</h1>
+          <h1 className="text-2xl font-bold text-white">OBEX</h1>
         </div>
         <nav className="flex gap-4 items-center">
-          <a href="#" className="px-4 py-2 text-green-700 hover:text-green-900 hover:bg-green-100 rounded transition-colors" onClick={(e) => { e.preventDefault(); scrollToSection("product_details"); }}>
+          <a href="#" className="px-4 py-2 text-white hover:text-[#e6dd58] hover:bg-black/10 rounded transition-colors" onClick={(e) => { e.preventDefault(); scrollToSection("product_details"); }}>
             About
           </a>
-          <a href="#research" className="px-4 py-2 text-green-700 hover:text-green-900 hover:bg-green-100 rounded transition-colors" onClick={(e) => { e.preventDefault(); scrollToSection("research"); }}>
+          <a href="#research" className="px-4 py-2 text-white hover:text-[#e6dd58] hover:bg-black/10 rounded transition-colors" onClick={(e) => { e.preventDefault(); scrollToSection("research"); }}>
             Research
           </a>
-          <Link href="/blog" className="px-4 py-2 text-green-700 hover:text-green-900 hover:bg-green-100 rounded transition-colors">
+          <Link href="/blog" className="px-4 py-2 text-white hover:text-[#e6dd58] hover:bg-black/10 rounded transition-colors">
             Blog
           </Link>
           <a 
             href="https://www.instagram.com/obexcanada/" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="text-green-700 hover:text-green-900 transition-colors"
+            className="text-white hover:text-[#e6dd58] transition-colors"
             aria-label="Follow us on Instagram"
           >
             <Instagram size={24} />
           </a>
-          <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors" onClick={() => scrollToSection("cta-section")}>
+          <button className="px-4 py-2 bg-[#57a779] text-white rounded hover:bg-[#4a8f68] transition-colors" onClick={() => scrollToSection("cta-section")}>
             Order
           </button>
         </nav>
