@@ -11,6 +11,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
@@ -100,6 +107,29 @@ export default function Home() {
           <Link href="/blog" className="px-4 py-2 text-white hover:text-[#e6dd58] hover:bg-black/10 rounded transition-colors">
             Blog
           </Link>
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className="px-4 py-2 text-white hover:text-[#e6dd58] hover:bg-black/10 rounded transition-colors">
+                Feedback
+              </button>
+            </DialogTrigger>
+            <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-gradient-to-b from-[#e6dd58]/10 to-white">
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-bold text-[#57a779]">Share Your Feedback</DialogTitle>
+              </DialogHeader>
+              <div className="w-full h-[800px]">
+                <iframe 
+                  src="https://docs.google.com/forms/d/e/1FAIpQLScf_73CWJmfiTGnQtKa3m17wWDaFQiKcMTY9YAFObb5V3VfPQ/viewform?embedded=true" 
+                  width="100%" 
+                  height="100%" 
+                  frameBorder="0" 
+                  className="w-full h-full"
+                >
+                  Loading...
+                </iframe>
+              </div>
+            </DialogContent>
+          </Dialog>
           <a 
             href="https://www.instagram.com/obexcanada/" 
             target="_blank" 
