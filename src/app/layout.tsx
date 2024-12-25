@@ -44,7 +44,10 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://OBEXCanada.com"
-  }
+  },
+  authors: [{ name: 'ØBEX Incorporated', url: 'https://OBEXCanada.com' }],
+  creator: 'ØBEX Incorporated',
+  publisher: 'ØBEX Incorporated'
 };
 
 export default function RootLayout({
@@ -71,6 +74,7 @@ export default function RootLayout({
         <link rel="shortcut icon" href="/new-favicon.ico" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="theme-color" content="#2A9D8F" />
+        <meta name="contact" content="support@obexcanada.com" />
       </head>
       <body className={`${raleway.variable} ${openSans.variable} ${playfairDisplay.variable} font-sans`}>
         {children}
