@@ -77,7 +77,10 @@ export default async function Blog() {
 
       <footer className="relative z-10 bg-[#264653] text-white py-12">
         <div className="max-w-5xl mx-auto px-4 text-center">
-          <p className="mb-4">© 2024 OBEX Corporation. All rights reserved.</p>
+          <p className="mb-2">© 2024 OBEX Corporation. All rights reserved.</p>
+          <p className="text-sm text-green-300 mb-4">
+            Contact us: <a href="mailto:support@obexcanada.com" className="hover:text-green-100 transition-colors">support@obexcanada.com</a>
+          </p>
           <Link 
             href="/" 
             className="text-green-300 hover:text-green-100 transition-colors inline-flex items-center gap-2"

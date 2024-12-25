@@ -288,7 +288,10 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-[#264653] text-white py-8">
         <div className="max-w-2xl mx-auto text-center">
-          <p>© 2024 OBEX Corporation. All rights reserved.</p>
+          <p className="mb-2">© 2024 OBEX Corporation. All rights reserved.</p>
+          <p className="text-sm text-green-300">
+            Contact us: <a href="mailto:support@obexcanada.com" className="hover:text-green-100 transition-colors">support@obexcanada.com</a>
+          </p>
         </div>
       </footer>
     </main>
