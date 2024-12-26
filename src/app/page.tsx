@@ -119,7 +119,7 @@ export default function Home() {
             <Instagram size={24} />
           </a>
           <button 
-            className="w-full sm:w-auto text-center px-4 py-2 bg-[#57a779] text-white rounded hover:bg-[#4a8f68] transition-colors" 
+            className="w-full sm:w-auto text-center px-4 py-2 bg-[#57a779] text-white rounded hover:bg-[#4a8f68] transition-colors border-2 border-white" 
             onClick={() => { scrollToSection("cta-section"); setIsMenuOpen(false); }}
           >
             Order
