@@ -1,6 +1,7 @@
 import { headers } from 'next/headers'
 import Stripe from 'stripe'
 import { Resend } from 'resend'
+import { supabase } from '@/lib/supabase'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 const resend = new Resend(process.env.RESEND_API_KEY!)
@@ -29,6 +30,58 @@ export async function POST(req: Request) {
       const lineItems = await stripe.checkout.sessions.listLineItems(session.id)
       
       if (customerEmail) {
+        // Store customer data in Supabase
+        const { data: customer, error: customerError } = await supabase
+          .from('customers')
+          .upsert({
+            stripe_customer_id: session.customer,
+            email: customerEmail,
+            name: customerName
+          })
+          .select()
+          .single()
+
+        if (customerError) {
+          console.error('Error storing customer:', customerError)
+          throw customerError
+        }
+
+        // Store address data
+        const { data: address, error: addressError } = await supabase
+          .from('addresses')
+          .insert({
+            customer_id: customer.id,
+            line1: session.customer_details?.address?.line1,
+            line2: session.customer_details?.address?.line2,
+            city: session.customer_details?.address?.city,
+            state: session.customer_details?.address?.state,
+            postal_code: session.customer_details?.address?.postal_code,
+            country: session.customer_details?.address?.country
+          })
+          .select()
+          .single()
+
+        if (addressError) {
+          console.error('Error storing address:', addressError)
+          throw addressError
+        }
+
+        // Store order data
+        const { error: orderError } = await supabase
+          .from('orders')
+          .insert({
+            stripe_order_id: session.id,
+            customer_id: customer.id,
+            address_id: address.id,
+            amount_total: session.amount_total ? session.amount_total / 100 : null,
+            status: 'pending'
+          })
+
+        if (orderError) {
+          console.error('Error storing order:', orderError)
+          throw orderError
+        }
+
         // Send welcome email to customer
         await resend.emails.send({
           from: 'ØBEX <support@obexcanada.com>',
@@ -63,9 +116,7 @@ export async function POST(req: Request) {
                     ${session.customer_details?.address?.postal_code || ''}<br>
                     ${session.customer_details?.address?.country || ''}
                   </div>
-                  
-                  <p style="font-size: 16px; margin-bottom: 20px;">We'll send you another email with tracking information once your order ships.</p>
-                  
+                                    
                   <p style="font-size: 16px; margin-bottom: 30px;">If you have any questions about your order, please don't hesitate to contact us at <a href="mailto:support@obexcanada.com" style="color: #2A9D8F; text-decoration: none;">support@obexcanada.com</a></p>
                   
                   <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e9ecef;">
