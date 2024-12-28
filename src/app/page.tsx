@@ -24,9 +24,183 @@ import {
 } from "@/components/ui/hover-card";
 import { useToast } from "@/components/ui/use-toast";
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from 'next/link'; 
 import { Instagram, Menu, X } from 'lucide-react';
+
+interface ControlInputProps {
+  label: string;
+  value: number;
+  onChange: (value: number) => void;
+  min: number;
+  max: number;
+}
+
+const ControlInput: React.FC<ControlInputProps> = ({ label, value, onChange, min, max }) => {
+  const [isDragging, setIsDragging] = useState(false);
+  const inputRef = useRef<HTMLDivElement>(null);
+  const startXRef = useRef<number>(0);
+  const startValueRef = useRef<number>(value);
+
+  const handleStart = (clientX: number) => {
+    setIsDragging(true);
+    startXRef.current = clientX;
+    startValueRef.current = value;
+  };
+
+  const handleMove = (clientX: number) => {
+    if (isDragging) {
+      const sensitivity = 0.5;
+      const delta = (clientX - startXRef.current) * sensitivity;
+      const range = max - min;
+      const newValue = Math.round(startValueRef.current + (delta / 100) * range);
+      onChange(Math.max(min, Math.min(max, newValue)));
+    }
+  };
+
+  const handleEnd = () => {
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => handleMove(e.clientX);
+    const handleTouchMove = (e: TouchEvent) => handleMove(e.touches[0].clientX);
+    const handleMouseUp = handleEnd;
+    const handleTouchEnd = handleEnd;
+
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('touchmove', handleTouchMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('touchend', handleTouchEnd);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [isDragging, min, max, onChange]);
+
+  return (
+    <div className="flex items-center mr-4 mb-2">
+      <label className="mr-2 text-gray-500 font-mono text-xs">{label}</label>
+      <div
+        ref={inputRef}
+        className={`w-12 text-center py-1 text-gray-500 font-mono text-xs cursor-ew-resize select-none ${
+          isDragging ? 'text-white' : ''
+        }`}
+        onMouseDown={(e) => handleStart(e.clientX)}
+        onTouchStart={(e) => handleStart(e.touches[0].clientX)}
+      >
+        {value}
+      </div>
+    </div>
+  );
+};
+
+interface MousePosition {
+  x: number;
+  y: number;
+}
+
+const RotatingLinesGrid: React.FC = () => {
+  const [mousePosition, setMousePosition] = useState<MousePosition>({ x: 0, y: 0 });
+  const [horizontalSeparation] = useState(30);
+  const [verticalSeparation] = useState(30);
+  const [lineWidth] = useState(25);
+  const [lineHeight] = useState(2);
+  const [rows] = useState(10);
+  const [columns] = useState(20);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent | TouchEvent) => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
+        const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
+        setMousePosition({
+          x: clientX - rect.left,
+          y: clientY - rect.top
+        });
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleMouseMove as EventListener);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleMouseMove as EventListener);
+    };
+  }, []);
+
+  const calculateRotationAndColor = (lineX: number, lineY: number) => {
+    const dx = mousePosition.x - lineX;
+    const dy = mousePosition.y - lineY;
+    const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    return { angle, distance };
+  };
+
+  const getColor = (distance: number) => {
+    const maxDistance = Math.sqrt(
+      (containerRef.current?.clientWidth || 0) ** 2 + 
+      (containerRef.current?.clientHeight || 0) ** 2
+    ) || 500;
+    const intensity = Math.max(0, 1 - distance / (maxDistance * 0.3));
+    const r = Math.round(244 + (233 - 244) * intensity);
+    const g = Math.round(162 + (196 - 162) * intensity);
+    const b = Math.round(97 + (106 - 97) * intensity);
+    return `rgb(${r}, ${g}, ${b})`;
+  };
+
+  const gridStyle = {
+    display: 'grid',
+    gridTemplateColumns: `repeat(${columns}, ${lineWidth}px)`,
+    gridTemplateRows: `repeat(${rows}, ${lineHeight}px)`,
+    gap: `${verticalSeparation}px ${horizontalSeparation}px`,
+    padding: '20px',
+    backgroundColor: 'transparent',
+    position: 'absolute' as const,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    zIndex: 0,
+  };
+
+  return (
+    <div 
+      ref={containerRef} 
+      style={gridStyle}
+      onTouchMove={(e) => e.preventDefault()}
+    >
+      {Array.from({ length: rows * columns }).map((_, index) => {
+        const row = Math.floor(index / columns);
+        const col = index % columns;
+        const lineX = col * (lineWidth + horizontalSeparation) + lineWidth / 2;
+        const lineY = row * (lineHeight + verticalSeparation) + lineHeight / 2;
+        const rotationAndColor = calculateRotationAndColor(lineX, lineY);
+
+        return (
+          <div
+            key={index}
+            style={{
+              width: `${lineWidth}px`,
+              height: `${lineHeight}px`,
+              backgroundColor: getColor(rotationAndColor.distance),
+              transform: `rotate(${rotationAndColor.angle}deg)`,
+              transformOrigin: 'center',
+              transition: 'transform 0.1s ease-out, background-color 0.1s ease-out',
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
 export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -128,8 +302,9 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center min-h-screen py-16 px-4 bg-gradient-to-b from-[#F4A261] to-[#E9C46A] text-white">
-        <div className="max-w-xs sm:max-w-2xl text-center mx-auto">
+      <section className="relative flex flex-col items-center justify-center min-h-screen py-16 px-4 bg-gradient-to-b from-[#F4A261] to-[#E9C46A] text-white overflow-hidden">
+        <RotatingLinesGrid />
+        <div className="max-w-xs sm:max-w-2xl text-center mx-auto relative z-10">
           <h2 className="mb-4 text-4xl sm:text-5xl font-bold text-green-800">Experience the Power of</h2>
           <h1 className="mb-4 text-6xl sm:text-[10rem] font-extrabold text-green-800 tracking-widest">ØBEX</h1>
           <p className="mb-8 text-lg sm:text-xl text-green-600">Your Natural Barrier Against Heartburn</p>
