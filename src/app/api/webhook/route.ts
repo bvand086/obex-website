@@ -20,13 +20,17 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export async function POST(req: NextRequest) {
-  // Get raw body as text - critical for signature verification
-  const body = await req.text();
+  // Get raw body as buffer and convert to string
+  const bodyBuffer = await req.arrayBuffer();
+  const rawBody = Buffer.from(bodyBuffer).toString('utf8');
   
   try {
-    // Get Stripe signature from headers
     const headersList = headers();
     const signature = headersList.get('stripe-signature');
+
+    console.log('Processing webhook...');
+    console.log('Raw body length:', rawBody.length);
+    console.log('Headers:', Object.fromEntries(headersList.entries()));
 
     if (!signature) {
       console.error('No Stripe signature header found');
@@ -41,14 +45,17 @@ export async function POST(req: NextRequest) {
     try {
       // Verify the signature with raw body
       event = stripe.webhooks.constructEvent(
-        body,
+        rawBody,
         signature,
         webhookSecret
       );
       console.log('Webhook event verified:', event.type);
     } catch (err) {
       console.error('⚠️ Webhook signature verification failed:', err);
-      console.error('Signature received:', signature);
+      console.error('Raw body first 100 chars:', rawBody.substring(0, 100));
+      console.error('Signature:', signature);
+      console.error('Secret first/last 4 chars:', 
+        webhookSecret.substring(0, 4) + '...' + webhookSecret.substring(webhookSecret.length - 4));
       return NextResponse.json(
         { error: `Webhook Error: ${(err as Error).message}` },
         { status: 400 }
@@ -72,37 +79,43 @@ export async function POST(req: NextRequest) {
       }
 
       try {
-        // Begin database operations
+        console.log('Processing order for customer:', customerEmail);
+
+        // Store customer in Supabase
         const { data: customer, error: customerError } = await supabase
           .from('customers')
           .upsert({
             stripe_customer_id: stripeCustomerId,
             email: customerEmail,
-            name: customerName || null,
+            name: customerName,
           })
           .select()
           .single();
 
         if (customerError) throw customerError;
 
-        // Store shipping address
+        console.log('Customer stored:', customer);
+
+        // Store customer address in Supabase
         const { data: addressData, error: addressError } = await supabase
           .from('addresses')
           .insert({
             customer_id: customer.id,
-            line1: address?.line1 || null,
-            line2: address?.line2 || null,
-            city: address?.city || null,
-            state: address?.state || null,
-            postal_code: address?.postal_code || null,
-            country: address?.country || null,
+            line1: address?.line1,
+            line2: address?.line2,
+            city: address?.city,
+            state: address?.state,
+            postal_code: address?.postal_code,
+            country: address?.country,
           })
           .select()
           .single();
 
         if (addressError) throw addressError;
 
-        // Create order record
+        console.log('Address stored:', addressData);
+
+        // Store order in Supabase
         const { data: orderData, error: orderError } = await supabase
           .from('orders')
           .insert({
@@ -116,6 +129,8 @@ export async function POST(req: NextRequest) {
           .single();
 
         if (orderError) throw orderError;
+
+        console.log('Order stored:', orderData);
 
         // Send customer confirmation email
         await resend.emails.send({
@@ -158,6 +173,8 @@ export async function POST(req: NextRequest) {
             </html>
           `
         });
+
+        console.log('Customer confirmation email sent');
 
         // Send internal notification email
         await resend.emails.send({
@@ -204,14 +221,15 @@ export async function POST(req: NextRequest) {
           `
         });
 
-        console.log('Order processed and emails sent:', orderData);
+        console.log('Internal notification email sent');
+        console.log('Order processed successfully:', orderData);
+
       } catch (err) {
         console.error('Error handling order:', err);
         throw err;
       }
     }
 
-    // Return a 200 response to acknowledge receipt of the event
     return NextResponse.json({ received: true }, { status: 200 });
   } catch (err) {
     console.error('Error processing webhook:', err);
