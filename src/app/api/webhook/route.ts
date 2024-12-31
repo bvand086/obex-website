@@ -2,6 +2,7 @@ import { headers } from 'next/headers'
 import Stripe from 'stripe'
 import { Resend } from 'resend'
 import { supabase } from '@/lib/supabase'
+import { NextResponse } from 'next/server'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 const resend = new Resend(process.env.RESEND_API_KEY!)
@@ -12,31 +13,35 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 export const preferredRegion = 'auto'
 
-export async function POST(req: Request) {
+export async function POST(request: Request) {
   try {
-    console.log('Webhook received')
-    
-    // Get the raw body
-    const text = await req.text()
-    
-    // Get the signature from headers
-    const sig = headers().get('stripe-signature')
-    if (!sig) {
-      console.error('No Stripe signature found in headers')
-      return new Response('No signature found', { status: 400 })
+    const body = await request.text()
+    const signature = headers().get('stripe-signature')
+
+    if (!signature) {
+      return NextResponse.json(
+        { error: 'No signature found' },
+        { status: 400 }
+      )
     }
 
-    console.log('Signature received:', sig)
-    console.log('Webhook secret being used:', endpointSecret ? 'Present' : 'Missing')
+    let event: Stripe.Event
 
-    // Verify the event
-    const event = stripe.webhooks.constructEvent(
-      text,
-      sig,
-      endpointSecret
-    )
+    try {
+      event = stripe.webhooks.constructEvent(
+        body,
+        signature,
+        endpointSecret
+      )
+    } catch (err) {
+      console.error('Webhook signature verification failed:', err)
+      return NextResponse.json(
+        { error: `Webhook Error: ${(err as Error).message}` },
+        { status: 400 }
+      )
+    }
 
-    console.log('Event verified successfully:', event.type)
+    console.log('Webhook verified successfully:', event.type)
 
     // Handle successful checkouts
     if (event.type === 'checkout.session.completed') {
@@ -214,11 +219,11 @@ export async function POST(req: Request) {
       }
     }
 
-    return new Response('Success', { status: 200 })
+    return NextResponse.json({ received: true })
   } catch (err) {
     console.error('Webhook error:', err)
-    return new Response(
-      'Webhook error: ' + (err as Error).message,
+    return NextResponse.json(
+      { error: `Webhook Error: ${(err as Error).message}` },
       { status: 400 }
     )
   }
