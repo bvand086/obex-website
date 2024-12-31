@@ -16,60 +16,47 @@ export const dynamic = 'force-dynamic';
 export const preferredRegion = 'auto';
 export const maxDuration = 10; // Ensure webhook has enough time to process
 
-async function buffer(req: NextRequest) {
-  const chunks = [];
-  const reader = req.body!.getReader();
-  
+// Configure the HTTP method and content type
+export async function POST(req: NextRequest) {
   try {
+    // Get the raw request body as a buffer for signature verification
+    const chunks = [];
+    const reader = req.body!.getReader();
+    
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
-      chunks.push(Buffer.from(value));
+      chunks.push(value);
     }
     
-    const rawBody = Buffer.concat(chunks);
-    console.log('📦 Raw body size:', rawBody.length, 'bytes');
-    console.log('🔍 First 100 bytes:', rawBody.toString('utf8').substring(0, 100));
-    console.log('🔍 Last 100 bytes:', rawBody.toString('utf8').slice(-100));
-    console.log('🔍 Raw body:', rawBody.toString('utf8'));
-    
-    return rawBody;
-  } catch (e) {
-    console.error('❌ Buffer reading error:', e);
-    throw e;
-  }
-}
-
-export async function POST(req: NextRequest) {
-  try {
-    const rawBody = await buffer(req);
+    const rawBody = Buffer.concat(chunks.map(chunk => Buffer.from(chunk)));
     const sig = headers().get('stripe-signature');
-
-    console.log('🔑 Stripe signature:', sig);
 
     if (!sig) {
       console.error('❌ No Stripe signature found in headers');
-      return NextResponse.json({ error: 'No signature found' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'No Stripe signature found' },
+        { status: 400 }
+      );
     }
 
     let event: Stripe.Event;
 
     try {
-      console.log('🔑 Webhook Secret (for verification):', webhookSecret); // Ensure this matches Stripe
-      console.log('🔑 Stripe Signature Header:', sig);
+      // Verify the event with Stripe using the raw body buffer
       event = stripe.webhooks.constructEvent(rawBody, sig, webhookSecret);
-      console.log('✅ Event verified:', event.id);
+      console.log('✅ Webhook signature verified:', event.id);
     } catch (err) {
       const error = err as Error;
-      console.error('❌ Verification failed:', error);
+      console.error('❌ Webhook signature verification failed:', error.message);
       return NextResponse.json(
-        { error: `Webhook Error: ${error.message}` },
+        { error: `Webhook signature verification failed: ${error.message}` },
         { status: 400 }
       );
     }
 
     // Successfully constructed event
-    console.log('✅ Event details:', {
+    console.log('✅ Processing webhook event:', {
       id: event.id,
       type: event.type,
       apiVersion: event.api_version,
@@ -152,7 +139,7 @@ export async function POST(req: NextRequest) {
           // Send customer confirmation email
           await resend.emails.send({
             from: 'ØBEX <support@obexcanada.com>',
-            to: [customerEmail], // Convert to array to satisfy type
+            to: [customerEmail],
             subject: 'Welcome to ØBEX - Order Confirmation',
             html: `
               <!DOCTYPE html>
@@ -269,9 +256,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ received: true });
 
   } catch (err) {
-    console.error('❌ Error:', err);
+    const error = err as Error;
+    console.error('❌ Webhook Error:', error.message);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', message: error.message },
       { status: 500 }
     );
   }
