@@ -10,11 +10,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 const resend = new Resend(process.env.RESEND_API_KEY!);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
-export const config = {
-  api: {
-    bodyParser: false
-  }
-};
+// New App Router config syntax
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+export const preferredRegion = 'auto';
 
 export async function POST(req: NextRequest) {
   const chunks = [];
