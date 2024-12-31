@@ -47,13 +47,15 @@ export async function POST(req: NextRequest) {
     console.log('🔑 Stripe signature:', sig);
 
     if (!sig) {
-      console.error('❌ No Stripe signature found');
+      console.error('❌ No Stripe signature found in headers');
       return NextResponse.json({ error: 'No signature found' }, { status: 400 });
     }
 
     let event: Stripe.Event;
 
     try {
+      console.log('🔑 Webhook Secret (for verification):', webhookSecret); // Ensure this matches Stripe
+      console.log('🔑 Stripe Signature Header:', sig);
       event = stripe.webhooks.constructEvent(rawBody, sig, webhookSecret);
       console.log('✅ Event verified:', event.id);
     } catch (err) {
