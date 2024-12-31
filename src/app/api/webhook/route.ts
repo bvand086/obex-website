@@ -4,58 +4,54 @@ import { Resend } from 'resend';
 import { supabase } from '@/lib/supabase';
 import { headers } from 'next/headers';
 
-// Initialize Stripe with apiVersion
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-04-10',
 });
-
-// Initialize Resend
 const resend = new Resend(process.env.RESEND_API_KEY!);
-
-// Get webhook secret from environment
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
-// Route segment config
-export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs';
+export const config = {
+  api: {
+    bodyParser: false
+  }
+};
 
 export async function POST(req: NextRequest) {
-  // Get raw body as buffer and convert to string
-  const bodyBuffer = await req.arrayBuffer();
-  const rawBody = Buffer.from(bodyBuffer).toString('utf8');
+  const chunks = [];
+  const reader = req.body?.getReader();
+  
+  if (!reader) {
+    return NextResponse.json({ error: 'No request body' }, { status: 400 });
+  }
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    chunks.push(value);
+  }
+
+  const rawBody = Buffer.concat(chunks).toString('utf8');
   
   try {
     const headersList = headers();
     const signature = headersList.get('stripe-signature');
 
-    console.log('Processing webhook...');
-    console.log('Raw body length:', rawBody.length);
-    console.log('Headers:', Object.fromEntries(headersList.entries()));
-
     if (!signature) {
       console.error('No Stripe signature header found');
-      return NextResponse.json(
-        { error: 'No signature found' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'No signature found' }, { status: 400 });
     }
+
+    console.log('Raw body length:', rawBody.length);
+    console.log('Raw body first 50 chars:', rawBody.substring(0, 50));
+    console.log('Signature:', signature);
 
     let event: Stripe.Event;
 
     try {
-      // Verify the signature with raw body
-      event = stripe.webhooks.constructEvent(
-        rawBody,
-        signature,
-        webhookSecret
-      );
-      console.log('Webhook event verified:', event.type);
+      event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
+      console.log('Event verified:', event.type);
     } catch (err) {
-      console.error('⚠️ Webhook signature verification failed:', err);
-      console.error('Raw body first 100 chars:', rawBody.substring(0, 100));
-      console.error('Signature:', signature);
-      console.error('Secret first/last 4 chars:', 
-        webhookSecret.substring(0, 4) + '...' + webhookSecret.substring(webhookSecret.length - 4));
+      console.error('Webhook verification failed:', err);
       return NextResponse.json(
         { error: `Webhook Error: ${(err as Error).message}` },
         { status: 400 }
@@ -94,8 +90,6 @@ export async function POST(req: NextRequest) {
 
         if (customerError) throw customerError;
 
-        console.log('Customer stored:', customer);
-
         // Store customer address in Supabase
         const { data: addressData, error: addressError } = await supabase
           .from('addresses')
@@ -113,8 +107,6 @@ export async function POST(req: NextRequest) {
 
         if (addressError) throw addressError;
 
-        console.log('Address stored:', addressData);
-
         // Store order in Supabase
         const { data: orderData, error: orderError } = await supabase
           .from('orders')
@@ -129,8 +121,6 @@ export async function POST(req: NextRequest) {
           .single();
 
         if (orderError) throw orderError;
-
-        console.log('Order stored:', orderData);
 
         // Send customer confirmation email
         await resend.emails.send({
@@ -173,8 +163,6 @@ export async function POST(req: NextRequest) {
             </html>
           `
         });
-
-        console.log('Customer confirmation email sent');
 
         // Send internal notification email
         await resend.emails.send({
@@ -220,22 +208,15 @@ export async function POST(req: NextRequest) {
             </html>
           `
         });
-
-        console.log('Internal notification email sent');
-        console.log('Order processed successfully:', orderData);
-
       } catch (err) {
         console.error('Error handling order:', err);
         throw err;
       }
     }
 
-    return NextResponse.json({ received: true }, { status: 200 });
+    return NextResponse.json({ received: true });
   } catch (err) {
-    console.error('Error processing webhook:', err);
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
+    console.error('Error:', err);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
