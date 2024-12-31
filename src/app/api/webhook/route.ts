@@ -16,7 +16,6 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const preferredRegion = 'auto';
 export const maxDuration = 10; // Ensure webhook has enough time to process
-export const bodyParser = false; // Disable the built-in body parser
 
 // Helper function to get buffer from readable stream
 async function buffer(readable: ReadableStream<Uint8Array>) {
@@ -37,6 +36,7 @@ async function buffer(readable: ReadableStream<Uint8Array>) {
   });
 }
 
+// Note: In App Router, raw body handling is automatic when using Request/Response objects
 export async function POST(req: NextRequest) {
   console.log('🎯 Webhook request received');
   
