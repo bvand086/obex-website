@@ -14,22 +14,38 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const preferredRegion = 'auto';
-// Helper function to get buffer from stream
+
+// Helper function to get raw body as buffer
 async function buffer(req: NextRequest) {
   const chunks: Uint8Array[] = [];
-  const reader = req.body!.getReader();
   
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    chunks.push(value);
+  try {
+    console.log('🔄 Starting to read request body');
+    const reader = req.body!.getReader();
+    
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        console.log('✅ Finished reading request body');
+        break;
+      }
+      chunks.push(value);
+    }
+    
+    const concatenated = Buffer.concat(chunks.map(chunk => Buffer.from(chunk)));
+    console.log(`📦 Raw body size: ${concatenated.length} bytes`);
+    return concatenated;
+  } catch (error) {
+    console.error('❌ Error reading request body:', error);
+    throw error;
   }
-  
-  return Buffer.concat(chunks.map(chunk => Buffer.from(chunk)));
 }
 
 export async function POST(req: NextRequest) {
+  console.log('🎯 Webhook request received');
+  
   if (req.method !== 'POST') {
+    console.warn('❌ Invalid method:', req.method);
     return NextResponse.json(
       { error: 'Method Not Allowed' },
       { 
@@ -40,16 +56,39 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const body = await buffer(req);
+    // Get the raw body
+    const rawBody = await buffer(req);
+    console.log('📝 Raw body retrieved successfully');
+
+    // Get the Stripe signature
     const headersList = headers();
-    const sig = headersList.get('stripe-signature');
+    const signature = headersList.get('stripe-signature');
+    
+    if (!signature) {
+      console.error('❌ No Stripe signature found in headers');
+      return NextResponse.json(
+        { error: 'No Stripe signature found' },
+        { status: 400 }
+      );
+    }
+
+    console.log('🔑 Stripe signature found:', signature);
+    console.log('🔐 Using webhook secret:', webhookSecret ? '✓ Present' : '❌ Missing');
 
     let event: Stripe.Event;
 
     try {
-      event = stripe.webhooks.constructEvent(body, sig!, webhookSecret);
+      console.log('🔄 Constructing Stripe event...');
+      event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
+      console.log('✅ Stripe event constructed successfully:', event.type);
     } catch (err: any) {
-      console.log(`❌ Error message: ${err.message}`);
+      console.error('❌ Webhook signature verification failed:', err.message);
+      console.error('Details:', {
+        signatureHeader: signature,
+        bodyLength: rawBody.length,
+        error: err
+      });
+      
       return NextResponse.json(
         { error: `Webhook Error: ${err.message}` },
         { status: 400 }
@@ -57,7 +96,12 @@ export async function POST(req: NextRequest) {
     }
 
     // Successfully constructed event
-    console.log('✅ Success:', event.id);
+    console.log('✅ Event details:', {
+      id: event.id,
+      type: event.type,
+      apiVersion: event.api_version,
+      created: new Date(event.created * 1000).toISOString()
+    });
 
     // Handle checkout.session.completed event
     if (event.type === 'checkout.session.completed') {
