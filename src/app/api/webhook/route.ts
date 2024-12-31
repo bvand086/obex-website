@@ -31,6 +31,7 @@ async function buffer(req: NextRequest) {
     console.log('📦 Raw body size:', rawBody.length, 'bytes');
     console.log('🔍 First 100 bytes:', rawBody.toString('utf8').substring(0, 100));
     console.log('🔍 Last 100 bytes:', rawBody.toString('utf8').slice(-100));
+    console.log('🔍 Raw body:', rawBody.toString('utf8'));
     
     return rawBody;
   } catch (e) {
