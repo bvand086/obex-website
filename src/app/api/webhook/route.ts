@@ -3,7 +3,6 @@ import Stripe from 'stripe'
 import { Resend } from 'resend'
 import { supabase } from '@/lib/supabase'
 import { NextResponse } from 'next/server'
-import { Readable } from 'node:stream'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-04-10',
@@ -11,12 +10,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 const resend = new Resend(process.env.RESEND_API_KEY!)
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!
 
-// Explicitly disable body parsing for this route
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}
+// Route segment config
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
 export async function POST(req: Request) {
   try {
