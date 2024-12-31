@@ -1,133 +1,101 @@
-import { headers } from 'next/headers'
-import Stripe from 'stripe'
-import { Resend } from 'resend'
-import { supabase } from '@/lib/supabase'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server';
+import Stripe from 'stripe';
+import { Resend } from 'resend';
+import { supabase } from '@/lib/supabase';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-04-10',
-})
-const resend = new Resend(process.env.RESEND_API_KEY!)
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!
+});
+const resend = new Resend(process.env.RESEND_API_KEY!);
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
 // Route segment config
-export const dynamic = 'force-dynamic'
-export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const signature = headers().get('stripe-signature')
-
+    // Get the Stripe signature header
+    const signature = req.headers.get('stripe-signature');
     if (!signature) {
-      console.error('No stripe-signature header found')
+      console.error('No Stripe signature header found');
       return NextResponse.json(
         { error: 'No signature found' },
         { status: 400 }
-      )
+      );
     }
 
-    console.log('Received webhook with signature:', signature)
-    console.log('Webhook secret:', webhookSecret ? 'Present' : 'Missing')
+    // Read raw body
+    const rawBody = await req.text();
 
-    // Get the raw body as a string
-    const rawBody = await req.text()
-    console.log('Raw body length:', rawBody.length)
-
-    let event: Stripe.Event
+    let event: Stripe.Event;
 
     try {
-      // Construct and verify the event
-      event = stripe.webhooks.constructEvent(
-        rawBody,
-        signature,
-        webhookSecret
-      )
-
-      console.log('Successfully constructed event:', event.type)
+      event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
+      console.log('Webhook event verified:', event.type);
     } catch (err) {
-      console.error('⚠️ Webhook signature verification failed:', err)
-      console.error('Signature:', signature)
-      console.error('Secret:', webhookSecret ? 'Present' : 'Missing')
+      console.error('⚠️ Webhook signature verification failed:', err);
       return NextResponse.json(
         { error: `Webhook Error: ${(err as Error).message}` },
         { status: 400 }
-      )
+      );
     }
 
-    // Handle successful checkouts
     if (event.type === 'checkout.session.completed') {
-      const session = event.data.object as Stripe.Checkout.Session
-      console.log('Processing checkout session:', session.id)
-      
-      // Extract customer details
-      const customerEmail = session.customer_details?.email
-      const customerName = session.customer_details?.name
-      
-      console.log('Customer details:', { customerEmail, customerName })
-      
+      const session = event.data.object as Stripe.Checkout.Session;
+
+      // Extract customer data
+      const { email: customerEmail, name: customerName, address } = session.customer_details || {};
+      const stripeCustomerId = session.customer;
+
       if (customerEmail) {
         try {
-          // Store customer data in Supabase
+          // Store customer in Supabase
           const { data: customer, error: customerError } = await supabase
             .from('customers')
             .upsert({
-              stripe_customer_id: session.customer,
+              stripe_customer_id: stripeCustomerId,
               email: customerEmail,
-              name: customerName
+              name: customerName,
             })
             .select()
-            .single()
+            .single();
 
-          if (customerError) {
-            console.error('Error storing customer:', customerError)
-            throw customerError
-          }
+          if (customerError) throw customerError;
 
-          console.log('Customer stored successfully:', customer)
-
-          // Store address data
-          const { data: address, error: addressError } = await supabase
+          // Store customer address in Supabase
+          const { data: addressData, error: addressError } = await supabase
             .from('addresses')
             .insert({
               customer_id: customer.id,
-              line1: session.customer_details?.address?.line1,
-              line2: session.customer_details?.address?.line2,
-              city: session.customer_details?.address?.city,
-              state: session.customer_details?.address?.state,
-              postal_code: session.customer_details?.address?.postal_code,
-              country: session.customer_details?.address?.country
+              line1: address?.line1,
+              line2: address?.line2,
+              city: address?.city,
+              state: address?.state,
+              postal_code: address?.postal_code,
+              country: address?.country,
             })
             .select()
-            .single()
+            .single();
 
-          if (addressError) {
-            console.error('Error storing address:', addressError)
-            throw addressError
-          }
+          if (addressError) throw addressError;
 
-          console.log('Address stored successfully:', address)
-
-          // Store order data
-          const { data: order, error: orderError } = await supabase
+          // Store order in Supabase
+          const { data: orderData, error: orderError } = await supabase
             .from('orders')
             .insert({
               stripe_order_id: session.id,
               customer_id: customer.id,
-              address_id: address.id,
+              address_id: addressData.id,
               amount_total: session.amount_total ? session.amount_total / 100 : null,
-              status: 'pending'
+              status: 'pending',
             })
             .select()
-            .single()
+            .single();
 
-          if (orderError) {
-            console.error('Error storing order:', orderError)
-            throw orderError
-          }
+          if (orderError) throw orderError;
 
-          console.log('Order stored successfully:', order)
-
-          // Send welcome email to customer
+          // Send customer confirmation email
           await resend.emails.send({
             from: 'ØBEX <support@obexcanada.com>',
             to: customerEmail,
@@ -154,12 +122,12 @@ export async function POST(req: Request) {
                     
                     <p style="font-size: 16px; margin-bottom: 15px;">Your order will be shipped to:</p>
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #e9ecef;">
-                      ${session.customer_details?.address?.line1 || ''}<br>
-                      ${session.customer_details?.address?.line2 ? session.customer_details.address.line2 + '<br>' : ''}
-                      ${session.customer_details?.address?.city || ''}, 
-                      ${session.customer_details?.address?.state || ''} 
-                      ${session.customer_details?.address?.postal_code || ''}<br>
-                      ${session.customer_details?.address?.country || ''}
+                      ${address?.line1 || ''}<br>
+                      ${address?.line2 ? address.line2 + '<br>' : ''}
+                      ${address?.city || ''}, 
+                      ${address?.state || ''} 
+                      ${address?.postal_code || ''}<br>
+                      ${address?.country || ''}
                     </div>
                     
                     <p style="font-size: 16px; margin-bottom: 30px;">If you have any questions about your order, please don't hesitate to contact us at <a href="mailto:support@obexcanada.com" style="color: #2A9D8F; text-decoration: none;">support@obexcanada.com</a></p>
@@ -167,7 +135,7 @@ export async function POST(req: Request) {
                 </body>
               </html>
             `
-          })
+          });
 
           // Send internal notification email
           await resend.emails.send({
@@ -198,12 +166,12 @@ export async function POST(req: Request) {
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
                       <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Shipping Address</h2>
                       <p style="margin: 10px 0;">
-                        ${session.customer_details?.address?.line1 || ''}<br>
-                        ${session.customer_details?.address?.line2 ? session.customer_details.address.line2 + '<br>' : ''}
-                        ${session.customer_details?.address?.city || ''}, 
-                        ${session.customer_details?.address?.state || ''} 
-                        ${session.customer_details?.address?.postal_code || ''}<br>
-                        ${session.customer_details?.address?.country || ''}
+                        ${address?.line1 || ''}<br>
+                        ${address?.line2 ? address.line2 + '<br>' : ''}
+                        ${address?.city || ''}, 
+                        ${address?.state || ''} 
+                        ${address?.postal_code || ''}<br>
+                        ${address?.country || ''}
                       </p>
                     </div>
 
@@ -212,30 +180,22 @@ export async function POST(req: Request) {
                 </body>
               </html>
             `
-          })
+          });
 
-          console.log('Emails sent successfully')
-
-          // Log order for shipping
-          console.log('New order to be shipped:', {
-            orderId: session.id,
-            customer: customerName,
-            email: customerEmail,
-            address: session.customer_details?.address
-          })
-        } catch (error) {
-          console.error('Error processing order:', error)
-          throw error
+          console.log('Order processed and emails sent:', orderData);
+        } catch (err) {
+          console.error('Error handling order:', err);
+          throw err;
         }
       }
     }
 
-    return NextResponse.json({ received: true })
+    return NextResponse.json({ received: true }, { status: 200 });
   } catch (err) {
-    console.error('Webhook error:', err)
+    console.error('Error processing webhook:', err);
     return NextResponse.json(
-      { error: `Webhook handler failed: ${(err as Error).message}` },
-      { status: 400 }
-    )
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
 } 
