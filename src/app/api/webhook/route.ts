@@ -3,23 +3,23 @@ import Stripe from 'stripe'
 import { Resend } from 'resend'
 import { supabase } from '@/lib/supabase'
 import { NextResponse } from 'next/server'
-import { buffer } from 'node:stream/consumers'
+import { Readable } from 'node:stream'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2024-04-10',
+})
 const resend = new Resend(process.env.RESEND_API_KEY!)
-const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!
 
-// New Next.js 13+ route segment config
-export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
-export const preferredRegion = 'auto' 
+// Explicitly disable body parsing for this route
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    // Get the raw request body as a buffer
-    const rawBody = await buffer(request.body as any)
-
-    // Get the Stripe signature from headers
     const signature = headers().get('stripe-signature')
 
     if (!signature) {
@@ -31,7 +31,11 @@ export async function POST(request: Request) {
     }
 
     console.log('Received webhook with signature:', signature)
-    console.log('Webhook secret:', endpointSecret ? 'Present' : 'Missing')
+    console.log('Webhook secret:', webhookSecret ? 'Present' : 'Missing')
+
+    // Get the raw body as a string
+    const rawBody = await req.text()
+    console.log('Raw body length:', rawBody.length)
 
     let event: Stripe.Event
 
@@ -40,15 +44,14 @@ export async function POST(request: Request) {
       event = stripe.webhooks.constructEvent(
         rawBody,
         signature,
-        endpointSecret
+        webhookSecret
       )
 
       console.log('Successfully constructed event:', event.type)
     } catch (err) {
       console.error('⚠️ Webhook signature verification failed:', err)
       console.error('Signature:', signature)
-      console.error('Secret:', endpointSecret ? 'Present' : 'Missing')
-      console.error('Raw body length:', rawBody.length)
+      console.error('Secret:', webhookSecret ? 'Present' : 'Missing')
       return NextResponse.json(
         { error: `Webhook Error: ${(err as Error).message}` },
         { status: 400 }
@@ -235,7 +238,7 @@ export async function POST(request: Request) {
   } catch (err) {
     console.error('Webhook error:', err)
     return NextResponse.json(
-      { error: `Webhook Error: ${(err as Error).message}` },
+      { error: `Webhook handler failed: ${(err as Error).message}` },
       { status: 400 }
     )
   }
