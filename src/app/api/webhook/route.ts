@@ -16,82 +16,67 @@ export const dynamic = 'force-dynamic';
 export const preferredRegion = 'auto';
 export const maxDuration = 10; // Ensure webhook has enough time to process
 
-// Helper function to get raw body as buffer
 async function buffer(req: NextRequest) {
-  const chunks: Uint8Array[] = [];
+  const chunks = [];
   const reader = req.body!.getReader();
   
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    chunks.push(value);
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      chunks.push(Buffer.from(value));
+    }
+    
+    const rawBody = Buffer.concat(chunks);
+    const bodyStr = rawBody.toString('utf8');
+    console.log('📥 Received format:', bodyStr.substring(0, 100));
+    
+    try {
+      const parsed = JSON.parse(bodyStr);
+      const stripeFormat = JSON.stringify(parsed);
+      
+      console.log('🔍 Format comparison:');
+      console.log('Original length:', bodyStr.length);
+      console.log('Compact length:', stripeFormat.length);
+      console.log('Formats match:', bodyStr === stripeFormat);
+      
+      if (bodyStr !== stripeFormat) {
+        console.log('📝 Reformatting to match Stripe format');
+        return Buffer.from(stripeFormat);
+      }
+      return rawBody;
+    } catch (e) {
+      console.error('❌ JSON parsing error:', e);
+      return rawBody;
+    }
+  } catch (e) {
+    console.error('❌ Buffer reading error:', e);
+    throw e;
   }
-
-  const concatenated = Buffer.concat(chunks);
-  // Convert to string and back to buffer to ensure consistent line endings
-  return Buffer.from(concatenated.toString());
 }
 
 export async function POST(req: NextRequest) {
-  console.log('🎯 Webhook request received');
-  
-  if (req.method !== 'POST') {
-    console.warn('❌ Invalid method:', req.method);
-    return NextResponse.json(
-      { error: 'Method Not Allowed' },
-      { 
-        status: 405,
-        headers: { 'Allow': 'POST' }
-      }
-    );
-  }
-
   try {
-    if (!req.body) {
-      console.error('❌ No request body found');
-      return NextResponse.json(
-        { error: 'No request body found' },
-        { status: 400 }
-      );
-    }
-
-    // Get the raw body as a buffer
-    console.log('🔄 Starting to read request body');
     const rawBody = await buffer(req);
-    console.log(`📦 Raw body size: ${rawBody.length} bytes`);
-    console.log('📝 Raw body preview:', rawBody.toString().slice(0, 100));
+    const sig = headers().get('stripe-signature');
 
-    // Get the Stripe signature
-    const headersList = headers();
-    const signature = headersList.get('stripe-signature');
-    
-    if (!signature) {
-      console.error('❌ No Stripe signature found in headers');
-      return NextResponse.json(
-        { error: 'No Stripe signature found' },
-        { status: 400 }
-      );
+    console.log('🔑 Stripe signature:', sig);
+
+    if (!sig) {
+      console.error('❌ No Stripe signature found');
+      return NextResponse.json({ error: 'No signature found' }, { status: 400 });
     }
-
-    console.log('🔑 Stripe signature found:', signature);
-    console.log('🔐 Using webhook secret:', webhookSecret ? '✓ Present' : '❌ Missing');
 
     let event: Stripe.Event;
 
     try {
-      console.log('🔄 Constructing Stripe event...');
-      event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
-      console.log('✅ Stripe event constructed successfully:', event.type);
-    } catch (err: any) {
-      console.error('❌ Webhook signature verification failed:', err.message);
-      console.error('Details:', {
-        signatureHeader: signature,
-        bodyLength: rawBody.length,
-        error: err
-      });
-      
+      event = stripe.webhooks.constructEvent(rawBody, sig, webhookSecret);
+      console.log('✅ Event verified:', event.id);
+    } catch (err) {
+      const error = err as Error;
+      console.error('❌ Verification failed:', error);
       return NextResponse.json(
-        { error: `Webhook Error: ${err.message}` },
+        { error: `Webhook Error: ${error.message}` },
         { status: 400 }
       );
     }
@@ -101,7 +86,7 @@ export async function POST(req: NextRequest) {
       id: event.id,
       type: event.type,
       apiVersion: event.api_version,
-      created: new Date(event.created * 1000).toISOString()
+      created: new Date(event.created).toISOString()
     });
 
     // Handle different event types
@@ -160,13 +145,14 @@ export async function POST(req: NextRequest) {
           console.log('📍 Address stored:', addressData);
 
           // Store order in Supabase
+          const amountTotal = session.amount_total != null ? session.amount_total / 100 : 34.99;
           const { data: orderData, error: orderError } = await supabase
             .from('orders')
             .insert({
               stripe_order_id: session.id,
               customer_id: customer.id,
               address_id: addressData.id,
-              amount_total: session.amount_total ? session.amount_total / 100 : null,
+              amount_total: amountTotal,
               status: 'pending',
             })
             .select()
@@ -179,7 +165,7 @@ export async function POST(req: NextRequest) {
           // Send customer confirmation email
           await resend.emails.send({
             from: 'ØBEX <support@obexcanada.com>',
-            to: customerEmail,
+            to: [customerEmail], // Convert to array to satisfy type
             subject: 'Welcome to ØBEX - Order Confirmation',
             html: `
               <!DOCTYPE html>
@@ -198,7 +184,7 @@ export async function POST(req: NextRequest) {
                       <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Order Details</h2>
                       <p style="margin: 10px 0;"><strong>Order ID:</strong> ${session.id}</p>
                       <p style="margin: 10px 0;"><strong>Product:</strong> ØBEX Large Pack (24 packets)</p>
-                      <p style="margin: 10px 0;"><strong>Amount:</strong> $${(session.amount_total ? session.amount_total / 100 : 34.99).toFixed(2)} CAD</p>
+                      <p style="margin: 10px 0;"><strong>Amount:</strong> $${amountTotal.toFixed(2)} CAD</p>
                     </div>
                     
                     <p style="font-size: 16px; margin-bottom: 15px;">Your order will be shipped to:</p>
@@ -223,7 +209,7 @@ export async function POST(req: NextRequest) {
           // Send internal notification email
           await resend.emails.send({
             from: 'ØBEX Orders <support@obexcanada.com>',
-            to: 'obexincorporated@gmail.com',
+            to: ['obexincorporated@gmail.com'],
             subject: `New ØBEX Order - ${session.id}`,
             html: `
               <!DOCTYPE html>
@@ -236,7 +222,7 @@ export async function POST(req: NextRequest) {
                       <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Order Details</h2>
                       <p style="margin: 10px 0;"><strong>Order ID:</strong> ${session.id}</p>
                       <p style="margin: 10px 0;"><strong>Product:</strong> ØBEX Large Pack (24 packets)</p>
-                      <p style="margin: 10px 0;"><strong>Amount:</strong> $${(session.amount_total ? session.amount_total / 100 : 34.99).toFixed(2)} CAD</p>
+                      <p style="margin: 10px 0;"><strong>Amount:</strong> $${amountTotal.toFixed(2)} CAD</p>
                       <p style="margin: 10px 0;"><strong>Date:</strong> ${new Date().toLocaleString('en-CA', { timeZone: 'America/Toronto' })}</p>
                     </div>
 
