@@ -7,20 +7,50 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 const resend = new Resend(process.env.RESEND_API_KEY!)
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!
 
-export async function POST(req: Request) {
-  const body = await req.text()
-  const sig = headers().get('stripe-signature')!
+// This is necessary for Next.js to not parse the body
+export const config = {
+  api: {
+    bodyParser: false
+  }
+}
 
+export async function POST(req: Request) {
   try {
-    console.log('Received webhook. Processing...')
+    console.log('Webhook received')
     
+    // Get the raw body as a buffer
+    const chunks = []
+    const reader = req.body?.getReader()
+    if (!reader) {
+      throw new Error('No request body')
+    }
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      chunks.push(value)
+    }
+
+    const rawBody = Buffer.concat(chunks)
+    
+    // Get the signature from headers
+    const sig = headers().get('stripe-signature')
+    if (!sig) {
+      console.error('No Stripe signature found in headers')
+      return new Response('No signature found', { status: 400 })
+    }
+
+    console.log('Signature received:', sig)
+    console.log('Webhook secret being used:', endpointSecret ? 'Present' : 'Missing')
+
+    // Verify the event
     const event = stripe.webhooks.constructEvent(
-      body, 
-      sig, 
+      rawBody,
+      sig,
       endpointSecret
     )
 
-    console.log('Event type:', event.type)
+    console.log('Event verified successfully:', event.type)
 
     // Handle successful checkouts
     if (event.type === 'checkout.session.completed') {
@@ -32,10 +62,6 @@ export async function POST(req: Request) {
       const customerName = session.customer_details?.name
       
       console.log('Customer details:', { customerEmail, customerName })
-      
-      // Get product details
-      const lineItems = await stripe.checkout.sessions.listLineItems(session.id)
-      console.log('Line items:', lineItems)
       
       if (customerEmail) {
         try {
@@ -52,11 +78,6 @@ export async function POST(req: Request) {
 
           if (customerError) {
             console.error('Error storing customer:', customerError)
-            console.error('Customer data attempted:', {
-              stripe_customer_id: session.customer,
-              email: customerEmail,
-              name: customerName
-            })
             throw customerError
           }
 
@@ -79,10 +100,6 @@ export async function POST(req: Request) {
 
           if (addressError) {
             console.error('Error storing address:', addressError)
-            console.error('Address data attempted:', {
-              customer_id: customer.id,
-              address: session.customer_details?.address
-            })
             throw addressError
           }
 
@@ -103,12 +120,6 @@ export async function POST(req: Request) {
 
           if (orderError) {
             console.error('Error storing order:', orderError)
-            console.error('Order data attempted:', {
-              stripe_order_id: session.id,
-              customer_id: customer.id,
-              address_id: address.id,
-              amount_total: session.amount_total ? session.amount_total / 100 : null
-            })
             throw orderError
           }
 
@@ -148,16 +159,8 @@ export async function POST(req: Request) {
                       ${session.customer_details?.address?.postal_code || ''}<br>
                       ${session.customer_details?.address?.country || ''}
                     </div>
-                                        
-                    <p style="font-size: 16px; margin-bottom: 30px;">If you have any questions about your order, please don't hesitate to contact us at <a href="mailto:support@obexcanada.com" style="color: #2A9D8F; text-decoration: none;">support@obexcanada.com</a></p>
                     
-                    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e9ecef;">
-                      <p style="color: #6c757d; font-size: 14px; margin: 0;">
-                        ØBEX Corporation<br>
-                        Hamilton, Ontario, Canada<br>
-                        <a href="https://obexcanada.com" style="color: #2A9D8F; text-decoration: none;">obexcanada.com</a>
-                      </p>
-                    </div>
+                    <p style="font-size: 16px; margin-bottom: 30px;">If you have any questions about your order, please don't hesitate to contact us at <a href="mailto:support@obexcanada.com" style="color: #2A9D8F; text-decoration: none;">support@obexcanada.com</a></p>
                   </div>
                 </body>
               </html>
@@ -208,6 +211,8 @@ export async function POST(req: Request) {
               </html>
             `
           })
+
+          console.log('Emails sent successfully')
 
           // Log order for shipping
           console.log('New order to be shipped:', {
