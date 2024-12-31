@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { Resend } from 'resend';
 import { supabase } from '@/lib/supabase';
+import { headers } from 'next/headers';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-04-10',
@@ -13,10 +14,18 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
+// Disable body parsing, need raw body for Stripe signature verification
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 export async function POST(req: NextRequest) {
   try {
-    // Get the Stripe signature header
-    const signature = req.headers.get('stripe-signature');
+    const headersList = headers();
+    const signature = headersList.get('stripe-signature');
+
     if (!signature) {
       console.error('No Stripe signature header found');
       return NextResponse.json(
@@ -25,20 +34,22 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Read raw body
+    // Get the raw body as a buffer
     const rawBody = await req.text();
-    console.log('Webhook Secret:', webhookSecret);
-    console.log('Signature:', signature);
-    console.log('Raw body length:', rawBody.length);
 
     let event: Stripe.Event;
 
     try {
-      event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
+      event = stripe.webhooks.constructEvent(
+        rawBody,
+        signature,
+        webhookSecret
+      );
       console.log('Webhook event verified:', event.type);
     } catch (err) {
       console.error('⚠️ Webhook signature verification failed:', err);
-      console.error('Raw body preview:', rawBody.substring(0, 100));
+      console.error('Webhook Secret used:', webhookSecret);
+      console.error('Signature received:', signature);
       return NextResponse.json(
         { error: `Webhook Error: ${(err as Error).message}` },
         { status: 400 }
