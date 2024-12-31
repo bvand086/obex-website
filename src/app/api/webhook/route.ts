@@ -16,35 +16,24 @@ export const dynamic = 'force-dynamic';
 export const preferredRegion = 'auto';
 
 export async function POST(req: NextRequest) {
-  const chunks = [];
-  const reader = req.body?.getReader();
-  
-  if (!reader) {
-    return NextResponse.json({ error: 'No request body' }, { status: 400 });
-  }
 
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    chunks.push(value);
-  }
-
-  const rawBody = Buffer.concat(chunks).toString('utf8');
-  
   try {
+    // Get raw body with simpler method
+    const rawBody = await req.text();
     const headersList = headers();
     const signature = headersList.get('stripe-signature');
+
+    console.log('Raw body length:', rawBody.length);
+    console.log('Raw body hash:', Buffer.from(rawBody).toString('hex').substring(0, 32));
+    console.log('Signature:', signature);
+    console.log('Secret hash:', Buffer.from(webhookSecret).toString('hex').substring(0, 32));
 
     if (!signature) {
       console.error('No Stripe signature header found');
       return NextResponse.json({ error: 'No signature found' }, { status: 400 });
     }
 
-    console.log('Raw body length:', rawBody.length);
-    console.log('Raw body first 50 chars:', rawBody.substring(0, 50));
-    console.log('Signature:', signature);
-
-    let event: Stripe.Event;
+    let event: Stripe.Event; 
 
     try {
       event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
