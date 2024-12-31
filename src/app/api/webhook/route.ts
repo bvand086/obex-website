@@ -3,6 +3,7 @@ import Stripe from 'stripe';
 import { Resend } from 'resend';
 import { supabase } from '@/lib/supabase';
 import { headers } from 'next/headers';
+import getRawBody from 'raw-body';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-04-10',
@@ -14,32 +15,6 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const preferredRegion = 'auto';
-
-// Helper function to get raw body as buffer
-async function buffer(req: NextRequest) {
-  const chunks: Uint8Array[] = [];
-  
-  try {
-    console.log('🔄 Starting to read request body');
-    const reader = req.body!.getReader();
-    
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) {
-        console.log('✅ Finished reading request body');
-        break;
-      }
-      chunks.push(value);
-    }
-    
-    const concatenated = Buffer.concat(chunks.map(chunk => Buffer.from(chunk)));
-    console.log(`📦 Raw body size: ${concatenated.length} bytes`);
-    return concatenated;
-  } catch (error) {
-    console.error('❌ Error reading request body:', error);
-    throw error;
-  }
-}
 
 export async function POST(req: NextRequest) {
   console.log('🎯 Webhook request received');
@@ -56,9 +31,12 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // Get the raw body
-    const rawBody = await buffer(req);
-    console.log('📝 Raw body retrieved successfully');
+    // Get the raw body as a buffer
+    console.log('🔄 Starting to read request body');
+    const rawBody = await getRawBody(req.body as any, {
+      limit: '5mb',
+    });
+    console.log(`📦 Raw body size: ${rawBody.length} bytes`);
 
     // Get the Stripe signature
     const headersList = headers();
