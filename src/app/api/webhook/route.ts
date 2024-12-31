@@ -7,31 +7,17 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 const resend = new Resend(process.env.RESEND_API_KEY!)
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!
 
-// This is necessary for Next.js to not parse the body
-export const config = {
-  api: {
-    bodyParser: false
-  }
-}
+// New Next.js 13+ route segment config
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
+export const preferredRegion = 'auto'
 
 export async function POST(req: Request) {
   try {
     console.log('Webhook received')
     
-    // Get the raw body as a buffer
-    const chunks = []
-    const reader = req.body?.getReader()
-    if (!reader) {
-      throw new Error('No request body')
-    }
-
-    while (true) {
-      const { done, value } = await reader.read()
-      if (done) break
-      chunks.push(value)
-    }
-
-    const rawBody = Buffer.concat(chunks)
+    // Get the raw body
+    const text = await req.text()
     
     // Get the signature from headers
     const sig = headers().get('stripe-signature')
@@ -45,7 +31,7 @@ export async function POST(req: Request) {
 
     // Verify the event
     const event = stripe.webhooks.constructEvent(
-      rawBody,
+      text,
       sig,
       endpointSecret
     )
