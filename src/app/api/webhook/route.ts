@@ -27,6 +27,9 @@ export async function POST(req: NextRequest) {
 
     // Read raw body
     const rawBody = await req.text();
+    console.log('Webhook Secret:', webhookSecret);
+    console.log('Signature:', signature);
+    console.log('Raw body length:', rawBody.length);
 
     let event: Stripe.Event;
 
@@ -35,6 +38,7 @@ export async function POST(req: NextRequest) {
       console.log('Webhook event verified:', event.type);
     } catch (err) {
       console.error('⚠️ Webhook signature verification failed:', err);
+      console.error('Raw body preview:', rawBody.substring(0, 100));
       return NextResponse.json(
         { error: `Webhook Error: ${(err as Error).message}` },
         { status: 400 }
