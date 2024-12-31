@@ -3,7 +3,6 @@ import Stripe from 'stripe';
 import { Resend } from 'resend';
 import { supabase } from '@/lib/supabase';
 import { headers } from 'next/headers';
-import { Readable } from 'stream';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-04-10',
@@ -17,26 +16,22 @@ export const dynamic = 'force-dynamic';
 export const preferredRegion = 'auto';
 export const maxDuration = 10; // Ensure webhook has enough time to process
 
-// Helper function to get buffer from readable stream
-async function buffer(readable: ReadableStream<Uint8Array>) {
-  const chunks: Buffer[] = [];
-  // @ts-ignore - Types are not perfectly aligned between Web Streams and Node.js streams
-  const nodeReadable = Readable.fromWeb(readable);
+// Helper function to get raw body as buffer
+async function buffer(req: NextRequest) {
+  const chunks: Uint8Array[] = [];
+  const reader = req.body!.getReader();
   
-  return new Promise<Buffer>((resolve, reject) => {
-    nodeReadable.on('data', (chunk: Buffer) => {
-      chunks.push(Buffer.from(chunk));
-    });
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    chunks.push(value);
+  }
 
-    nodeReadable.on('end', () => {
-      resolve(Buffer.concat(chunks));
-    });
-
-    nodeReadable.on('error', reject);
-  });
+  const concatenated = Buffer.concat(chunks);
+  // Convert to string and back to buffer to ensure consistent line endings
+  return Buffer.from(concatenated.toString());
 }
 
-// Note: In App Router, raw body handling is automatic when using Request/Response objects
 export async function POST(req: NextRequest) {
   console.log('🎯 Webhook request received');
   
@@ -62,8 +57,9 @@ export async function POST(req: NextRequest) {
 
     // Get the raw body as a buffer
     console.log('🔄 Starting to read request body');
-    const rawBody = await buffer(req.body);
+    const rawBody = await buffer(req);
     console.log(`📦 Raw body size: ${rawBody.length} bytes`);
+    console.log('📝 Raw body preview:', rawBody.toString().slice(0, 100));
 
     // Get the Stripe signature
     const headersList = headers();
