@@ -12,7 +12,7 @@ const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!
 // New Next.js 13+ route segment config
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
-export const preferredRegion = 'auto'
+export const preferredRegion = 'auto' 
 
 export async function POST(request: Request) {
   try {
