@@ -14,14 +14,11 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-// Disable body parsing, need raw body for Stripe signature verification
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
+// New way to configure the route handler
 export async function POST(req: NextRequest) {
+  const body = await req.text();
+  const contentType = req.headers.get('content-type') || '';
+  
   try {
     const headersList = headers();
     const signature = headersList.get('stripe-signature');
@@ -34,14 +31,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Get the raw body as a buffer
-    const rawBody = await req.text();
-
     let event: Stripe.Event;
 
     try {
       event = stripe.webhooks.constructEvent(
-        rawBody,
+        body,
         signature,
         webhookSecret
       );
