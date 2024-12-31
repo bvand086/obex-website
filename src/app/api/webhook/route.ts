@@ -28,27 +28,11 @@ async function buffer(req: NextRequest) {
     }
     
     const rawBody = Buffer.concat(chunks);
-    const bodyStr = rawBody.toString('utf8');
-    console.log('📥 Received format:', bodyStr.substring(0, 100));
+    console.log('📦 Raw body size:', rawBody.length, 'bytes');
+    console.log('🔍 First 100 bytes:', rawBody.toString('utf8').substring(0, 100));
+    console.log('🔍 Last 100 bytes:', rawBody.toString('utf8').slice(-100));
     
-    try {
-      const parsed = JSON.parse(bodyStr);
-      const stripeFormat = JSON.stringify(parsed);
-      
-      console.log('🔍 Format comparison:');
-      console.log('Original length:', bodyStr.length);
-      console.log('Compact length:', stripeFormat.length);
-      console.log('Formats match:', bodyStr === stripeFormat);
-      
-      if (bodyStr !== stripeFormat) {
-        console.log('📝 Reformatting to match Stripe format');
-        return Buffer.from(stripeFormat);
-      }
-      return rawBody;
-    } catch (e) {
-      console.error('❌ JSON parsing error:', e);
-      return rawBody;
-    }
+    return rawBody;
   } catch (e) {
     console.error('❌ Buffer reading error:', e);
     throw e;
