@@ -3,6 +3,7 @@ import Stripe from 'stripe'
 import { Resend } from 'resend'
 import { supabase } from '@/lib/supabase'
 import { NextResponse } from 'next/server'
+import { buffer } from 'node:stream/consumers'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 const resend = new Resend(process.env.RESEND_API_KEY!)
@@ -15,33 +16,44 @@ export const preferredRegion = 'auto'
 
 export async function POST(request: Request) {
   try {
-    const body = await request.text()
+    // Get the raw request body as a buffer
+    const rawBody = await buffer(request.body as any)
+
+    // Get the Stripe signature from headers
     const signature = headers().get('stripe-signature')
 
     if (!signature) {
+      console.error('No stripe-signature header found')
       return NextResponse.json(
         { error: 'No signature found' },
         { status: 400 }
       )
     }
 
+    console.log('Received webhook with signature:', signature)
+    console.log('Webhook secret:', endpointSecret ? 'Present' : 'Missing')
+
     let event: Stripe.Event
 
     try {
+      // Construct and verify the event
       event = stripe.webhooks.constructEvent(
-        body,
+        rawBody,
         signature,
         endpointSecret
       )
+
+      console.log('Successfully constructed event:', event.type)
     } catch (err) {
-      console.error('Webhook signature verification failed:', err)
+      console.error('⚠️ Webhook signature verification failed:', err)
+      console.error('Signature:', signature)
+      console.error('Secret:', endpointSecret ? 'Present' : 'Missing')
+      console.error('Raw body length:', rawBody.length)
       return NextResponse.json(
         { error: `Webhook Error: ${(err as Error).message}` },
         { status: 400 }
       )
     }
-
-    console.log('Webhook verified successfully:', event.type)
 
     // Handle successful checkouts
     if (event.type === 'checkout.session.completed') {
