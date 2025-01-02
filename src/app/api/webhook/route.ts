@@ -19,21 +19,16 @@ export const maxDuration = 10; // Ensure webhook has enough time to process
 // Configure the HTTP method and content type
 export async function POST(req: NextRequest) {
   try {
-    // Get the raw request body as a buffer for signature verification
-    const chunks = [];
-    const reader = req.body!.getReader();
+    // Get the raw request body as text first
+    const text = await req.text();
+    const rawBody = Buffer.from(text);
     
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      chunks.push(value);
-    }
-    
-    const rawBody = Buffer.concat(chunks.map(chunk => Buffer.from(chunk)));
-    const sig = headers().get('stripe-signature');
+    // Get the Stripe signature from headers
+    const sig = headers().get('Stripe-Signature');
 
     if (!sig) {
       console.error('❌ No Stripe signature found in headers');
+      console.error('Headers received:', JSON.stringify(Object.fromEntries(headers().entries())));
       return NextResponse.json(
         { error: 'No Stripe signature found' },
         { status: 400 }
@@ -43,12 +38,23 @@ export async function POST(req: NextRequest) {
     let event: Stripe.Event;
 
     try {
-      // Verify the event with Stripe using the raw body buffer
+      // Verify the event with Stripe using the raw body
+      console.log('🔑 Webhook secret check:', {
+        length: webhookSecret.length,
+        prefix: webhookSecret.substring(0, 8),
+        suffix: webhookSecret.substring(webhookSecret.length - 4)
+      });
       event = stripe.webhooks.constructEvent(rawBody, sig, webhookSecret);
       console.log('✅ Webhook signature verified:', event.id);
     } catch (err) {
       const error = err as Error;
-      console.error('❌ Webhook signature verification failed:', error.message);
+      console.error('❌ Webhook signature verification failed:', {
+        error: error.message,
+        signature: sig,
+        webhookSecretLength: webhookSecret?.length || 0,
+        bodyLength: rawBody.length,
+        body: rawBody.toString().slice(0, 100) + '...' // Log first 100 chars for debugging
+      });
       return NextResponse.json(
         { error: `Webhook signature verification failed: ${error.message}` },
         { status: 400 }
