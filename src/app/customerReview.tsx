@@ -9,16 +9,18 @@ interface CustomerReviewProps {
 }
 
 const CustomerReview: React.FC<CustomerReviewProps> = ({ name, review }) => (
-  <div className="flex flex-col items-center bg-white p-6 rounded-lg shadow-md max-w-sm mx-auto">
+  <div className="flex flex-col bg-white p-6 rounded-lg shadow-md max-w-sm mx-auto h-[400px]">
     <div className="flex mb-2">
       {[...Array(5)].map((_, i) => (
         <Star key={i} className="text-[#E9C46A] fill-[#E9C46A]" size={24} />
       ))}
     </div>
-    <p className="text-[#264653] text-center mb-4">{review}</p>
-    <div className="flex items-center">
-      <div className="w-12 h-12 bg-[#2A9D8F] rounded-full mr-4 flex items-center justify-center">
-        <span className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
+    <div className="flex-grow overflow-y-auto mb-4 custom-scrollbar">
+      <p className="text-[#264653] text-center">{review}</p>
+    </div>
+    <div className="flex items-center mt-auto pt-4 border-t border-gray-100">
+      <div className="w-12 h-12 bg-[#2A9D8F] rounded-full mr-4 flex items-center justify-center flex-shrink-0">
+        <span className="text-white text-2xl font-bold">
           {name.charAt(0)}
         </span>
       </div>
@@ -39,12 +41,13 @@ const CustomerReviews: React.FC = () => {
     { name: "Nicole C.", review: "Amazing product providing 100% relief of my heartburn and indigestion even at 37 weeks pregnant after eating a spicy and acidic meal. Have tried other types of antacids throughout my pregnancy and this has been the most effective by far! The flavours are great and in very convenient packaging which makes it easy to take with me in my purse/hospital bags." },
     { name: "Wilma M.", review: "Very effective product in treating my reflux as I go through chemotherapy. This worked considerably better than Nexium for me and I was grateful for a safe alternative. The relief it provides during this challenging time is truly appreciated." },
     { name: "Dawn J.", review: "Before discovering Obex, I experienced a severe acid reflux episode that kept me awake until 4 AM in terrible pain. I'm incredibly thankful to have found this product - it works quickly and effectively to provide relief. The pleasant taste is an added bonus. I highly recommend giving Obex a try - you'll see the difference for yourself." },
-    { name: "Carly M.", review: "My husband suffers with GERD and with a recent flare up he was finding minimal relief with over the counter medication. Through a co-worker we were introduced to Obex. As stated it creates a barrier to protect the esophagus. Accompanied by Nexum he was able to finally manage his symptoms. It has played a pivotal role and now has become a part of his regular nighttime routine to ensure protection throughout the night. The fact that this product is all natural and can be taken alone or alongside other medications with no interactions is truly remarkable. It is an added bonus that this product comes in a variety of carefully crafted flavours that don’t taste medicinal and are true to the flavour description. Our household will never be without Obex." },
+    { name: "Carly M.", review: "My husband suffers with GERD and with a recent flare up he was finding minimal relief with over the counter medication. Through a co-worker we were introduced to Obex. As stated it creates a barrier to protect the esophagus. Accompanied by Nexum he was able to finally manage his symptoms. It has played a pivotal role and now has become a part of his regular nighttime routine to ensure protection throughout the night. The fact that this product is all natural and can be taken alone or alongside other medications with no interactions is truly remarkable. It is an added bonus that this product comes in a variety of carefully crafted flavours that don't taste medicinal and are true to the flavour description. Our household will never be without Obex." },
   ], []);
 
-  const getRandomReviews = useCallback(() => 
-    [...allReviews].sort(() => 0.5 - Math.random()).slice(0, 3),
-  [allReviews]);
+  const getRandomReviews = useCallback(() => {
+    const shuffled = [...allReviews].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 3);
+  }, [allReviews]);
 
   const displayedReviews = showAll ? allReviews : getRandomReviews();
 
@@ -80,8 +83,25 @@ const CustomerReviews: React.FC = () => {
           </Button>
         </div>
       </div>
+      <style jsx global>{`
+        .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: #2A9D8F #E9EDe9;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #E9EDe9;
+          border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background-color: #2A9D8F;
+          border-radius: 3px;
+        }
+      `}</style>
     </section>
   );
-};
+}
 
 export default CustomerReviews;

@@ -296,7 +296,7 @@ export default function Home() {
             className="w-full sm:w-auto text-center px-4 py-2 bg-[#57a779] text-white rounded hover:bg-[#4a8f68] transition-colors border-2 border-white" 
             onClick={() => { scrollToSection("cta-section"); setIsMenuOpen(false); }}
           >
-            Order
+            Buy Now
           </button>
         </nav>
       </header>
@@ -310,7 +310,7 @@ export default function Home() {
           <p className="mb-8 text-lg sm:text-xl text-green-600">Your Natural Barrier Against Heartburn</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button className="w-full sm:w-auto px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600" onClick={() => scrollToSection('cta-section')}>
-              Order
+              Buy Now
             </Button>
             <button className="w-full sm:w-auto px-6 py-2 border border-green-600 text-green-600 rounded hover:bg-green-100" onClick={() => scrollToSection('product_details')}>
               Learn More
@@ -401,7 +401,7 @@ export default function Home() {
               Learn More
             </button>
             <button className="px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600" onClick={() => scrollToSection("cta-section")}>
-              Order Now
+              Buy Now
             </button>
           </div>
         </div>
@@ -435,24 +435,43 @@ export default function Home() {
       {/* CTA Section */}
       <section id="cta-section" className="bg-[#2A9D8F] text-white py-16">
         <div className="max-w-2xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-4">Experience natural relief from reflux with OBEX</h2>
-          <p className="mb-8">Choose the perfect OBEX package for you — our Large pack contains 24 packets with 3 delightful flavours. Order now for natural relief!</p>
-          
-          <Card className="mb-8 bg-white text-gray-900">
-            <CardHeader className="bg-green-100">
-              <CardTitle className="text-green-800">Large Pack</CardTitle>
-              <CardDescription className="text-green-600">Perfect for regular use</CardDescription>
-            </CardHeader>
-            <CardContent className="p-4">
-              <Image src="/productimage.png" alt="Product image" width={200} height={200} className="mx-auto mb-4" />
-              <p className="mb-4 text-gray-700">Each large package contains 24 packets, each with a 5mL dose, featuring 3 delightful flavour varieties.</p>
-              <p className="text-xl font-semibold text-green-700">$34.99+tax</p>
+          <Card className="mb-8 bg-white text-gray-900 overflow-hidden">
+            <div className="bg-[#f0f9f0] p-8">
+              <h2 className="text-4xl font-bold text-[#2A9D8F] mb-2">New Bottle Format</h2>
+              <p className="text-xl text-[#4ead9f]">Coming Soon</p>
+            </div>
+            <CardContent className="p-8 relative">
+              <div className="relative">
+                <Image 
+                  src="/OBEXTUBE.jpg" 
+                  alt="New OBEX bottle" 
+                  width={500} 
+                  height={500} 
+                  className="mx-auto mb-4" 
+                />
+                <div className="absolute top-8 right-[-60px] transform rotate-45 bg-[#E9B949] text-white px-16 py-2 shadow-lg">
+                  <span className="text-lg font-semibold tracking-wider">Coming Soon</span>
+                </div>
+              </div>
+              
+              <div className="mt-8 p-6 bg-[#fff9e6] rounded-xl border border-[#E9B949]/20">
+                <p className="text-[#8B4513] text-lg">
+                  Original packets still available in limited quantities.
+                  <br />
+                  Contact us at{' '}
+                  <a 
+                    href="mailto:support@obexcanada.com" 
+                    className="text-[#2A9D8F] hover:text-[#1f7268] font-medium"
+                  >
+                    support@obexcanada.com
+                  </a>
+                  {' '}to order.
+                </p>
+              </div>
             </CardContent>
-            <CardFooter className="bg-green-100">
-              <a href="https://buy.stripe.com/9AQdUjcDrdiT9os7st" className="w-full py-2 bg-orange-500 text-white rounded hover:bg-orange-600 text-center">
-                Buy Now
-              </a>
-            </CardFooter>
+            <div className="bg-[#f0f9f0] p-4">
+              <p className="text-[#2A9D8F] text-lg italic">Stay tuned for our new bottle format launch!</p>
+            </div>
           </Card>
         </div>
       </section>
@@ -460,7 +479,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-[#264653] text-white py-8">
         <div className="max-w-2xl mx-auto text-center">
-          <p className="mb-2">© 2024 OBEX Corporation. All rights reserved.</p>
+          <p className="mb-2">© 2025 OBEX Corporation. All rights reserved.</p>
           <p className="text-sm text-green-300">
             Contact us: <a href="mailto:support@obexcanada.com" className="hover:text-green-100 transition-colors">support@obexcanada.com</a>
           </p>
