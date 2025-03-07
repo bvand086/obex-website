@@ -435,42 +435,63 @@ export default function Home() {
       {/* CTA Section */}
       <section id="cta-section" className="bg-[#2A9D8F] text-white py-16">
         <div className="max-w-2xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <Card className="mb-8 bg-white text-gray-900 overflow-hidden">
-            <div className="bg-[#f0f9f0] p-8">
-              <h2 className="text-4xl font-bold text-[#2A9D8F] mb-2">New Bottle Format</h2>
-              <p className="text-xl text-[#4ead9f]">Coming Soon</p>
-            </div>
-            <CardContent className="p-8 relative">
-              <div className="relative">
-                <Image 
-                  src="/OBEXTUBE.jpg" 
-                  alt="New OBEX bottle" 
-                  width={500} 
-                  height={500} 
-                  className="mx-auto mb-4" 
-                />
-                <div className="absolute top-8 right-[-60px] transform rotate-45 bg-[#E9B949] text-white px-16 py-2 shadow-lg">
-                  <span className="text-lg font-semibold tracking-wider">Coming Soon</span>
+          <Card className="mb-8 bg-white text-gray-900 overflow-hidden rounded-xl shadow-lg">
+            <div className="relative">
+              {/* Full gradient background */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#2A9D8F] to-[#E9B949]"></div>
+              
+              {/* White content area with diagonal cut - more transparent */}
+              <div className="absolute top-[240px] left-0 right-0 bottom-0 bg-white/95" style={{ clipPath: "polygon(0 0, 100% 60px, 100% 100%, 0 100%)" }}></div>
+              
+              {/* Cream colored bottom area with diagonal cut - more transparent */}
+              <div className="absolute bottom-0 left-0 right-0 h-[180px] bg-[#fff9e6]/90" style={{ clipPath: "polygon(0 60px, 100% 0, 100% 100%, 0 100%)" }}></div>
+              
+              {/* Content */}
+              <div className="relative z-10">
+                {/* Header content */}
+                <div className="pt-12 pb-20 px-6 text-center">
+                  <div className="inline-block px-6 py-2 bg-white/90 rounded-full text-[#2A9D8F] font-semibold mb-6 shadow-sm backdrop-blur-sm">
+                    Just Launched!
+                  </div>
+                  <h2 className="text-5xl font-bold text-white mb-2">New Bottle Format</h2>
+                  <p className="text-2xl text-white">Now Available!</p>
+                </div>
+                
+                {/* Product image in white area */}
+                <div className="bg-white/90 backdrop-blur-sm mx-auto w-4/5 max-w-[600px] -mt-4 pt-4 pb-8 rounded-t-xl">
+                  <Image 
+                    src="/OBEXTUBE.jpg" 
+                    alt="New OBEX bottle" 
+                    width={500} 
+                    height={500} 
+                    className="mx-auto" 
+                  />
+                </div>
+                
+                {/* Flavor text in cream area */}
+                <div className="relative bg-[#fff9e6]/90 backdrop-blur-sm pt-4 pb-16 px-8 text-center">
+                  <p className="text-[#8B4513] text-lg mb-12">
+                    Experience OBEX in three chef-inspired flavors:
+                    <br />
+                    <span className="font-medium">Orange Cream</span> • <span className="font-medium">Lemon Meringue</span> • <span className="font-medium">Refreshing Mint</span>
+                  </p>
+                  
+                  {/* Purchase button */}
+                  <a 
+                    href="https://buy.stripe.com/bIY6rR8nbcePcAEcMQ?client_reference_id=obex_website&success_url=https://obexcanada.com/success?session_id={CHECKOUT_SESSION_ID}&cancel_url=https://obexcanada.com/cancel"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute left-1/2 transform -translate-x-1/2 px-10 py-4 bg-[#2A9D8F] text-white text-lg font-semibold rounded-lg hover:bg-[#238276] transition-colors duration-200 text-center min-w-[200px] shadow-md"
+                  >
+                    Purchase Now
+                  </a>
+                </div>
+                
+                {/* Footer */}
+                <div className="bg-white/90 backdrop-blur-sm p-6 text-center">
+                  <p className="text-[#2A9D8F] text-lg italic">Experience the new OBEX – Available now!</p>
                 </div>
               </div>
-              
-              <div className="mt-8 p-6 bg-[#fff9e6] rounded-xl border border-[#E9B949]/20">
-                <p className="text-[#8B4513] text-lg">
-                  Original packets still available in limited quantities.
-                  <br />
-                  Contact us at{' '}
-                  <a 
-                    href="mailto:support@obexcanada.com" 
-                    className="text-[#2A9D8F] hover:text-[#1f7268] font-medium"
-                  >
-                    support@obexcanada.com
-                  </a>
-                  {' '}to order.
-                </p>
-              </div>
-            </CardContent>
-            <div className="bg-[#f0f9f0] p-4">
-              <p className="text-[#2A9D8F] text-lg italic">Stay tuned for our new bottle format launch!</p>
             </div>
           </Card>
         </div>
@@ -482,6 +503,9 @@ export default function Home() {
           <p className="mb-2">© 2025 OBEX Corporation. All rights reserved.</p>
           <p className="text-sm text-green-300">
             Contact us: <a href="mailto:support@obexcanada.com" className="hover:text-green-100 transition-colors">support@obexcanada.com</a>
+          </p>
+          <p className="text-xs text-gray-400 max-w-xl mx-auto mt-4">
+            These statements have not been evaluated by Health Canada. This product is not intended to diagnose, treat, cure, or prevent any disease. Consult a healthcare practitioner prior to use if you have a medical condition or are taking medications.
           </p>
         </div>
       </footer>

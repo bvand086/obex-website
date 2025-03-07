@@ -78,6 +78,7 @@ export default async function Blog() {
       <footer className="relative z-10 bg-[#264653] text-white py-12">
         <div className="max-w-5xl mx-auto px-4 text-center">
           <p className="mb-2">© 2024 OBEX Corporation. All rights reserved.</p>
+          
           <p className="text-sm text-green-300 mb-4">
             Contact us: <a href="mailto:support@obexcanada.com" className="hover:text-green-100 transition-colors">support@obexcanada.com</a>
           </p>
@@ -90,6 +91,9 @@ export default async function Blog() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
           </Link>
+          <p className="text-xs text-gray-400 max-w-xl mx-auto mt-4">
+            These statements have not been evaluated by Health Canada. This product is not intended to diagnose, treat, cure, or prevent any disease. Consult a healthcare practitioner prior to use if you have a medical condition or are taking medications.
+          </p>
         </div>
       </footer>
     </main>
