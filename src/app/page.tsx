@@ -483,7 +483,7 @@ export default function Home() {
                     rel="noopener noreferrer"
                     className="absolute left-1/2 transform -translate-x-1/2 px-10 py-4 bg-[#2A9D8F] text-white text-lg font-semibold rounded-lg hover:bg-[#238276] transition-colors duration-200 text-center min-w-[200px] shadow-md"
                   >
-                    Purchase Now
+                    Buy Now
                   </a>
                 </div>
                 
