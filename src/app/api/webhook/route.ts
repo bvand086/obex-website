@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { Resend } from 'resend';
-import { supabase } from '@/lib/supabase';
 import { headers } from 'next/headers';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -14,7 +13,7 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const preferredRegion = 'auto';
-export const maxDuration = 10; // Ensure webhook has enough time to process
+export const maxDuration = 60; // Increased timeout to ensure webhook has enough time to process
 
 // Configure the HTTP method and content type
 export async function POST(req: NextRequest) {
@@ -81,7 +80,6 @@ export async function POST(req: NextRequest) {
           name: customerName, 
           address 
         } = session.customer_details || {};
-        const stripeCustomerId = session.customer;
 
         if (!customerEmail) {
           throw new Error('Customer email not found in session');
@@ -90,57 +88,8 @@ export async function POST(req: NextRequest) {
         try {
           console.log('💫 Processing order for customer:', customerEmail);
 
-          // Store customer in Supabase
-          const { data: customer, error: customerError } = await supabase
-            .from('customers')
-            .upsert({
-              stripe_customer_id: stripeCustomerId,
-              email: customerEmail,
-              name: customerName,
-            })
-            .select()
-            .single();
-
-          if (customerError) throw customerError;
-
-          console.log('👤 Customer stored:', customer);
-
-          // Store customer address in Supabase
-          const { data: addressData, error: addressError } = await supabase
-            .from('addresses')
-            .insert({
-              customer_id: customer.id,
-              line1: address?.line1,
-              line2: address?.line2,
-              city: address?.city,
-              state: address?.state,
-              postal_code: address?.postal_code,
-              country: address?.country,
-            })
-            .select()
-            .single();
-
-          if (addressError) throw addressError;
-
-          console.log('📍 Address stored:', addressData);
-
-          // Store order in Supabase
+          // Calculate amount (no need for Supabase)
           const amountTotal = session.amount_total != null ? session.amount_total / 100 : 34.99;
-          const { data: orderData, error: orderError } = await supabase
-            .from('orders')
-            .insert({
-              stripe_order_id: session.id,
-              customer_id: customer.id,
-              address_id: addressData.id,
-              amount_total: amountTotal,
-              status: 'pending',
-            })
-            .select()
-            .single();
-
-          if (orderError) throw orderError;
-
-          console.log('📦 Order stored:', orderData);
 
           // Send customer confirmation email
           await resend.emails.send({
@@ -233,7 +182,7 @@ export async function POST(req: NextRequest) {
           });
 
           console.log('📧 Internal notification email sent');
-          console.log('✅ Order processed successfully:', orderData);
+          console.log('✅ Order processed successfully');
 
         } catch (err) {
           console.error('❌ Error handling order:', err);
