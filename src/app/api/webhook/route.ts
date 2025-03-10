@@ -91,6 +91,28 @@ export async function POST(req: NextRequest) {
           // Calculate amount (no need for Supabase)
           const amountTotal = session.amount_total != null ? session.amount_total / 100 : 34.99;
 
+          // Extract flavor from custom fields
+          let selectedFlavor = 'Not specified';
+          if (session.custom_fields && session.custom_fields.length > 0) {
+            const flavorField = session.custom_fields.find(field => field.key === 'chooseyourflavour');
+            if (flavorField && 
+                'dropdown' in flavorField && 
+                flavorField.dropdown && 
+                typeof flavorField.dropdown === 'object' && 
+                flavorField.dropdown.value) {
+              // Map the flavor value to a more readable format
+              const flavorMap: Record<string, string> = {
+                'lemonmeringue': 'Lemon Meringue',
+                'orangecream': 'Orange Cream',
+                'soothingmint': 'Soothing Mint'
+              };
+              selectedFlavor = flavorMap[flavorField.dropdown.value] || flavorField.dropdown.value;
+            }
+          }
+
+          // Determine product name
+          const productName = 'ØBEX Reflux Relief';
+
           // Send customer confirmation email
           await resend.emails.send({
             from: 'ØBEX <support@obexcanada.com>',
@@ -108,12 +130,13 @@ export async function POST(req: NextRequest) {
 
                     <p style="font-size: 16px; margin-bottom: 20px;">Dear ${customerName || 'Valued Customer'},</p>
                     
-                    <p style="font-size: 16px; margin-bottom: 25px;">We're excited to confirm your order for the ØBEX Large Pack. Your natural solution for reflux relief is on its way!</p>
+                    <p style="font-size: 16px; margin-bottom: 25px;">We're excited to confirm your order for ${productName}. Your natural solution for reflux relief is on its way!</p>
                     
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
                       <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Order Details</h2>
                       <p style="margin: 10px 0;"><strong>Order ID:</strong> ${session.id}</p>
-                      <p style="margin: 10px 0;"><strong>Product:</strong> ØBEX Large Pack (24 packets)</p>
+                      <p style="margin: 10px 0;"><strong>Product:</strong> ${productName}</p>
+                      <p style="margin: 10px 0;"><strong>Flavor:</strong> ${selectedFlavor}</p>
                       <p style="margin: 10px 0;"><strong>Amount:</strong> $${amountTotal.toFixed(2)} CAD</p>
                     </div>
                     
@@ -151,7 +174,8 @@ export async function POST(req: NextRequest) {
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
                       <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Order Details</h2>
                       <p style="margin: 10px 0;"><strong>Order ID:</strong> ${session.id}</p>
-                      <p style="margin: 10px 0;"><strong>Product:</strong> ØBEX Large Pack (24 packets)</p>
+                      <p style="margin: 10px 0;"><strong>Product:</strong> ${productName}</p>
+                      <p style="margin: 10px 0;"><strong>Flavor:</strong> ${selectedFlavor}</p>
                       <p style="margin: 10px 0;"><strong>Amount:</strong> $${amountTotal.toFixed(2)} CAD</p>
                       <p style="margin: 10px 0;"><strong>Date:</strong> ${new Date().toLocaleString('en-CA', { timeZone: 'America/Toronto' })}</p>
                     </div>
