@@ -87,6 +87,18 @@ export default function RootLayout({
             `
           }}
         />
+        {/* Google Ads tag (gtag.js) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16496906796"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'AW-16496906796');
+            `
+          }}
+        />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="shortcut icon" href="/new-favicon.ico" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
