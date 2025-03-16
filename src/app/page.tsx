@@ -319,6 +319,24 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Our Story Section */}
+      <section className="bg-[#FAFAF9] py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-center text-[#2A9D8F] mb-12">Our Story</h2>
+          <div className="space-y-6 text-gray-700">
+            <p>OBEX was founded by a collaborative team—a laryngologist, a speech-language pathologist, a food scientist, and a professional chef—in Hamilton, Ontario, Canada. The inspiration for OBEX emerged from a unique clinical need identified during the laryngologist's fellowship training at the University of Southern California in Los Angeles, where sodium alginate therapy was frequently recommended for patients managing LPR, reflux, and regurgitation symptoms. Sodium alginate therapy offered significant relief—either alone or alongside proton pump inhibitors.</p>
+            
+            <p>After returning to Ontario, the team recognized a significant barrier for patients: existing sodium alginate products available in Canada often had tastes and textures that many patients found challenging. Additionally, importing alternative products from the United States was financially impractical due to high costs related to import fees, currency exchange, and shipping.</p>
+            
+            <p>Recognizing this unmet need, the team leveraged their combined medical, culinary, and scientific expertise to develop their own sodium alginate blend. With the chef's culinary creativity and the food scientist's expertise, they developed an alginate blend with appealing and soothing flavours such as Mint, Lemon Meringue, and Orange Cream. After thorough internal testing, sample packets were distributed to selected individuals.</p>
+            
+            <p>The response was overwhelmingly positive. Patients reported effective symptom relief and genuinely enjoyed the taste, which reinforced the team's confidence in the product.</p>
+            
+            <p>Inspired by this feedback, the team officially created OBEX—a name derived from the Latin word meaning "barrier," symbolizing the protective property of sodium alginate. Today, OBEX remains committed to offering Canadians a high-quality, enjoyable-tasting sodium alginate blend crafted with care by medical, culinary, and scientific experts.</p>
+          </div>
+        </div>
+      </section>
+
       {/* Customer Reviews */}
       <CustomerReviews />
 
@@ -471,7 +489,7 @@ export default function Home() {
                 {/* Flavor text in cream area */}
                 <div className="relative bg-[#fff9e6]/90 backdrop-blur-sm pt-4 pb-16 px-8 text-center">
                   <p className="text-[#8B4513] text-lg mb-12">
-                    Experience OBEX in three chef-inspired flavors:
+                    Experience OBEX in three chef-inspired flavours:
                     <br />
                     <span className="font-medium">Orange Cream</span> • <span className="font-medium">Lemon Meringue</span> • <span className="font-medium">Refreshing Mint</span>
                   </p>
