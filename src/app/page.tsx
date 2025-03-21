@@ -537,27 +537,199 @@ export default function Home() {
       </section>
 
       {/* Flavour Options Section */}
-      <section className="bg-[#E9EDe9] py-16">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-[#2A9D8F] mb-4">Chef Developed Flavours</h2>
-          <p className="mb-8 text-left text-gray-700">Discover the delicious side of relief with OBEX, now available in three chef-inspired flavours.</p>
-          
-          <div className="mb-8 p-4 bg-green-100 rounded-lg">
-            <h3 className="text-2xl font-bold mb-2 text-green-700">Refreshing Mint</h3>
-            <p className="text-gray-700">Experience the crisp and invigorating taste of refreshing mint. This classic flavour not only soothes your senses but also provides a cooling comforting sensation.</p>
+      <section className="relative py-24 overflow-hidden">
+        {/* Background elements */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FAFAFA] to-[#E9EDe9] z-0"></div>
+        <div className="absolute inset-0 opacity-20 z-0" style={{ 
+          backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5z\' fill=\'%232A9D8F\' fill-opacity=\'0.1\' fill-rule=\'evenodd\'/%3E%3C/svg%3E")',
+        }}></div>
+        
+        {/* Large decorative elements */}
+        <div className="absolute top-1/4 -right-40 w-96 h-96 bg-[#2A9D8F]/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/3 -left-40 w-96 h-96 bg-[#E9C46A]/5 rounded-full blur-3xl"></div>
+        
+        <div className="container relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <span className="inline-block px-4 py-1 bg-[#2A9D8F]/10 text-[#2A9D8F] rounded-full text-sm font-medium mb-4">Chef-Crafted</span>
+            <h2 className="text-5xl font-bold text-[#2A9D8F] mb-4">Chef Developed Flavours</h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">Discover the delicious side of relief with OBEX, now available in three chef-inspired flavours.</p>
           </div>
           
-          <div className="mb-8 p-4 bg-yellow-100 rounded-lg">
-            <h3 className="text-2xl font-bold mb-2 text-yellow-700">Lemon Meringue</h3>
-            <p className="text-gray-700">Indulge in the delightful tang of lemon meringue, reminiscent of a classic dessert. The perfect balance of zesty lemon and sweet meringue creates a delectable treat that will brighten your day while keeping you comfortable.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            {/* Mint Flavor Card */}
+            <div className="flavor-card group h-[520px] relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-green-100 rounded-2xl transform transition-transform duration-500 group-hover:scale-[0.98]"></div>
+              <div className="absolute -inset-0.5 bg-gradient-to-br from-green-200 to-green-400 opacity-50 rounded-2xl blur-sm group-hover:opacity-80 transition duration-500"></div>
+              <div className="relative flex flex-col h-full bg-white/80 backdrop-blur-md p-8 rounded-2xl border border-green-200/50 shadow-xl transition-all duration-500 group-hover:shadow-green-200/40 overflow-hidden">
+                {/* Top decorative accent */}
+                <div className="absolute top-0 left-0 w-40 h-40 bg-green-500/10 rounded-br-[100px] -translate-x-10 -translate-y-10 blur-md"></div>
+                <div className="absolute top-4 right-4 w-16 h-16 rounded-full bg-gradient-to-br from-green-100 to-green-300 opacity-70 blur-md"></div>
+                
+                {/* Flavor icon */}
+                <div className="flex justify-center mb-6">
+                  <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center transform transition-transform duration-500 group-hover:rotate-12">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+                    </svg>
+                  </div>
+                </div>
+                
+                <h3 className="text-2xl font-bold text-center text-green-700 mb-4">Refreshing Mint</h3>
+                
+                <div className="relative flex-grow overflow-hidden">
+                  <div className="h-[180px] flex items-center">
+                    <p className="text-gray-700 leading-relaxed transform transition-transform duration-500 group-hover:translate-y-[-8px] opacity-100 group-hover:opacity-0">Experience the crisp and invigorating taste of refreshing mint. This classic flavour not only soothes your senses but also provides a cooling comforting sensation.</p>
+                  </div>
+                  
+                  {/* Hover details */}
+                  <div className="absolute inset-0 flex flex-col justify-center transform transition-all duration-500 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
+                    <span className="text-green-700 font-semibold mb-2">Perfect For:</span>
+                    <ul className="text-gray-700 text-sm mb-4">
+                      <li className="flex items-center mb-1">
+                        <span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                        After meals with strong flavors
+                      </li>
+                      <li className="flex items-center mb-1">
+                        <span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                        When you want a cool sensation
+                      </li>
+                      <li className="flex items-center">
+                        <span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                        A refreshing daytime option
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                
+                {/* Bottom accent */}
+                <div className="mt-auto flex justify-center">
+                  <div className="w-16 h-1 bg-gradient-to-r from-green-300 to-green-500 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Lemon Meringue Flavor Card */}
+            <div className="flavor-card group h-[520px] relative mt-0">
+              <div className="absolute inset-0 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl transform transition-transform duration-500 group-hover:scale-[0.98]"></div>
+              <div className="absolute -inset-0.5 bg-gradient-to-br from-yellow-200 to-yellow-400 opacity-50 rounded-2xl blur-sm group-hover:opacity-80 transition duration-500"></div>
+              <div className="relative flex flex-col h-full bg-white/80 backdrop-blur-md p-8 rounded-2xl border border-yellow-200/50 shadow-xl transition-all duration-500 group-hover:shadow-yellow-200/40 overflow-hidden">
+                {/* Top decorative accent */}
+                <div className="absolute top-0 left-0 w-40 h-40 bg-yellow-500/10 rounded-br-[100px] -translate-x-10 -translate-y-10 blur-md"></div>
+                <div className="absolute top-4 right-4 w-16 h-16 rounded-full bg-gradient-to-br from-yellow-100 to-yellow-300 opacity-70 blur-md"></div>
+                
+                {/* Flavor icon */}
+                <div className="flex justify-center mb-6">
+                  <div className="w-20 h-20 rounded-full bg-yellow-100 flex items-center justify-center transform transition-transform duration-500 group-hover:rotate-12">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 text-yellow-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M16 8c0 2-2 3-4 4.5-2 1.5-4 2.5-4 4.5"></path>
+                      <path d="M8.5 8.5v.01"></path>
+                      <path d="M16 15.5v.01"></path>
+                    </svg>
+                  </div>
+                </div>
+                
+                <h3 className="text-2xl font-bold text-center text-yellow-700 mb-4">Lemon Meringue</h3>
+                
+                <div className="relative flex-grow overflow-hidden">
+                  <div className="h-[180px] flex items-center">
+                    <p className="text-gray-700 leading-relaxed transform transition-transform duration-500 group-hover:translate-y-[-8px] opacity-100 group-hover:opacity-0">Indulge in the delightful tang of lemon meringue, reminiscent of a classic dessert. The perfect balance of zesty lemon and sweet meringue creates a delectable treat that will brighten your day while keeping you comfortable.</p>
+                  </div>
+                  
+                  {/* Hover details */}
+                  <div className="absolute inset-0 flex flex-col justify-center transform transition-all duration-500 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
+                    <span className="text-yellow-700 font-semibold mb-2">Perfect For:</span>
+                    <ul className="text-gray-700 text-sm mb-4">
+                      <li className="flex items-center mb-1">
+                        <span className="w-2 h-2 rounded-full bg-yellow-500 mr-2"></span>
+                        After citrus or acidic meals
+                      </li>
+                      <li className="flex items-center mb-1">
+                        <span className="w-2 h-2 rounded-full bg-yellow-500 mr-2"></span>
+                        When you need a mood boost
+                      </li>
+                      <li className="flex items-center">
+                        <span className="w-2 h-2 rounded-full bg-yellow-500 mr-2"></span>
+                        A bright morning option
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                
+                {/* Bottom accent */}
+                <div className="mt-auto flex justify-center">
+                  <div className="w-16 h-1 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Orange Cream Flavor Card */}
+            <div className="flavor-card group h-[520px] relative mt-0">
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl transform transition-transform duration-500 group-hover:scale-[0.98]"></div>
+              <div className="absolute -inset-0.5 bg-gradient-to-br from-orange-200 to-orange-400 opacity-50 rounded-2xl blur-sm group-hover:opacity-80 transition duration-500"></div>
+              <div className="relative flex flex-col h-full bg-white/80 backdrop-blur-md p-8 rounded-2xl border border-orange-200/50 shadow-xl transition-all duration-500 group-hover:shadow-orange-200/40 overflow-hidden">
+                {/* Top decorative accent */}
+                <div className="absolute top-0 left-0 w-40 h-40 bg-orange-500/10 rounded-br-[100px] -translate-x-10 -translate-y-10 blur-md"></div>
+                <div className="absolute top-4 right-4 w-16 h-16 rounded-full bg-gradient-to-br from-orange-100 to-orange-300 opacity-70 blur-md"></div>
+                
+                {/* Flavor icon */}
+                <div className="flex justify-center mb-6">
+                  <div className="w-20 h-20 rounded-full bg-orange-100 flex items-center justify-center transform transition-transform duration-500 group-hover:rotate-12">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 text-orange-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                      <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                      <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                    </svg>
+                  </div>
+                </div>
+                
+                <h3 className="text-2xl font-bold text-center text-orange-700 mb-4">Orange Cream</h3>
+                
+                <div className="relative flex-grow overflow-hidden">
+                  <div className="h-[180px] flex items-center">
+                    <p className="text-gray-700 leading-relaxed transform transition-transform duration-500 group-hover:translate-y-[-8px] opacity-100 group-hover:opacity-0">Savour the nostalgic blend of creamy vanilla and bright orange with our orange creamsicle flavour. This comforting and luscious option takes you back to childhood summers, offering a soothing and enjoyable way to manage reflux.</p>
+                  </div>
+                  
+                  {/* Hover details */}
+                  <div className="absolute inset-0 flex flex-col justify-center transform transition-all duration-500 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
+                    <span className="text-orange-700 font-semibold mb-2">Perfect For:</span>
+                    <ul className="text-gray-700 text-sm mb-4">
+                      <li className="flex items-center mb-1">
+                        <span className="w-2 h-2 rounded-full bg-orange-500 mr-2"></span>
+                        After spicy meals
+                      </li>
+                      <li className="flex items-center mb-1">
+                        <span className="w-2 h-2 rounded-full bg-orange-500 mr-2"></span>
+                        When seeking comfort
+                      </li>
+                      <li className="flex items-center">
+                        <span className="w-2 h-2 rounded-full bg-orange-500 mr-2"></span>
+                        A soothing evening option
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                
+                {/* Bottom accent */}
+                <div className="mt-auto flex justify-center">
+                  <div className="w-16 h-1 bg-gradient-to-r from-orange-300 to-orange-500 rounded-full"></div>
+                </div>
+              </div>
+            </div>
           </div>
           
-          <div className="mb-8 p-4 bg-orange-100 rounded-lg">
-            <h3 className="text-2xl font-bold mb-2 text-orange-700">Orange Cream</h3>
-            <p className="text-gray-700">Savour the nostalgic blend of creamy vanilla and bright orange with our orange creamsicle flavour. This comforting and luscious option takes you back to childhood summers, offering a soothing and enjoyable way to manage reflux.</p>
+          <div className="max-w-3xl mx-auto text-center">
+            <p className="text-gray-600 text-lg">Each flavour is crafted with care to provide an enjoyable taste experience. Say goodbye to the bland and medicinal, and hello to the delicious and natural with OBEX.</p>
+            <div className="mt-12 inline-block">
+              <Button
+                onClick={() => scrollToSection('cta-section')}
+                className="bg-[#2A9D8F] text-white hover:bg-[#238276] shadow-md hover:shadow-xl transition-all duration-300 px-8 py-4 rounded-full text-lg font-medium"
+              >
+                Explore Our Products
+              </Button>
+            </div>
           </div>
-          
-          <p className="text-left text-gray-700">Each flavour is crafted with care to provide an enjoyable taste experience. Say goodbye to the bland and medicinal, and hello to the delicious and natural with OBEX.</p>
         </div>
       </section>
 
