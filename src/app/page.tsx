@@ -567,10 +567,14 @@ export default function Home() {
                 
                 {/* Flavor icon */}
                 <div className="flex justify-center mb-6">
-                  <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center transform transition-transform duration-500 group-hover:rotate-12">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
-                    </svg>
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center transform transition-transform duration-500 group-hover:rotate-12">
+                    <Image 
+                      src="/white_transparent_OSlashLogo.png" 
+                      alt="Mint Flavor" 
+                      width={40} 
+                      height={40} 
+                      className="object-contain"
+                    />
                   </div>
                 </div>
                 
@@ -580,7 +584,7 @@ export default function Home() {
                   <div className="h-[180px] flex items-center">
                     <p className="text-gray-700 leading-relaxed transform transition-transform duration-500 group-hover:translate-y-[-8px] opacity-100 group-hover:opacity-0">Experience the crisp and invigorating taste of refreshing mint. This classic flavour not only soothes your senses but also provides a cooling comforting sensation.</p>
                   </div>
-                  
+
                   {/* Hover details */}
                   <div className="absolute inset-0 flex flex-col justify-center transform transition-all duration-500 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
                     <span className="text-green-700 font-semibold mb-2">Perfect For:</span>
@@ -619,13 +623,14 @@ export default function Home() {
                 
                 {/* Flavor icon */}
                 <div className="flex justify-center mb-6">
-                  <div className="w-20 h-20 rounded-full bg-yellow-100 flex items-center justify-center transform transition-transform duration-500 group-hover:rotate-12">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 text-yellow-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <path d="M16 8c0 2-2 3-4 4.5-2 1.5-4 2.5-4 4.5"></path>
-                      <path d="M8.5 8.5v.01"></path>
-                      <path d="M16 15.5v.01"></path>
-                    </svg>
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-500 flex items-center justify-center transform transition-transform duration-500 group-hover:rotate-12">
+                    <Image 
+                      src="/white_transparent_OSlashLogo.png" 
+                      alt="Lemon Flavor" 
+                      width={40} 
+                      height={40} 
+                      className="object-contain"
+                    />
                   </div>
                 </div>
                 
@@ -635,7 +640,7 @@ export default function Home() {
                   <div className="h-[180px] flex items-center">
                     <p className="text-gray-700 leading-relaxed transform transition-transform duration-500 group-hover:translate-y-[-8px] opacity-100 group-hover:opacity-0">Indulge in the delightful tang of lemon meringue, reminiscent of a classic dessert. The perfect balance of zesty lemon and sweet meringue creates a delectable treat that will brighten your day while keeping you comfortable.</p>
                   </div>
-                  
+
                   {/* Hover details */}
                   <div className="absolute inset-0 flex flex-col justify-center transform transition-all duration-500 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
                     <span className="text-yellow-700 font-semibold mb-2">Perfect For:</span>
@@ -674,13 +679,14 @@ export default function Home() {
                 
                 {/* Flavor icon */}
                 <div className="flex justify-center mb-6">
-                  <div className="w-20 h-20 rounded-full bg-orange-100 flex items-center justify-center transform transition-transform duration-500 group-hover:rotate-12">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 text-orange-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-                      <line x1="9" y1="9" x2="9.01" y2="9"></line>
-                      <line x1="15" y1="9" x2="15.01" y2="9"></line>
-                    </svg>
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center transform transition-transform duration-500 group-hover:rotate-12">
+                    <Image 
+                      src="/white_transparent_OSlashLogo.png" 
+                      alt="Orange Flavor" 
+                      width={40} 
+                      height={40} 
+                      className="object-contain"
+                    />
                   </div>
                 </div>
                 
@@ -690,7 +696,7 @@ export default function Home() {
                   <div className="h-[180px] flex items-center">
                     <p className="text-gray-700 leading-relaxed transform transition-transform duration-500 group-hover:translate-y-[-8px] opacity-100 group-hover:opacity-0">Savour the nostalgic blend of creamy vanilla and bright orange with our orange creamsicle flavour. This comforting and luscious option takes you back to childhood summers, offering a soothing and enjoyable way to manage reflux.</p>
                   </div>
-                  
+
                   {/* Hover details */}
                   <div className="absolute inset-0 flex flex-col justify-center transform transition-all duration-500 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
                     <span className="text-orange-700 font-semibold mb-2">Perfect For:</span>
