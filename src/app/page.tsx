@@ -602,6 +602,14 @@ export default function Home() {
                         A refreshing daytime option
                       </li>
                     </ul>
+                    <a 
+                      href="https://buy.stripe.com/bIY6rR8nbcePcAEcMQ?client_reference_id=obex_website&prefilled_custom[flavor]=mint"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 mx-auto px-6 py-2 bg-gradient-to-r from-green-400 to-green-600 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all transform hover:scale-105"
+                    >
+                      Buy Now
+                    </a>
                   </div>
                 </div>
                 
@@ -658,6 +666,14 @@ export default function Home() {
                         A bright morning option
                       </li>
                     </ul>
+                    <a 
+                      href="https://buy.stripe.com/bIY6rR8nbcePcAEcMQ?client_reference_id=obex_website&prefilled_custom[flavor]=lemon"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 mx-auto px-6 py-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all transform hover:scale-105"
+                    >
+                      Buy Now
+                    </a>
                   </div>
                 </div>
                 
@@ -714,6 +730,14 @@ export default function Home() {
                         A soothing evening option
                       </li>
                     </ul>
+                    <a 
+                      href="https://buy.stripe.com/bIY6rR8nbcePcAEcMQ?client_reference_id=obex_website&prefilled_custom[flavor]=orange"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 mx-auto px-6 py-2 bg-gradient-to-r from-orange-400 to-orange-600 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all transform hover:scale-105"
+                    >
+                      Buy Now
+                    </a>
                   </div>
                 </div>
                 
