@@ -361,12 +361,15 @@ export default function Home() {
           >
             <Instagram size={24} />
           </a>
-          <button 
-            className="w-full sm:w-auto text-center px-4 py-2 bg-[#57a779] text-white rounded hover:bg-[#4a8f68] transition-colors border-2 border-white" 
-            onClick={() => { scrollToSection("cta-section"); setIsMenuOpen(false); }}
+          <a 
+            href="https://buy.stripe.com/bIY6rR8nbcePcAEcMQ?client_reference_id=obex_website&success_url=https://obexcanada.com/success?session_id={CHECKOUT_SESSION_ID}&cancel_url=https://obexcanada.com/cancel"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full sm:w-auto text-center px-4 py-2 bg-[#E9C46A] text-[#264653] font-medium rounded-lg hover:bg-[#e0bb5e] transition-all duration-300 shadow-md hover:shadow-lg border-2 border-white" 
+            onClick={() => setIsMenuOpen(false)}
           >
             Buy Now
-          </button>
+          </a>
         </nav>
       </header>
 
@@ -378,10 +381,10 @@ export default function Home() {
           <h1 className="mb-4 text-6xl sm:text-[10rem] font-extrabold text-green-800 tracking-widest">ØBEX</h1>
           <p className="mb-8 text-lg sm:text-xl text-green-600">Your Natural Barrier Against Heartburn</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button className="w-full sm:w-auto px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600" onClick={() => scrollToSection('cta-section')}>
+            <Button className="w-full sm:w-auto px-6 py-2 bg-[#E9C46A] text-[#264653] font-medium rounded-lg hover:bg-[#e0bb5e] transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105" onClick={() => scrollToSection('cta-section')}>
               Buy Now
             </Button>
-            <button className="w-full sm:w-auto px-6 py-2 border border-green-600 text-green-600 rounded hover:bg-green-100" onClick={() => scrollToSection('product_details')}>
+            <button className="w-full sm:w-auto px-6 py-2 border-2 border-[#2A9D8F] text-[#2A9D8F] font-medium rounded-lg hover:bg-[#2A9D8F]/10 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105" onClick={() => scrollToSection('product_details')}>
               Learn More
             </button>
           </div>
@@ -526,10 +529,10 @@ export default function Home() {
             Crafted in Hamilton, Ontario, OBEX is the result of a groundbreaking collaboration among an ENT Surgeon, a Speech-Language Pathologist, a Chef, and a Food Scientist. Born from the desire to offer a palatable, natural alternative to traditional reflux remedies, OBEX combines a rich legacy of scientific knowledge with culinary innovation.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700" onClick={() => scrollToSection("product_details")}>
+            <button className="px-6 py-2 bg-[#2A9D8F] text-white rounded-lg hover:bg-[#238276] transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105" onClick={() => scrollToSection("product_details")}>
               Learn More
             </button>
-            <button className="px-6 py-2 bg-orange-500 text-white rounded hover:bg-orange-600" onClick={() => scrollToSection("cta-section")}>
+            <button className="px-6 py-2 bg-[#E9C46A] text-[#264653] font-medium rounded-lg hover:bg-[#e0bb5e] transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105" onClick={() => scrollToSection("cta-section")}>
               Buy Now
             </button>
           </div>
@@ -754,7 +757,7 @@ export default function Home() {
             <div className="mt-12 inline-block">
               <Button
                 onClick={() => scrollToSection('cta-section')}
-                className="bg-[#2A9D8F] text-white hover:bg-[#238276] shadow-md hover:shadow-xl transition-all duration-300 px-8 py-4 rounded-full text-lg font-medium"
+                className="bg-[#2A9D8F] text-white hover:bg-[#238276] shadow-md hover:shadow-xl transition-all duration-300 px-8 py-4 rounded-lg text-lg font-medium transform hover:scale-105"
               >
                 Explore Our Products
               </Button>
@@ -812,7 +815,7 @@ export default function Home() {
                     href="https://buy.stripe.com/bIY6rR8nbcePcAEcMQ?client_reference_id=obex_website&success_url=https://obexcanada.com/success?session_id={CHECKOUT_SESSION_ID}&cancel_url=https://obexcanada.com/cancel"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="absolute left-1/2 transform -translate-x-1/2 px-10 py-4 bg-[#2A9D8F] text-white text-lg font-semibold rounded-lg hover:bg-[#238276] transition-colors duration-200 text-center min-w-[200px] shadow-md"
+                    className="absolute left-1/2 transform -translate-x-1/2 px-10 py-4 bg-[#E9C46A] text-[#264653] text-lg font-semibold rounded-lg hover:bg-[#e0bb5e] transition-all duration-300 shadow-md hover:shadow-xl text-center min-w-[200px]"
                   >
                     Buy Now
                   </a>
