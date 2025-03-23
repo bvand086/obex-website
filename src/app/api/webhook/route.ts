@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { Resend } from 'resend';
 import { headers } from 'next/headers';
+import { scheduleWelcomeSequence } from '@/lib/emails';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-04-10',
@@ -206,6 +207,24 @@ export async function POST(req: NextRequest) {
           });
 
           console.log('📧 Internal notification email sent');
+          
+          // Schedule the welcome sequence emails
+          const orderMetadata = {
+            productName,
+            selectedFlavor,
+            amountTotal: amountTotal.toFixed(2),
+            currency: 'CAD',
+            shippingAddress: address
+          };
+          
+          await scheduleWelcomeSequence({
+            customerEmail,
+            customerName: customerName || undefined,
+            orderId: session.id,
+            metadata: orderMetadata
+          });
+          
+          console.log('📅 Welcome email sequence scheduled');
           console.log('✅ Order processed successfully');
 
         } catch (err) {
