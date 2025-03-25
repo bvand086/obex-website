@@ -474,47 +474,140 @@ export default function Home() {
       </section>
 
       {/* Research Section */}
-      <section id="research" className="bg-white py-16">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-[#2A9D8F] mb-4">Medical Research Support</h2>
-          
-          <Card className="mb-8 border-yellow-300">
-            <CardHeader className="bg-yellow-100">
-              <HoverCard>
-                <HoverCardTrigger>
-                  <CardTitle className="mb-4 text-yellow-800">Comparative Study of Alginate and Omeprazole in Symptomatic Treatment of Non-erosive Gastroesophageal Reflux Disease</CardTitle>
-                </HoverCardTrigger>
-                <HoverCardContent className="bg-white text-black">
-                  <a href="https://pubmed.ncbi.nlm.nih.gov/30487493/" target="_blank" className="text-left underline hover:text-blue-600">
-                    Saifullah, A. M., Ahmed, F., Shil, B. C., Banik, R. K., Saha, S. K., Chowdhury, M., ... & Akhter, A. (2018). Comparative Study of Alginate and Omeprazole in Symptomatic Treatment of Non-erosive Gastroesophageal Reflux Disease. Mymensingh medical journal: MMJ, 27(4), 771-775.
-                  </a>
-                </HoverCardContent>
-              </HoverCard>
-            </CardHeader>
-            <CardContent>
-              <p className="mb-4 text-gray-700">This study compared the effectiveness of sodium alginate and omeprazole in treating heartburn. The results showed that sodium alginate works just as well as omeprazole for treating heartburn, providing a new option for people who might want an alternative to traditional heartburn medications.</p>
-              <p className="text-yellow-700"><strong>Bottom Line:</strong> If you suffer from heartburn, sodium alginate could be a great alternative to consider, especially if you're interested in a natural remedy.</p>
-            </CardContent>
-          </Card>
-          
-          <Card className="border-yellow-300">
-            <CardHeader className="bg-yellow-100">
-              <HoverCard>
-                <HoverCardTrigger>
-                  <CardTitle className="mb-4 text-yellow-800">Alginate on demand as add-on for patients with gastro-oesophageal reflux disease and insufficient PPI effect</CardTitle>
-                </HoverCardTrigger>
-                <HoverCardContent className="bg-white text-black">
-                  <a href="https://pubmed.ncbi.nlm.nih.gov/30466131/" target="_blank" className="text-left underline hover:text-blue-600">
-                    Müller, M., Labenz, G., Borkenstein, D. P., & Labenz, J. (2018). Alginate on demand as add-on for patients with gastro-oesophageal reflux disease and insufficient PPI effect. Deutsche Medizinische Wochenschrift (1946), 144(4), e30-e35.
-                  </a>
-                </HoverCardContent>
-              </HoverCard>
-            </CardHeader>
-            <CardContent>
-              <p className="mb-4 text-gray-700">This study looked at adding alginate to the treatment plan of GERD patients who were already on PPIs but still had symptoms. After adding alginate, 72% of the patients felt better about their treatment, with many showing significant improvement.</p>
-              <p className="text-yellow-700"><strong>What This Means:</strong> For people with chronic acid reflux who aren't satisfied with their current treatment, adding alginate can be an effective and safe way to manage symptoms.</p>
-            </CardContent>
-          </Card>
+      <section id="research" className="relative py-24 overflow-hidden bg-gradient-to-b from-white to-[#F4F6F6]">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#2A9D8F]/5 rounded-full blur-3xl transform -translate-y-1/2 translate-x-1/2"></div>
+          <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-[#E9C46A]/5 rounded-full blur-3xl transform translate-y-1/4 -translate-x-1/4"></div>
+        </div>
+
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="inline-block px-4 py-1 bg-[#2A9D8F]/10 text-[#2A9D8F] rounded-full text-sm font-medium mb-4">Evidence-Based</span>
+            <h2 className="text-5xl font-bold text-[#2A9D8F] mb-4">Medical Research Support</h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">Discover the scientific evidence behind OBEX's effectiveness in managing reflux symptoms.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* First Research Card */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#2A9D8F]/20 to-[#E9C46A]/20 rounded-2xl transform transition-transform duration-500 group-hover:scale-[0.98]"></div>
+              <div className="absolute -inset-0.5 bg-gradient-to-br from-[#2A9D8F] to-[#E9C46A] opacity-20 rounded-2xl blur group-hover:opacity-30 transition duration-500"></div>
+              <div className="relative bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-xl transition-all duration-500 group-hover:shadow-2xl border border-[#2A9D8F]/10">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#2A9D8F] to-[#E9C46A] flex items-center justify-center transform transition-transform duration-500 group-hover:rotate-12">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-[#2A9D8F] group-hover:text-[#264653] transition-colors duration-300">Comparative Study: Alginate vs. Omeprazole</h3>
+                </div>
+
+                <div className="space-y-4">
+                  <p className="text-gray-600 leading-relaxed">This study compared the effectiveness of sodium alginate and omeprazole in treating heartburn, demonstrating comparable efficacy between the two treatments.</p>
+                  
+                  <div className="bg-[#2A9D8F]/5 p-4 rounded-lg">
+                    <h4 className="font-semibold text-[#2A9D8F] mb-2">Key Findings:</h4>
+                    <ul className="space-y-2">
+                      <li className="flex items-center text-gray-600">
+                        <span className="w-2 h-2 rounded-full bg-[#2A9D8F] mr-2"></span>
+                        Similar effectiveness to omeprazole
+                      </li>
+                      <li className="flex items-center text-gray-600">
+                        <span className="w-2 h-2 rounded-full bg-[#2A9D8F] mr-2"></span>
+                        Rapid symptom relief
+                      </li>
+                      <li className="flex items-center text-gray-600">
+                        <span className="w-2 h-2 rounded-full bg-[#2A9D8F] mr-2"></span>
+                        Well-tolerated by patients
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4">
+                    <span className="text-sm text-gray-500">Published in MMJ, 2018</span>
+                    <a 
+                      href="https://pubmed.ncbi.nlm.nih.gov/30487493/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-[#2A9D8F] hover:text-[#264653] transition-colors duration-300"
+                    >
+                      Read More
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Second Research Card */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#E9C46A]/20 to-[#2A9D8F]/20 rounded-2xl transform transition-transform duration-500 group-hover:scale-[0.98]"></div>
+              <div className="absolute -inset-0.5 bg-gradient-to-br from-[#E9C46A] to-[#2A9D8F] opacity-20 rounded-2xl blur group-hover:opacity-30 transition duration-500"></div>
+              <div className="relative bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-xl transition-all duration-500 group-hover:shadow-2xl border border-[#E9C46A]/10">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#E9C46A] to-[#2A9D8F] flex items-center justify-center transform transition-transform duration-500 group-hover:rotate-12">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-[#E9C46A] group-hover:text-[#264653] transition-colors duration-300">Alginate as Add-on Therapy</h3>
+                </div>
+
+                <div className="space-y-4">
+                  <p className="text-gray-600 leading-relaxed">This study investigated the effectiveness of adding alginate to existing PPI treatment in patients with persistent GERD symptoms.</p>
+                  
+                  <div className="bg-[#E9C46A]/5 p-4 rounded-lg">
+                    <h4 className="font-semibold text-[#E9C46A] mb-2">Key Findings:</h4>
+                    <ul className="space-y-2">
+                      <li className="flex items-center text-gray-600">
+                        <span className="w-2 h-2 rounded-full bg-[#E9C46A] mr-2"></span>
+                        72% patient satisfaction
+                      </li>
+                      <li className="flex items-center text-gray-600">
+                        <span className="w-2 h-2 rounded-full bg-[#E9C46A] mr-2"></span>
+                        Significant symptom improvement
+                      </li>
+                      <li className="flex items-center text-gray-600">
+                        <span className="w-2 h-2 rounded-full bg-[#E9C46A] mr-2"></span>
+                        Safe complementary treatment
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4">
+                    <span className="text-sm text-gray-500">Published in DMW, 2018</span>
+                    <a 
+                      href="https://pubmed.ncbi.nlm.nih.gov/30466131/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-[#E9C46A] hover:text-[#264653] transition-colors duration-300"
+                    >
+                      Read More
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-16 text-center">
+            <p className="text-gray-600 text-lg mb-8">Our commitment to evidence-based solutions drives continuous research and development.</p>
+            <button 
+              onClick={() => scrollToSection('cta-section')}
+              className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-[#2A9D8F] to-[#264653] text-white rounded-lg hover:from-[#264653] hover:to-[#2A9D8F] transition-all duration-500 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              Try OBEX Today
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </button>
+          </div>
         </div>
       </section>
 
