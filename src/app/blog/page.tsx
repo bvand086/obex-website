@@ -4,21 +4,38 @@ import Image from 'next/image';
 import { getBlogPosts, BlogPost } from '@/lib/blogData';
 
 const BlogPostCard = ({ title, excerpt, date, slug }: BlogPost) => (
-  <div className="group relative mb-8 p-8 bg-white/95 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-green-100">
-    <div className="absolute inset-0 bg-gradient-to-r from-green-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
-    <div className="relative z-10">
-      <p className="text-sm text-green-600 mb-2 font-medium tracking-wider uppercase">{date}</p>
-      <h2 className="text-2xl font-bold mb-3 text-green-800 group-hover:text-green-700 transition-colors">{title}</h2>
-      <p className="text-gray-600 mb-4 leading-relaxed">{excerpt}</p>
-      <Link 
-        href={`/blog/${slug}`} 
-        className="inline-flex items-center text-green-600 hover:text-green-800 font-semibold group-hover:translate-x-2 transition-transform duration-300"
-      >
-        Read more
-        <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
-      </Link>
+  <div className="group relative">
+    {/* Background gradient and blur effects */}
+    <div className="absolute inset-0 bg-gradient-to-br from-[#2A9D8F]/20 to-[#E9C46A]/20 rounded-2xl transform transition-transform duration-500 group-hover:scale-[0.98]"></div>
+    <div className="absolute -inset-0.5 bg-gradient-to-br from-[#2A9D8F] to-[#E9C46A] opacity-20 rounded-2xl blur group-hover:opacity-30 transition duration-500"></div>
+    
+    {/* Card content */}
+    <div className="relative bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-xl transition-all duration-500 group-hover:shadow-2xl border border-[#2A9D8F]/10">
+      <div className="flex items-center gap-4 mb-6">
+        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#2A9D8F] to-[#E9C46A] flex items-center justify-center transform transition-transform duration-500 group-hover:rotate-12">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H15" />
+          </svg>
+        </div>
+        <div>
+          <p className="text-sm text-[#2A9D8F] font-medium tracking-wider uppercase">{date}</p>
+          <h2 className="text-2xl font-bold text-[#264653] group-hover:text-[#2A9D8F] transition-colors duration-300">{title}</h2>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <p className="text-gray-600 leading-relaxed">{excerpt}</p>
+        
+        <Link 
+          href={`/blog/${slug}`} 
+          className="inline-flex items-center text-[#2A9D8F] hover:text-[#264653] transition-colors duration-300 group/link"
+        >
+          <span className="font-medium">Read Article</span>
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2 transform transition-transform duration-300 group-hover/link:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </Link>
+      </div>
     </div>
   </div>
 );
@@ -27,73 +44,105 @@ export default async function Blog() {
   const blogPosts = await getBlogPosts();
 
   return (
-    <main className="min-h-screen relative bg-gradient-to-br from-[#E9C46A] via-[#F4A261] to-[#2A9D8F] font-raleway">
-      <div className="absolute inset-0 bg-white/80" />
+    <main className="min-h-screen relative bg-gradient-to-br from-[#FAFAF9] to-[#F4F6F6]">
+      {/* Background decorative elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#2A9D8F]/5 rounded-full blur-3xl transform -translate-y-1/2 translate-x-1/2"></div>
+        <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-[#E9C46A]/5 rounded-full blur-3xl transform translate-y-1/4 -translate-x-1/4"></div>
+      </div>
       
-      <header className="sticky top-0 z-20 border-b border-green-200/50 backdrop-blur-sm bg-white/70">
-        <div className="max-w-5xl mx-auto">
+      {/* Header */}
+      <header className="sticky top-0 z-20 backdrop-blur-md bg-white/70 border-b border-[#2A9D8F]/10">
+        <div className="max-w-6xl mx-auto">
           <div className="flex flex-col sm:flex-row items-center justify-between p-4">
             <div className="flex items-center gap-4 mb-4 sm:mb-0">
-              <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-black shadow-lg">
+              <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-black shadow-lg transform hover:scale-110 transition-transform duration-300">
                 <Image src="/white_transparent_OSlashLogo.png" alt="OBEX Logo" width={32} height={32} className="object-cover" />
               </div>
-              <h1 className="text-2xl font-bold text-green-800">OBEX</h1>
+              <h1 className="text-2xl font-bold text-[#2A9D8F]">OBEX</h1>
             </div>
-            <nav className="flex gap-4 items-center">
-              <Link href="/" className="px-4 py-2 text-green-700 hover:text-green-900 hover:bg-green-100/80 rounded-lg transition-all duration-300">
+            <nav className="flex flex-wrap justify-center gap-2 sm:gap-4">
+              <Link href="/" className="px-4 py-2 text-[#2A9D8F] hover:text-[#264653] hover:bg-[#2A9D8F]/5 rounded-lg transition-all duration-300">
                 Home
               </Link>
-              <Link href="/#product_details" className="px-4 py-2 text-green-700 hover:text-green-900 hover:bg-green-100/80 rounded-lg transition-all duration-300">
+              <Link href="/#product_details" className="px-4 py-2 text-[#2A9D8F] hover:text-[#264653] hover:bg-[#2A9D8F]/5 rounded-lg transition-all duration-300">
                 About
               </Link>
-              <Link href="/#research" className="px-4 py-2 text-green-700 hover:text-green-900 hover:bg-green-100/80 rounded-lg transition-all duration-300">
+              <Link href="/#research" className="px-4 py-2 text-[#2A9D8F] hover:text-[#264653] hover:bg-[#2A9D8F]/5 rounded-lg transition-all duration-300">
                 Research
               </Link>
-              <Link href="/#cta-section" className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 shadow-md hover:shadow-lg transition-all duration-300">
-                Main
+              <Link 
+                href="/#cta-section" 
+                className="px-4 py-2 bg-gradient-to-r from-[#2A9D8F] to-[#264653] text-white rounded-lg hover:from-[#264653] hover:to-[#2A9D8F] shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              >
+                Try OBEX
               </Link>
             </nav>
           </div>
         </div>
       </header>
 
-      <section className="relative z-10 max-w-5xl mx-auto px-4 py-12">
-        <div className="mb-12 p-12 bg-white/90 backdrop-blur-sm rounded-xl shadow-xl">
-          <h1 className="text-5xl font-bold mb-6 text-green-800 leading-tight">
-            OBEX Blog
-          </h1>
-          <p className="text-xl text-gray-700 leading-relaxed max-w-2xl">
-            Stay informed about the latest in natural heartburn relief and digestive health. 
-            Discover expert insights, research updates, and practical tips for managing reflux naturally.
-          </p>
+      {/* Main Content */}
+      <section className="relative z-10 max-w-6xl mx-auto px-4 py-16">
+        {/* Hero Section */}
+        <div className="relative mb-16">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#2A9D8F]/10 to-[#E9C46A]/10 rounded-2xl transform transition-transform duration-500"></div>
+          <div className="relative bg-white/90 backdrop-blur-sm p-12 rounded-2xl shadow-xl border border-[#2A9D8F]/10">
+            <span className="inline-block px-4 py-1 bg-[#2A9D8F]/10 text-[#2A9D8F] rounded-full text-sm font-medium mb-4">Latest Updates</span>
+            <h1 className="text-5xl font-bold mb-6 text-[#264653] leading-tight">
+              OBEX Blog
+            </h1>
+            <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
+              Stay informed about the latest in natural heartburn relief and digestive health. 
+              Discover expert insights, research updates, and practical tips for managing reflux naturally.
+            </p>
+          </div>
         </div>
         
-        <div className="grid gap-8">
+        {/* Blog Posts Grid */}
+        <div className="grid gap-8 md:grid-cols-2">
           {blogPosts.map((post: BlogPost) => (
             <BlogPostCard key={post.id} {...post} />
           ))}
         </div>
       </section>
 
+      {/* Footer */}
       <footer className="relative z-10 bg-[#264653] text-white py-12">
-        <div className="max-w-5xl mx-auto px-4 text-center">
-          <p className="mb-2">© 2024 OBEX Corporation. All rights reserved.</p>
+        <div className="max-w-6xl mx-auto px-4 text-center">
+          <div className="mb-8">
+            <Image 
+              src="/white_transparent_OSlashLogo.png" 
+              alt="OBEX Logo" 
+              width={48} 
+              height={48} 
+              className="mx-auto mb-4"
+            />
+            <p className="text-2xl font-bold text-white mb-2">OBEX</p>
+          </div>
           
-          <p className="text-sm text-green-300 mb-4">
-            Contact us: <a href="mailto:support@obexcanada.com" className="hover:text-green-100 transition-colors">support@obexcanada.com</a>
+          <p className="mb-4 text-gray-300">
+            Contact us: <a href="mailto:support@obexcanada.com" className="text-[#2A9D8F] hover:text-[#E9C46A] transition-colors">support@obexcanada.com</a>
           </p>
-          <Link 
-            href="/" 
-            className="text-green-300 hover:text-green-100 transition-colors inline-flex items-center gap-2"
-          >
-            <span>Back to Home</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
-          </Link>
-          <p className="text-xs text-gray-400 max-w-xl mx-auto mt-4">
-            These statements have not been evaluated by Health Canada. This product is not intended to diagnose, treat, cure, or prevent any disease. Consult a healthcare practitioner prior to use if you have a medical condition or are taking medications.
-          </p>
+          
+          <div className="flex justify-center gap-4 mb-8">
+            <Link 
+              href="/" 
+              className="text-[#2A9D8F] hover:text-[#E9C46A] transition-colors inline-flex items-center gap-2"
+            >
+              <span>Back to Home</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+            </Link>
+          </div>
+          
+          <div className="border-t border-gray-700 pt-8">
+            <p className="text-sm text-gray-400 mb-4">© 2024 OBEX Corporation. All rights reserved.</p>
+            <p className="text-xs text-gray-500 max-w-xl mx-auto">
+              These statements have not been evaluated by Health Canada. This product is not intended to diagnose, treat, cure, or prevent any disease. Consult a healthcare practitioner prior to use if you have a medical condition or are taking medications.
+            </p>
+          </div>
         </div>
       </footer>
     </main>
