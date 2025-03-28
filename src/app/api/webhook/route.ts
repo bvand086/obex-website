@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { Resend } from 'resend';
 import { headers } from 'next/headers';
-import { scheduleWelcomeSequence } from '@/lib/emails';
+import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { EmailType } from '@/lib/emails';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-04-10',
@@ -208,23 +209,53 @@ export async function POST(req: NextRequest) {
 
           console.log('📧 Internal notification email sent');
           
-          // Schedule the welcome sequence emails
-          const orderMetadata = {
-            productName,
-            selectedFlavor,
-            amountTotal: amountTotal.toFixed(2),
-            currency: 'CAD',
-            shippingAddress: address
-          };
+          // --- START: New Email Scheduling Logic ---
+          try {
+            const now = new Date();
+            const schedule = [
+              { type: 'welcome_2_usage', days: 3 },
+              { type: 'welcome_3_education', days: 10 },
+              { type: 'welcome_4_community', days: 24 },
+              { type: 'welcome_5_feedback', days: 38 },
+            ];
+
+            const emailsToSchedule = schedule.map(item => {
+              const sendAt = new Date(now);
+              sendAt.setDate(now.getDate() + item.days);
+              return {
+                customer_email: customerEmail,
+                customer_name: customerName || null,
+                email_type: item.type as EmailType,
+                send_at: sendAt.toISOString(),
+                status: 'pending' as const,
+                metadata: {
+                  selectedFlavor: selectedFlavor,
+                  productName: productName,
+                  amountTotal: amountTotal.toFixed(2),
+                  currency: 'CAD',
+                  shippingAddress: address
+                },
+                order_id: session.id,
+                attempt_count: 0,
+              };
+            });
+
+            const { error: insertError } = await supabaseAdmin
+              .from('scheduled_emails')
+              .insert(emailsToSchedule);
+
+            if (insertError) {
+              throw insertError;
+            }
+
+            console.log(`📅 Scheduled ${emailsToSchedule.length} follow-up emails for ${customerEmail}`);
+
+          } catch (scheduleError) {
+            console.error(`❌ Error scheduling follow-up emails for ${customerEmail}:`, scheduleError);
+            // We don't throw the main error since the order processing succeeded
+          }
+          // --- END: New Email Scheduling Logic ---
           
-          await scheduleWelcomeSequence({
-            customerEmail,
-            customerName: customerName || undefined,
-            orderId: session.id,
-            metadata: orderMetadata
-          });
-          
-          console.log('📅 Welcome email sequence scheduled');
           console.log('✅ Order processed successfully');
 
         } catch (err) {
@@ -251,14 +282,13 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Return a response to acknowledge receipt of the event
+    // Return a 200 response to acknowledge receipt of the event
     return NextResponse.json({ received: true });
 
   } catch (err) {
-    const error = err as Error;
-    console.error('❌ Webhook Error:', error.message);
+    console.error('❌ Error processing webhook:', err);
     return NextResponse.json(
-      { error: 'Internal server error', message: error.message },
+      { error: 'Webhook handler failed' },
       { status: 500 }
     );
   }

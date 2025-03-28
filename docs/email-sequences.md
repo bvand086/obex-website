@@ -1,56 +1,156 @@
-# ØBEX Email Sequence System
-
-This document explains the email sequence system implemented for ØBEX to enhance customer communication and engagement.
+# Email Sequence System Documentation
 
 ## Overview
 
-The system automatically sends a series of follow-up emails to customers after they make a purchase. These emails are spread out over time to deliver timely information and maintain engagement without overwhelming the customer.
-
-## Email Sequence
-
-The welcome sequence consists of 5 emails:
-
-1. **Welcome and Thank You (Immediate)** - Sent immediately after purchase through the webhook
-2. **How to Use Obex Effectively (Day 3)** - Sent 3 days after purchase
-3. **Educational Content About Reflux Management (Day 10)** - Sent 10 days after purchase
-4. **Invitation to Join Community/Social Media (Day 24)** - Sent 24 days after purchase
-5. **Request for Feedback (Day 38)** - Sent 38 days after purchase
+The ØBEX email sequence system uses a combination of Vercel Cron Jobs, Supabase, and Resend to deliver a series of welcome and educational emails to customers after they make a purchase. This approach provides a reliable, cost-effective solution with minimal external dependencies.
 
 ## Technical Implementation
 
-The system uses:
-
-- **Supabase** for storing scheduled emails
-- **Resend** for sending emails
-- **Vercel Cron Jobs** for processing scheduled emails
-
 ### Components
 
-1. **Database Schema**: `scheduled_emails` table in Supabase
-2. **Webhook Handler**: `src/app/api/webhook/route.ts` schedules the email sequence when a purchase is made
-3. **Email Scheduler**: `src/lib/emails.ts` contains helper functions for scheduling emails
-4. **Email Processor**: `src/app/api/cron/process-emails/route.ts` processes and sends pending emails
-5. **Cron Job**: Configured in `vercel.json` to run every 15 minutes
+1. **Supabase Database**: Stores scheduled email information in the `scheduled_emails` table.
+2. **Stripe Webhook Handler**: Processes checkout events and schedules follow-up emails.
+3. **Vercel Cron Job**: Runs periodically to check for and send emails that are due.
+4. **Resend API**: Handles the actual email sending with high deliverability.
 
-### Process Flow
+### Database Schema
 
-1. When a customer makes a purchase, the webhook handler sends the immediate welcome email.
-2. The handler then schedules all follow-up emails in the Supabase database.
-3. The cron job runs every 15 minutes, checking for emails that are due to be sent.
-4. When an email is due, the processor sends it via Resend and updates its status.
+The `scheduled_emails` table includes the following fields:
+
+- `id`: Unique identifier (UUID)
+- `created_at`: When the email was scheduled
+- `send_at`: When the email should be sent
+- `customer_email`: Recipient email address
+- `customer_name`: Recipient name (optional)
+- `email_type`: Type of email to send (e.g., 'welcome_2_usage')
+- `status`: Current status ('pending', 'sent', or 'failed')
+- `metadata`: JSON data with customer and order details
+- `order_id`: Related Stripe order ID
+- `attempt_count`: Number of send attempts
+
+### Email Types
+
+The system supports the following email types:
+
+1. **welcome_1**: Order confirmation (sent immediately by the webhook)
+2. **welcome_2_usage**: Usage instructions (sent 3 days after purchase)
+3. **welcome_3_education**: Educational content about acid reflux (sent 10 days after purchase)
+4. **welcome_4_community**: Information about joining the community (sent 24 days after purchase)
+5. **welcome_5_feedback**: Request for product feedback (sent 38 days after purchase)
+
+## Process Flow
+
+1. **Order Placed**: Customer completes checkout via Stripe.
+2. **Webhook Triggered**: Stripe sends a webhook event to `/api/webhook`.
+3. **Initial Email**: Confirmation email is sent immediately to the customer.
+4. **Emails Scheduled**: Follow-up emails are scheduled in the Supabase `scheduled_emails` table.
+5. **Cron Job Execution**: Vercel runs the cron job every 15 minutes.
+6. **Email Processing**: The cron job handler checks for due emails, sends them via Resend, and updates their status.
+7. **Retry Logic**: Failed emails are retried up to 3 times before being marked as permanently failed.
+
+## Implementation Details
+
+### Webhook Handler (`/api/webhook/route.ts`)
+
+The webhook handler is responsible for:
+- Verifying the Stripe webhook signature
+- Sending the immediate order confirmation email
+- Scheduling follow-up emails in the Supabase database
+
+### Cron Job Handler (`/api/cron/process-emails/route.ts`)
+
+The cron job handler:
+- Authenticates the request using a secret key
+- Queries Supabase for pending emails that are due
+- Generates email content based on email type
+- Sends emails via Resend
+- Updates email status in the database
+- Handles retry logic for failed sends
+
+### Email Templates (`/lib/emailTemplates.ts`)
+
+Contains functions to generate HTML content for each email type.
 
 ## Security
 
-- The cron job endpoint is protected by an API key (CRON_SECRET)
-- Supabase Row Level Security (RLS) ensures only authenticated users can access the email data
+The cron job endpoint is protected by the `CRON_SECRET` environment variable. Vercel's built-in authentication for cron jobs ensures that only authorized requests can trigger the email processing.
+
+## Configuration
+
+### Email Schedule Timing
+
+The timing for follow-up emails is defined in the webhook handler:
+
+```typescript
+const schedule = [
+  { type: 'welcome_2_usage', days: 3 },
+  { type: 'welcome_3_education', days: 10 },
+  { type: 'welcome_4_community', days: 24 },
+  { type: 'welcome_5_feedback', days: 38 },
+];
+```
+
+### Cron Job Frequency
+
+The cron job runs every 15 minutes, as defined in `vercel.json`:
+
+```json
+{
+  "crons": [
+    {
+      "path": "/api/cron/process-emails",
+      "schedule": "*/15 * * * *"
+    }
+  ]
+}
+```
+
+## Environment Variables
+
+The following environment variables are required:
+
+- `NEXT_PUBLIC_SUPABASE_URL`: Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Supabase public key
+- `SUPABASE_SERVICE_ROLE_KEY`: Supabase service role key (for backend operations)
+- `RESEND_API_KEY`: Resend API key
+- `STRIPE_SECRET_KEY`: Stripe secret key
+- `STRIPE_WEBHOOK_SECRET`: Stripe webhook signing secret
+- `CRON_SECRET`: Secret for authenticating cron job requests
 
 ## Customization
 
-To modify the email content or schedule:
+### Email Content
 
-1. **Email Templates**: Update the email templates in `src/app/api/cron/process-emails/route.ts`
-2. **Email Schedule**: Update the timing in `src/lib/emails.ts` in the `scheduleWelcomeSequence` function
+To modify the content of emails, edit the template functions in `/lib/emailTemplates.ts`.
 
-## Monitoring
+### Email Schedule
 
-The system logs all activities to the console, which can be viewed in Vercel logs. Additionally, email statuses are tracked in the database with counts of send attempts to handle failures gracefully. 
+To change when emails are sent, update the `schedule` array in the webhook handler.
+
+### Email Frequency
+
+To change how often the system checks for emails to send, modify the `schedule` parameter in `vercel.json`.
+
+## Monitoring and Debugging
+
+- **Vercel Logs**: Check the function logs in the Vercel dashboard
+- **Database Inspection**: Query the `scheduled_emails` table in Supabase
+- **Resend Dashboard**: Monitor email deliverability and open rates
+
+## Error Handling
+
+The system includes several error handling mechanisms:
+
+1. **Send Retries**: Failed emails are retried up to 3 times
+2. **Status Tracking**: Email status is tracked in the database
+3. **Detailed Logging**: Errors are logged for troubleshooting
+
+## Testing
+
+To test the system:
+
+1. Make a test purchase through Stripe (using test mode)
+2. Verify that rows are added to the `scheduled_emails` table
+3. Manually adjust the `send_at` time for a test email to the current time
+4. Wait for the cron job to run or trigger it manually
+5. Verify that the email is sent and the status is updated 
