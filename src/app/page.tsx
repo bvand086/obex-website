@@ -27,6 +27,8 @@ import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import Link from 'next/link'; 
 import { Instagram, Menu, X } from 'lucide-react';
+import CartIcon from '@/components/CartIcon';
+import AddToCartButton from '@/components/AddToCartButton';
 
 interface ControlInputProps {
   label: string;
@@ -297,80 +299,158 @@ export default function Home() {
       <style jsx global>{timelineStyles}</style>
       
       {/* Header */}
-      <header className="relative flex flex-col sm:flex-row items-center justify-between p-4 bg-gradient-to-r from-[#e6dd58] via-[#dda742] to-[#57a779] max-w-full mx-auto">
-        <div className="flex items-center justify-between w-full sm:w-auto">
-          <div className="flex items-center gap-4">
-            <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-black">
-              <Image src="/white_transparent_OSlashLogo.png" alt="OBEX Logo" width={28} height={28} className="object-cover" />
-            </div>
-            <h1 className="text-2xl font-bold text-white">OBEX</h1>
-          </div>
-          <button 
-            className="sm:hidden text-white hover:text-[#e6dd58] transition-colors"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-        
-        <nav className={`${
-          isMenuOpen ? 'flex' : 'hidden'
-        } sm:flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto mt-4 sm:mt-0 ${
-          isMenuOpen ? 'absolute top-full left-0 right-0 bg-gradient-to-r from-[#e6dd58] via-[#dda742] to-[#57a779] p-4 z-50' : ''
-        }`}>
-          <a href="#" className="w-full sm:w-auto text-center px-4 py-2 text-white hover:text-[#e6dd58] hover:bg-black/10 rounded transition-colors" onClick={(e) => { e.preventDefault(); scrollToSection("product_details"); setIsMenuOpen(false); }}>
-            About
-          </a>
-          <a href="#research" className="w-full sm:w-auto text-center px-4 py-2 text-white hover:text-[#e6dd58] hover:bg-black/10 rounded transition-colors" onClick={(e) => { e.preventDefault(); scrollToSection("research"); setIsMenuOpen(false); }}>
-            Research
-          </a>
-          <Link href="/blog" className="w-full sm:w-auto text-center px-4 py-2 text-white hover:text-[#e6dd58] hover:bg-black/10 rounded transition-colors" onClick={() => setIsMenuOpen(false)}>
-            Blog
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm">
+        <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <Link href="/" className="flex items-center space-x-2">
+            <Image src="/OSlashLogo.png" alt="ØBEX Logo" width={40} height={40} />
+            <span className="text-xl font-bold text-[#2A9D8F]">ØBEX</span>
           </Link>
-          <Dialog>
-            <DialogTrigger asChild>
-              <button className="w-full sm:w-auto text-center px-4 py-2 text-white hover:text-[#e6dd58] hover:bg-black/10 rounded transition-colors" onClick={() => setIsMenuOpen(false)}>
-                Feedback
-              </button>
-            </DialogTrigger>
-            <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-gradient-to-b from-[#e6dd58]/10 to-white">
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-bold text-[#57a779]">Share Your Feedback</DialogTitle>
-              </DialogHeader>
-              <div className="w-full h-[800px]">
-                <iframe 
-                  src="https://docs.google.com/forms/d/e/1FAIpQLScf_73CWJmfiTGnQtKa3m17wWDaFQiKcMTY9YAFObb5V3VfPQ/viewform?embedded=true" 
-                  width="100%" 
-                  height="100%" 
-                  frameBorder="0" 
-                  className="w-full h-full"
-                >
-                  Loading...
-                </iframe>
-              </div>
-            </DialogContent>
-          </Dialog>
-          <a 
-            href="https://www.instagram.com/obexcanada/" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="w-full sm:w-auto text-center px-4 py-2 text-white hover:text-[#e6dd58] transition-colors flex items-center justify-center"
-            aria-label="Follow us on Instagram"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <Instagram size={24} />
-          </a>
-          <a 
-            href="https://buy.stripe.com/bIY6rR8nbcePcAEcMQ?client_reference_id=obex_website&success_url=https://obexcanada.com/success?session_id={CHECKOUT_SESSION_ID}&cancel_url=https://obexcanada.com/cancel"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full sm:w-auto text-center px-4 py-2 bg-[#E9C46A] text-[#264653] font-medium rounded-lg hover:bg-[#e0bb5e] transition-all duration-300 shadow-md hover:shadow-lg border-2 border-white" 
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Buy Now
-          </a>
+          
+          <div className="hidden md:flex items-center space-x-6">
+            <button 
+              onClick={() => scrollToSection("product_details")} 
+              className="px-4 py-2 text-[#2A9D8F] hover:text-[#264653] hover:bg-[#2A9D8F]/5 rounded-lg transition-all duration-300"
+            >
+              About
+            </button>
+            <button 
+              onClick={() => scrollToSection("research")} 
+              className="px-4 py-2 text-[#2A9D8F] hover:text-[#264653] hover:bg-[#2A9D8F]/5 rounded-lg transition-all duration-300"
+            >
+              Research
+            </button>
+            <Link 
+              href="/blog" 
+              className="px-4 py-2 text-[#2A9D8F] hover:text-[#264653] hover:bg-[#2A9D8F]/5 rounded-lg transition-all duration-300"
+            >
+              Blog
+            </Link>
+            <Dialog>
+              <DialogTrigger asChild>
+                <button className="px-4 py-2 text-[#2A9D8F] hover:text-[#264653] hover:bg-[#2A9D8F]/5 rounded-lg transition-all duration-300">
+                  Feedback
+                </button>
+              </DialogTrigger>
+              <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-gradient-to-b from-[#e6dd58]/10 to-white">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-bold text-[#57a779]">Share Your Feedback</DialogTitle>
+                </DialogHeader>
+                <div className="w-full h-[800px]">
+                  <iframe 
+                    src="https://docs.google.com/forms/d/e/1FAIpQLScf_73CWJmfiTGnQtKa3m17wWDaFQiKcMTY9YAFObb5V3VfPQ/viewform?embedded=true" 
+                    width="100%" 
+                    height="100%" 
+                    frameBorder="0" 
+                    className="w-full h-full"
+                  >
+                    Loading...
+                  </iframe>
+                </div>
+              </DialogContent>
+            </Dialog>
+            <a 
+              href="https://www.instagram.com/obexcanada/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="px-4 py-2 text-[#2A9D8F] hover:text-[#264653] transition-all duration-300"
+              aria-label="Follow us on Instagram"
+            >
+              <Instagram size={24} />
+            </a>
+            <div className="flex items-center space-x-4">
+              <CartIcon />
+              <Link 
+                href="/cart" 
+                className="px-6 py-2 bg-[#E9C46A] text-[#264653] font-medium rounded-lg hover:bg-[#e0bb5e] transition-all duration-300 shadow-md hover:shadow-lg"
+              >
+                View Cart
+              </Link>
+            </div>
+          </div>
+
+          <div className="md:hidden flex items-center space-x-4">
+            <button 
+              className="text-[#2A9D8F] hover:text-[#264653] transition-colors"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+            <CartIcon />
+          </div>
         </nav>
+        
+        {/* Mobile menu */}
+        <div className={`${
+          isMenuOpen ? 'block' : 'hidden'
+        } md:hidden bg-white/95 backdrop-blur-sm border-t`}>
+          <div className="container mx-auto px-4 py-4 space-y-4">
+            <button 
+              onClick={() => { scrollToSection("product_details"); setIsMenuOpen(false); }}
+              className="block w-full text-left px-4 py-2 text-[#2A9D8F] hover:text-[#264653] hover:bg-[#2A9D8F]/5 rounded-lg transition-all duration-300"
+            >
+              About
+            </button>
+            <button 
+              onClick={() => { scrollToSection("research"); setIsMenuOpen(false); }}
+              className="block w-full text-left px-4 py-2 text-[#2A9D8F] hover:text-[#264653] hover:bg-[#2A9D8F]/5 rounded-lg transition-all duration-300"
+            >
+              Research
+            </button>
+            <Link 
+              href="/blog"
+              onClick={() => setIsMenuOpen(false)}
+              className="block w-full text-left px-4 py-2 text-[#2A9D8F] hover:text-[#264653] hover:bg-[#2A9D8F]/5 rounded-lg transition-all duration-300"
+            >
+              Blog
+            </Link>
+            <Dialog>
+              <DialogTrigger asChild>
+                <button 
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block w-full text-left px-4 py-2 text-[#2A9D8F] hover:text-[#264653] hover:bg-[#2A9D8F]/5 rounded-lg transition-all duration-300"
+                >
+                  Feedback
+                </button>
+              </DialogTrigger>
+              <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-gradient-to-b from-[#e6dd58]/10 to-white">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-bold text-[#57a779]">Share Your Feedback</DialogTitle>
+                </DialogHeader>
+                <div className="w-full h-[800px]">
+                  <iframe 
+                    src="https://docs.google.com/forms/d/e/1FAIpQLScf_73CWJmfiTGnQtKa3m17wWDaFQiKcMTY9YAFObb5V3VfPQ/viewform?embedded=true" 
+                    width="100%" 
+                    height="100%" 
+                    frameBorder="0" 
+                    className="w-full h-full"
+                  >
+                    Loading...
+                  </iframe>
+                </div>
+              </DialogContent>
+            </Dialog>
+            <div className="flex items-center justify-between px-4 py-2">
+              <a 
+                href="https://www.instagram.com/obexcanada/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-[#2A9D8F] hover:text-[#264653] transition-all duration-300"
+                aria-label="Follow us on Instagram"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Instagram size={24} />
+              </a>
+              <Link 
+                href="/cart"
+                onClick={() => setIsMenuOpen(false)}
+                className="px-6 py-2 bg-[#E9C46A] text-[#264653] font-medium rounded-lg hover:bg-[#e0bb5e] transition-all duration-300 shadow-md hover:shadow-lg"
+              >
+                View Cart
+              </Link>
+            </div>
+          </div>
+        </div>
       </header>
 
       {/* Hero Section */}
@@ -702,14 +782,11 @@ export default function Home() {
                         A refreshing daytime option
                       </li>
                     </ul>
-                    <a 
-                      href="https://buy.stripe.com/bIY6rR8nbcePcAEcMQ?client_reference_id=obex_website&prefilled_custom[flavor]=mint"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <AddToCartButton
+                      priceId="price_YOUR_MINT_PRICE_ID"
+                      flavor="Refreshing Mint"
                       className="mt-4 mx-auto px-6 py-2 bg-gradient-to-r from-green-400 to-green-600 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all transform hover:scale-105"
-                    >
-                      Buy Now
-                    </a>
+                    />
                   </div>
                 </div>
                 
@@ -766,14 +843,11 @@ export default function Home() {
                         A bright morning option
                       </li>
                     </ul>
-                    <a 
-                      href="https://buy.stripe.com/bIY6rR8nbcePcAEcMQ?client_reference_id=obex_website&prefilled_custom[flavor]=lemon"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <AddToCartButton
+                      priceId="price_YOUR_LEMON_PRICE_ID"
+                      flavor="Lemon Meringue"
                       className="mt-4 mx-auto px-6 py-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all transform hover:scale-105"
-                    >
-                      Buy Now
-                    </a>
+                    />
                   </div>
                 </div>
                 
@@ -830,14 +904,11 @@ export default function Home() {
                         A soothing evening option
                       </li>
                     </ul>
-                    <a 
-                      href="https://buy.stripe.com/bIY6rR8nbcePcAEcMQ?client_reference_id=obex_website&prefilled_custom[flavor]=orange"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <AddToCartButton
+                      priceId="price_YOUR_ORANGE_PRICE_ID"
+                      flavor="Orange Cream"
                       className="mt-4 mx-auto px-6 py-2 bg-gradient-to-r from-orange-400 to-orange-600 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all transform hover:scale-105"
-                    >
-                      Buy Now
-                    </a>
+                    />
                   </div>
                 </div>
                 
@@ -908,14 +979,11 @@ export default function Home() {
                   </p>
                   
                   {/* Purchase button */}
-                  <a 
-                    href="https://buy.stripe.com/bIY6rR8nbcePcAEcMQ?client_reference_id=obex_website&success_url=https://obexcanada.com/success?session_id={CHECKOUT_SESSION_ID}&cancel_url=https://obexcanada.com/cancel"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <AddToCartButton
+                    priceId="price_YOUR_DEFAULT_PRICE_ID"
+                    flavor="Refreshing Mint"
                     className="absolute left-1/2 transform -translate-x-1/2 px-10 py-4 bg-[#E9C46A] text-[#264653] text-lg font-semibold rounded-lg hover:bg-[#e0bb5e] transition-all duration-300 shadow-md hover:shadow-xl text-center min-w-[200px]"
-                  >
-                    Buy Now
-                  </a>
+                  />
                 </div>
                 
                 {/* Footer */}

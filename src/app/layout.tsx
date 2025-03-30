@@ -3,6 +3,7 @@ import { Raleway, Open_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import "./typography.css";
 import { Toaster } from "@/components/ui/toaster";
+import { CartProvider } from "@/context/CartContext";
 
 const raleway = Raleway({ subsets: ["latin"], display: "swap", variable: "--font-raleway" });
 const openSans = Open_Sans({ subsets: ["latin"], display: "swap", variable: "--font-open-sans" });
@@ -106,8 +107,10 @@ export default function RootLayout({
         <meta name="contact" content="support@obexcanada.com" />
       </head>
       <body className={`${raleway.variable} ${openSans.variable} ${playfairDisplay.variable} font-sans`}>
-        {children}
-        <Toaster />
+        <CartProvider>
+          {children}
+          <Toaster />
+        </CartProvider>
       </body>
     </html>
   );
