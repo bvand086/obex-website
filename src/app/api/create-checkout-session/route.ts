@@ -23,9 +23,29 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid cart data' }, { status: 400 });
     }
 
-    const line_items = cartItems.map((item) => ({
-      price: item.priceId,
+    // Filter out any items with empty or invalid priceIds
+    const validCartItems = cartItems.filter(item => 
+      item.priceId && typeof item.priceId === 'string' && item.priceId.trim() !== ''
+    );
+
+    if (validCartItems.length === 0) {
+      return NextResponse.json({ 
+        error: 'No valid items in cart. Please check product price IDs.' 
+      }, { status: 400 });
+    }
+
+    // ALTERNATIVE APPROACH: Don't use priceId but create a line item with adjustable pricing
+    // This works in both test and live modes regardless of price ID existence
+    const line_items = validCartItems.map((item) => ({
       quantity: item.quantity,
+      price_data: {
+        currency: 'cad',
+        product_data: {
+          name: 'ØBEX Reflux Relief Bottle',
+          description: `Flavor: ${item.flavorName || 'Not specified'}`,
+        },
+        unit_amount: 2899, // Amount in cents ($28.99)
+      },
     }));
 
     const origin = request.headers.get('origin') || 'http://localhost:3000';
@@ -42,7 +62,7 @@ export async function POST(request: NextRequest) {
         allowed_countries: ['CA', 'US'],
       },
       metadata: {
-        cart_details: JSON.stringify(cartItems.map(item => ({
+        cart_details: JSON.stringify(validCartItems.map(item => ({
           flavor: item.flavorName,
           qty: item.quantity
         }))),

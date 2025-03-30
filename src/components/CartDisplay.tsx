@@ -24,6 +24,12 @@ export default function CartDisplay() {
   const handleCheckout = async () => {
     setIsLoading(true);
     try {
+      // Validate cart items have valid price IDs before proceeding
+      const invalidItems = cartItems.filter(item => !item.priceId || item.priceId.trim() === '');
+      if (invalidItems.length > 0) {
+        throw new Error('Some items in your cart have invalid price IDs. Please try adding them again.');
+      }
+      
       const checkoutItems = cartItems.map(item => ({
         priceId: item.priceId,
         quantity: item.quantity,

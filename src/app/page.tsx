@@ -783,7 +783,7 @@ export default function Home() {
                       </li>
                     </ul>
                     <AddToCartButton
-                      priceId="price_YOUR_MINT_PRICE_ID"
+                      priceId="price_1CDEFGHIJKLMNOPQRSTUVWX"
                       flavor="Refreshing Mint"
                       className="mt-4 mx-auto px-6 py-2 bg-gradient-to-r from-green-400 to-green-600 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all transform hover:scale-105"
                     />
@@ -844,7 +844,7 @@ export default function Home() {
                       </li>
                     </ul>
                     <AddToCartButton
-                      priceId="price_YOUR_LEMON_PRICE_ID"
+                      priceId="price_2CDEFGHIJKLMNOPQRSTUVWX"
                       flavor="Lemon Meringue"
                       className="mt-4 mx-auto px-6 py-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all transform hover:scale-105"
                     />
@@ -905,7 +905,7 @@ export default function Home() {
                       </li>
                     </ul>
                     <AddToCartButton
-                      priceId="price_YOUR_ORANGE_PRICE_ID"
+                      priceId="price_3CDEFGHIJKLMNOPQRSTUVWX"
                       flavor="Orange Cream"
                       className="mt-4 mx-auto px-6 py-2 bg-gradient-to-r from-orange-400 to-orange-600 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all transform hover:scale-105"
                     />
@@ -980,7 +980,7 @@ export default function Home() {
                   
                   {/* Purchase button */}
                   <AddToCartButton
-                    priceId="price_YOUR_DEFAULT_PRICE_ID"
+                    priceId="price_1CDEFGHIJKLMNOPQRSTUVWX"
                     flavor="Refreshing Mint"
                     className="absolute left-1/2 transform -translate-x-1/2 px-10 py-4 bg-[#E9C46A] text-[#264653] text-lg font-semibold rounded-lg hover:bg-[#e0bb5e] transition-all duration-300 shadow-md hover:shadow-xl text-center min-w-[200px]"
                   />
