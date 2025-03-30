@@ -61,6 +61,48 @@ export async function POST(request: NextRequest) {
       shipping_address_collection: {
         allowed_countries: ['CA', 'US'],
       },
+      shipping_options: [
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: {
+              amount: 629, // $6.29 shipping fee
+              currency: 'cad',
+            },
+            display_name: 'Standard Shipping',
+            delivery_estimate: {
+              minimum: {
+                unit: 'business_day',
+                value: 5,
+              },
+              maximum: {
+                unit: 'business_day',
+                value: 10,
+              },
+            },
+          },
+        },
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: {
+              amount: 1299, // $12.99 shipping fee
+              currency: 'cad',
+            },
+            display_name: 'Express Shipping',
+            delivery_estimate: {
+              minimum: {
+                unit: 'business_day',
+                value: 1,
+              },
+              maximum: {
+                unit: 'business_day',
+                value: 3,
+              },
+            },
+          },
+        },
+      ],
       metadata: {
         cart_details: JSON.stringify(validCartItems.map(item => ({
           flavor: item.flavorName,

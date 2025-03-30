@@ -4,6 +4,7 @@ import { Resend } from 'resend';
 import { headers } from 'next/headers';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { EmailType } from '@/lib/emails';
+import { Buffer } from 'buffer';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-04-10',
@@ -92,24 +93,71 @@ export async function POST(req: NextRequest) {
 
           // Calculate amount (no need for Supabase)
           const amountTotal = session.amount_total != null ? session.amount_total / 100 : 34.99;
-
-          // Extract flavor from custom fields
-          let selectedFlavor = 'Not specified';
-          if (session.custom_fields && session.custom_fields.length > 0) {
-            const flavorField = session.custom_fields.find(field => field.key === 'chooseyourflavour');
-            if (flavorField && 
-                'dropdown' in flavorField && 
-                flavorField.dropdown && 
-                typeof flavorField.dropdown === 'object' && 
-                flavorField.dropdown.value) {
-              // Map the flavor value to a more readable format
-              const flavorMap: Record<string, string> = {
-                'lemonmeringue': 'Lemon Meringue',
-                'orangecream': 'Orange Cream',
-                'soothingmint': 'Soothing Mint'
-              };
-              selectedFlavor = flavorMap[flavorField.dropdown.value] || flavorField.dropdown.value;
+          
+          // Get shipping option information
+          const shippingRate = session.shipping_cost?.shipping_rate;
+          let shippingMethod = 'Standard Shipping';
+          let shippingCost = 0;
+          
+          if (shippingRate && typeof shippingRate === 'string') {
+            // Try to get the shipping rate details from Stripe if available
+            try {
+              const shippingRateDetails = await stripe.shippingRates.retrieve(shippingRate);
+              shippingMethod = shippingRateDetails.display_name || 'Standard Shipping';
+              shippingCost = shippingRateDetails.fixed_amount?.amount ? 
+                shippingRateDetails.fixed_amount.amount / 100 : 0;
+            } catch (error) {
+              console.error('Error retrieving shipping rate details:', error);
+              // Fall back to just using the shipping cost from the session
+              shippingCost = session.shipping_cost?.amount_total ? 
+                session.shipping_cost.amount_total / 100 : 0;
             }
+          } else if (session.shipping_cost?.amount_total) {
+            // If we don't have a shipping rate ID, just use the cost
+            shippingCost = session.shipping_cost.amount_total / 100;
+          }
+
+          // Get cart items from metadata if available
+          let cartItems: {flavor?: string, qty?: number}[] = [];
+          let productDetailsHtml = '';
+          
+          if (session.metadata?.cart_details) {
+            try {
+              cartItems = JSON.parse(session.metadata.cart_details);
+              
+              // Generate HTML for multiple items if available
+              if (cartItems.length > 0) {
+                productDetailsHtml = cartItems.map(item => 
+                  `<p style="margin: 10px 0;"><strong>${item.qty}x</strong> ØBEX Reflux Relief - ${item.flavor || 'Not specified'}</p>`
+                ).join('');
+              }
+            } catch (error) {
+              console.error('Error parsing cart details:', error);
+            }
+          }
+          
+          // If no cart details found, fall back to the custom fields approach
+          if (productDetailsHtml === '') {
+            let selectedFlavor = 'Not specified';
+            if (session.custom_fields && session.custom_fields.length > 0) {
+              const flavorField = session.custom_fields.find(field => field.key === 'chooseyourflavour');
+              if (flavorField && 
+                  'dropdown' in flavorField && 
+                  flavorField.dropdown && 
+                  typeof flavorField.dropdown === 'object' && 
+                  flavorField.dropdown.value) {
+                // Map the flavor value to a more readable format
+                const flavorMap: Record<string, string> = {
+                  'lemonmeringue': 'Lemon Meringue',
+                  'orangecream': 'Orange Cream',
+                  'soothingmint': 'Soothing Mint'
+                };
+                selectedFlavor = flavorMap[flavorField.dropdown.value] || flavorField.dropdown.value;
+              }
+            }
+            
+            productDetailsHtml = `<p style="margin: 10px 0;"><strong>Product:</strong> ØBEX Reflux Relief</p>
+                                 <p style="margin: 10px 0;"><strong>Flavor:</strong> ${selectedFlavor}</p>`;
           }
 
           // Determine product name
@@ -132,24 +180,27 @@ export async function POST(req: NextRequest) {
 
                     <p style="font-size: 16px; margin-bottom: 20px;">Dear ${customerName || 'Valued Customer'},</p>
                     
-                    <p style="font-size: 16px; margin-bottom: 25px;">We're excited to confirm your order for ${productName}. Your natural solution for reflux relief is on its way!</p>
+                    <p style="font-size: 16px; margin-bottom: 25px;">We're excited to confirm your order for ØBEX Reflux Relief. Your natural solution for reflux relief is on its way!</p>
                     
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
                       <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Order Details</h2>
                       <p style="margin: 10px 0;"><strong>Order ID:</strong> ${session.id}</p>
-                      <p style="margin: 10px 0;"><strong>Product:</strong> ${productName}</p>
-                      <p style="margin: 10px 0;"><strong>Flavor:</strong> ${selectedFlavor}</p>
-                      <p style="margin: 10px 0;"><strong>Amount:</strong> $${amountTotal.toFixed(2)} CAD</p>
+                      ${productDetailsHtml}
+                      <p style="margin: 10px 0;"><strong>Shipping Method:</strong> ${shippingMethod}</p>
+                      <p style="margin: 10px 0;"><strong>Shipping Cost:</strong> $${shippingCost.toFixed(2)} CAD</p>
+                      <p style="margin: 10px 0;"><strong>Total Amount:</strong> $${amountTotal.toFixed(2)} CAD</p>
                     </div>
                     
                     <p style="font-size: 16px; margin-bottom: 15px;">Your order will be shipped to:</p>
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #e9ecef;">
-                      ${address?.line1 || ''}<br>
-                      ${address?.line2 ? address.line2 + '<br>' : ''}
-                      ${address?.city || ''}, 
-                      ${address?.state || ''} 
-                      ${address?.postal_code || ''}<br>
-                      ${address?.country || ''}
+                      <p style="margin: 0;">
+                        ${address?.line1 || ''}<br>
+                        ${address?.line2 ? address.line2 + '<br>' : ''}
+                        ${address?.city || ''}, 
+                        ${address?.state || ''} 
+                        ${address?.postal_code || ''}<br>
+                        ${address?.country || ''}
+                      </p>
                     </div>
                     
                     <p style="font-size: 16px; margin-bottom: 30px;">If you have any questions about your order, please don't hesitate to contact us at <a href="mailto:support@obexcanada.com" style="color: #2A9D8F; text-decoration: none;">support@obexcanada.com</a></p>
@@ -176,9 +227,10 @@ export async function POST(req: NextRequest) {
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
                       <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Order Details</h2>
                       <p style="margin: 10px 0;"><strong>Order ID:</strong> ${session.id}</p>
-                      <p style="margin: 10px 0;"><strong>Product:</strong> ${productName}</p>
-                      <p style="margin: 10px 0;"><strong>Flavor:</strong> ${selectedFlavor}</p>
-                      <p style="margin: 10px 0;"><strong>Amount:</strong> $${amountTotal.toFixed(2)} CAD</p>
+                      ${productDetailsHtml}
+                      <p style="margin: 10px 0;"><strong>Shipping Method:</strong> ${shippingMethod}</p>
+                      <p style="margin: 10px 0;"><strong>Shipping Cost:</strong> $${shippingCost.toFixed(2)} CAD</p>
+                      <p style="margin: 10px 0;"><strong>Total Amount:</strong> $${amountTotal.toFixed(2)} CAD</p>
                       <p style="margin: 10px 0;"><strong>Date:</strong> ${new Date().toLocaleString('en-CA', { timeZone: 'America/Toronto' })}</p>
                     </div>
 
@@ -229,8 +281,10 @@ export async function POST(req: NextRequest) {
                 send_at: sendAt.toISOString(),
                 status: 'pending' as const,
                 metadata: {
-                  selectedFlavor: selectedFlavor,
+                  cartItems: cartItems,
                   productName: productName,
+                  shippingMethod: shippingMethod,
+                  shippingCost: shippingCost.toFixed(2),
                   amountTotal: amountTotal.toFixed(2),
                   currency: 'CAD',
                   shippingAddress: address
