@@ -213,8 +213,8 @@ export async function POST(req: NextRequest) {
           try {
             const now = new Date();
             const schedule = [
-              { type: 'welcome_2_usage', days: 3 },
-              { type: 'welcome_3_education', days: 10 },
+              { type: 'welcome_2_usage', days: 7 },
+              { type: 'welcome_3_education', days: 14 },
               { type: 'welcome_4_community', days: 24 },
               { type: 'welcome_5_feedback', days: 38 },
             ];
