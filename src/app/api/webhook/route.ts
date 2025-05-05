@@ -80,8 +80,12 @@ export async function POST(req: NextRequest) {
         const { 
           email: customerEmail, 
           name: customerName, 
-          address 
+          address: billingAddress // Rename for clarity, this is billing address
         } = session.customer_details || {};
+
+        // Extract shipping data
+        const shippingDetails = session.shipping_details;
+        const shippingAddress = shippingDetails?.address;
 
         if (!customerEmail) {
           throw new Error('Customer email not found in session');
@@ -144,12 +148,12 @@ export async function POST(req: NextRequest) {
                     
                     <p style="font-size: 16px; margin-bottom: 15px;">Your order will be shipped to:</p>
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #e9ecef;">
-                      ${address?.line1 || ''}<br>
-                      ${address?.line2 ? address.line2 + '<br>' : ''}
-                      ${address?.city || ''}, 
-                      ${address?.state || ''} 
-                      ${address?.postal_code || ''}<br>
-                      ${address?.country || ''}
+                      ${shippingAddress?.line1 || ''}<br>
+                      ${shippingAddress?.line2 ? shippingAddress.line2 + '<br>' : ''}
+                      ${shippingAddress?.city || ''}, 
+                      ${shippingAddress?.state || ''} 
+                      ${shippingAddress?.postal_code || ''}<br>
+                      ${shippingAddress?.country || ''}
                     </div>
                     
                     <p style="font-size: 16px; margin-bottom: 30px;">If you have any questions about your order, please don't hesitate to contact us at <a href="mailto:support@obexcanada.com" style="color: #2A9D8F; text-decoration: none;">support@obexcanada.com</a></p>
@@ -196,24 +200,24 @@ export async function POST(req: NextRequest) {
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
                       <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Shipping Address</h2>
                       <p style="margin: 10px 0;">
-                        ${address?.line1 || ''}<br>
-                        ${address?.line2 ? address.line2 + '<br>' : ''}
-                        ${address?.city || ''}, 
-                        ${address?.state || ''} 
-                        ${address?.postal_code || ''}<br>
-                        ${address?.country || ''}
+                        ${shippingAddress?.line1 || ''}<br>
+                        ${shippingAddress?.line2 ? shippingAddress.line2 + '<br>' : ''}
+                        ${shippingAddress?.city || ''}, 
+                        ${shippingAddress?.state || ''} 
+                        ${shippingAddress?.postal_code || ''}<br>
+                        ${shippingAddress?.country || ''}
                       </p>
                     </div>
 
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
                       <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Billing Address</h2>
                       <p style="margin: 10px 0;">
-                        ${session.customer_details?.address?.line1 || ''}<br>
-                        ${session.customer_details?.address?.line2 ? session.customer_details.address.line2 + '<br>' : ''}
-                        ${session.customer_details?.address?.city || ''}, 
-                        ${session.customer_details?.address?.state || ''} 
-                        ${session.customer_details?.address?.postal_code || ''}<br>
-                        ${session.customer_details?.address?.country || ''}
+                        ${billingAddress?.line1 || ''}<br>
+                        ${billingAddress?.line2 ? billingAddress.line2 + '<br>' : ''}
+                        ${billingAddress?.city || ''}, 
+                        ${billingAddress?.state || ''} 
+                        ${billingAddress?.postal_code || ''}<br>
+                        ${billingAddress?.country || ''}
                       </p>
                     </div>
 
@@ -250,7 +254,8 @@ export async function POST(req: NextRequest) {
                   productName: productName,
                   amountTotal: amountTotal.toFixed(2),
                   currency: 'CAD',
-                  shippingAddress: address
+                  shippingAddress: shippingAddress,
+                  billingAddress: billingAddress
                 },
                 order_id: session.id,
                 attempt_count: 0,
