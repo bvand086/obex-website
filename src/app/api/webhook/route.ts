@@ -182,13 +182,13 @@ export async function POST(req: NextRequest) {
                       <p style="margin: 10px 0;"><strong>Order ID:</strong> ${session.id}</p>
                       <p style="margin: 10px 0;"><strong>Product:</strong> ${productName}</p>
                       <p style="margin: 10px 0;"><strong>Flavor:</strong> ${selectedFlavor}</p>
-                      <p style="margin: 10px 0;"><strong>Quantity:</strong> ${(session as any).quantity || 1} bottle(s)</p>
-                      <p style="margin: 10px 0;"><strong>Amount:</strong> $${amountTotal.toFixed(2)} CAD</p>
+                      <p style="margin: 10px 0;"><strong>Quantity to ship:</strong> ${(session as any).quantity || 1} bottle(s)</p>
+                      <p style="margin: 10px 0;"><strong>Total Amount Paid:</strong> $${amountTotal.toFixed(2)} CAD</p>
                       ${(session as any).total_details?.amount_discount ? 
                         `<p style="margin: 10px 0;"><strong>Discount Applied:</strong> $${((session as any).total_details.amount_discount / 100).toFixed(2)} CAD</p>
-                         <p style="margin: 10px 0;"><strong>Discount Code:</strong> ${(session as any).discount?.coupon?.id || 'N/A'}</p>` 
-                        : ''}
-                      <p style="margin: 10px 0;"><strong>Date:</strong> ${new Date().toLocaleString('en-CA', { timeZone: 'America/Toronto' })}</p>
+                         <p style="margin: 10px 0;"><strong>Discount Code:</strong> ${(session as any).discount?.promotion_code || 'None applied'}</p>` 
+                        : '<p style="margin: 10px 0;"><strong>Discount Code:</strong> None applied</p>'}
+                      <p style="margin: 10px 0;"><strong>Order Date:</strong> ${new Date().toLocaleString('en-CA', { timeZone: 'America/Toronto' })}</p>
                     </div>
 
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
@@ -200,6 +200,7 @@ export async function POST(req: NextRequest) {
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
                       <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Shipping Address</h2>
                       <p style="margin: 10px 0;">
+                        <strong>Recipient:</strong> ${customerName || 'Not provided'}<br>
                         ${shippingAddress?.line1 || ''}<br>
                         ${shippingAddress?.line2 ? shippingAddress.line2 + '<br>' : ''}
                         ${shippingAddress?.city || ''}, 
