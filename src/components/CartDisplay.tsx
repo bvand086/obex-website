@@ -3,12 +3,23 @@
 import { useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
-import { Minus, Plus, Trash2 } from 'lucide-react';
+import { Minus, Plus, Trash2, Check, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { Input } from '@/components/ui/input';
 
 export default function CartDisplay() {
   const { cartItems, removeFromCart, updateQuantity, getCartTotal } = useCart();
   const [isLoading, setIsLoading] = useState(false);
+  const [couponCode, setCouponCode] = useState('');
+  const [couponError, setCouponError] = useState('');
+  const [couponSuccess, setCouponSuccess] = useState('');
+  const [validatingCoupon, setValidatingCoupon] = useState(false);
+  const [appliedDiscount, setAppliedDiscount] = useState<{
+    code: string;
+    percentOff?: number;
+    amountOff?: number;
+    currency?: string;
+  } | null>(null);
 
   const handleQuantityChange = (itemId: string, newQuantity: number) => {
     if (newQuantity >= 1) {
@@ -19,6 +30,78 @@ export default function CartDisplay() {
   const handleRemoveItem = (itemId: string) => {
     removeFromCart(itemId);
     toast.success('Item removed from cart');
+  };
+
+  const handleCouponChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCouponCode(e.target.value);
+    setCouponError('');
+    setCouponSuccess('');
+  };
+
+  const validateCoupon = async () => {
+    if (!couponCode.trim()) {
+      setCouponError('Please enter a discount code');
+      return;
+    }
+
+    setValidatingCoupon(true);
+    setCouponError('');
+    setCouponSuccess('');
+    setAppliedDiscount(null);
+
+    try {
+      const response = await fetch('/api/validate-coupon', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code: couponCode.trim() }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setCouponError(data.error || 'Invalid discount code');
+        return;
+      }
+
+      if (data.valid) {
+        setCouponSuccess(`${couponCode} applied!`);
+        setAppliedDiscount({
+          code: couponCode,
+          percentOff: data.percentOff,
+          amountOff: data.amountOff,
+          currency: data.currency,
+        });
+        toast.success(`Discount code applied: ${couponCode}`);
+      } else {
+        setCouponError(data.message || 'Invalid discount code');
+      }
+    } catch (error) {
+      console.error('Error validating coupon:', error);
+      setCouponError('Error validating discount code');
+    } finally {
+      setValidatingCoupon(false);
+    }
+  };
+
+  const calculateDiscountedTotal = () => {
+    const subtotal = getCartTotal();
+    
+    if (!appliedDiscount) return subtotal;
+    
+    if (appliedDiscount.percentOff) {
+      const discount = subtotal * (appliedDiscount.percentOff / 100);
+      return subtotal - discount;
+    }
+    
+    if (appliedDiscount.amountOff) {
+      // Amount off is stored in cents, convert to dollars
+      const amountOff = appliedDiscount.amountOff / 100;
+      return Math.max(0, subtotal - amountOff);
+    }
+    
+    return subtotal;
   };
 
   const handleCheckout = async () => {
@@ -36,12 +119,17 @@ export default function CartDisplay() {
         flavorName: item.flavor
       }));
 
+      const requestData = {
+        cartItems: checkoutItems,
+        couponCode: appliedDiscount?.code || couponCode.trim() || undefined
+      };
+
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(checkoutItems),
+        body: JSON.stringify(requestData),
       });
 
       if (!response.ok) {
@@ -118,10 +206,63 @@ export default function CartDisplay() {
       </div>
 
       <div className="mt-8 border-t pt-6">
-        <div className="flex justify-between mb-4">
-          <span className="font-medium">Total</span>
-          <span className="font-medium">${getCartTotal().toFixed(2)}</span>
+        {/* Coupon Code Section */}
+        <div className="mb-6">
+          <label htmlFor="coupon" className="block text-sm font-medium text-gray-700 mb-2">
+            Discount Code
+          </label>
+          <div className="flex space-x-2">
+            <Input
+              id="coupon"
+              type="text"
+              placeholder="Enter discount code"
+              value={couponCode}
+              onChange={handleCouponChange}
+              className="flex-1"
+            />
+            <Button 
+              onClick={validateCoupon} 
+              disabled={validatingCoupon}
+              className="bg-[#2A9D8F] hover:bg-[#264653] text-white min-w-[80px]"
+            >
+              {validatingCoupon ? "..." : "Apply"}
+            </Button>
+          </div>
+          {couponError && (
+            <div className="mt-2 flex items-center text-sm text-red-600">
+              <AlertCircle className="h-4 w-4 mr-1" />
+              <p>{couponError}</p>
+            </div>
+          )}
+          {couponSuccess && (
+            <div className="mt-2 flex items-center text-sm text-green-600">
+              <Check className="h-4 w-4 mr-1" />
+              <p>{couponSuccess}</p>
+            </div>
+          )}
         </div>
+        
+        {/* Order Summary */}
+        <div className="bg-gray-50 p-4 rounded-lg mb-4">
+          <h3 className="font-medium mb-3">Order Summary</h3>
+          <div className="flex justify-between mb-2">
+            <span className="text-gray-600">Subtotal</span>
+            <span>${getCartTotal().toFixed(2)}</span>
+          </div>
+          
+          {appliedDiscount && (
+            <div className="flex justify-between mb-2 text-green-600">
+              <span>Discount ({appliedDiscount.percentOff ? `${appliedDiscount.percentOff}%` : `$${(appliedDiscount.amountOff || 0) / 100}`})</span>
+              <span>-${(getCartTotal() - calculateDiscountedTotal()).toFixed(2)}</span>
+            </div>
+          )}
+          
+          <div className="border-t border-gray-200 my-2 pt-2 flex justify-between font-medium">
+            <span>Total</span>
+            <span>${calculateDiscountedTotal().toFixed(2)}</span>
+          </div>
+        </div>
+        
         <Button 
           className="w-full bg-[#2A9D8F] hover:bg-[#264653] text-white"
           onClick={handleCheckout}

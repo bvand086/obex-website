@@ -15,9 +15,27 @@ interface CartItem {
   flavorName?: string;
 }
 
+interface CheckoutRequest {
+  cartItems: CartItem[];
+  couponCode?: string;
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const cartItems = (await request.json()) as CartItem[];
+    const requestData = await request.json() as (CartItem[] | CheckoutRequest);
+    
+    // Handle both formats for backward compatibility
+    let cartItems: CartItem[] = [];
+    let couponCode: string | undefined;
+    
+    if (Array.isArray(requestData)) {
+      // Old format: direct array of cart items
+      cartItems = requestData;
+    } else {
+      // New format: object with cartItems and optional couponCode
+      cartItems = requestData.cartItems;
+      couponCode = requestData.couponCode;
+    }
 
     if (!Array.isArray(cartItems) || cartItems.length === 0) {
       return NextResponse.json({ error: 'Invalid cart data' }, { status: 400 });
@@ -52,7 +70,8 @@ export async function POST(request: NextRequest) {
     const success_url = `${origin}/success?session_id={CHECKOUT_SESSION_ID}`;
     const cancel_url = `${origin}/cancel`;
 
-    const session = await stripe.checkout.sessions.create({
+    // Prepare checkout session configuration
+    const checkoutConfig: Stripe.Checkout.SessionCreateParams = {
       payment_method_types: ['card'],
       line_items: line_items,
       mode: 'payment',
@@ -109,7 +128,39 @@ export async function POST(request: NextRequest) {
           qty: item.quantity
         }))),
       },
-    });
+    };
+
+    // Apply coupon code if provided
+    if (couponCode && couponCode.trim() !== '') {
+      try {
+        // First try to find it as a promotion code (customer-facing code)
+        const promotionCodes = await stripe.promotionCodes.list({
+          code: couponCode.trim(),
+          active: true,
+          limit: 1,
+        });
+        
+        if (promotionCodes.data.length > 0) {
+          // Found a valid promotion code
+          checkoutConfig.discounts = [{ promotion_code: promotionCodes.data[0].id }];
+          console.log(`Applied promotion code: ${couponCode} (${promotionCodes.data[0].id})`);
+        } else {
+          // If not found as promotion code, try as coupon (for backward compatibility)
+          try {
+            const coupon = await stripe.coupons.retrieve(couponCode.trim());
+            checkoutConfig.discounts = [{ coupon: coupon.id }];
+            console.log(`Applied direct coupon: ${couponCode}`);
+          } catch (couponError) {
+            console.error(`Coupon not found: ${couponCode}`, couponError);
+          }
+        }
+      } catch (discountError) {
+        // Log the error but continue with checkout without the coupon
+        console.error(`Error processing discount code: ${couponCode}`, discountError);
+      }
+    }
+
+    const session = await stripe.checkout.sessions.create(checkoutConfig);
 
     if (session.url) {
       return NextResponse.json({ checkoutUrl: session.url }, { status: 200 });
