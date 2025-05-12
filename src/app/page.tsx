@@ -936,63 +936,166 @@ export default function Home() {
 
       {/* CTA Section */}
       <section id="cta-section" className="bg-[#2A9D8F] text-white py-16">
-        <div className="max-w-2xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <Card className="mb-8 bg-white text-gray-900 overflow-hidden rounded-xl shadow-lg">
-            <div className="relative">
-              {/* Full gradient background */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#2A9D8F] to-[#E9B949]"></div>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold mb-4">Choose Your Bundle</h2>
+            <p className="text-xl text-white/80 max-w-2xl mx-auto">Select the perfect OBEX package that suits your needs and budget</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Starter Package */}
+            <div className="bg-white rounded-xl overflow-hidden shadow-xl transform transition-all duration-300 hover:scale-105 hover:shadow-2xl flex flex-col h-full">
+              <div className="bg-gray-100 p-6">
+                <h3 className="text-2xl font-bold text-[#264653] mb-1">Starter</h3>
+                <div className="flex items-baseline">
+                  <span className="text-3xl font-bold text-[#2A9D8F]">$28.99</span>
+                </div>
+              </div>
               
-              {/* White content area with diagonal cut - more transparent */}
-              <div className="absolute top-[240px] left-0 right-0 bottom-0 bg-white/95" style={{ clipPath: "polygon(0 0, 100% 60px, 100% 100%, 0 100%)" }}></div>
-              
-              {/* Cream colored bottom area with diagonal cut - more transparent */}
-              <div className="absolute bottom-0 left-0 right-0 h-[180px] bg-[#fff9e6]/90" style={{ clipPath: "polygon(0 60px, 100% 0, 100% 100%, 0 100%)" }}></div>
-              
-              {/* Content */}
-              <div className="relative z-10">
-                {/* Header content */}
-                <div className="pt-12 pb-20 px-6 text-center">
-                  <div className="inline-block px-6 py-2 bg-white/90 rounded-full text-[#2A9D8F] font-semibold mb-6 shadow-sm backdrop-blur-sm">
-                    Just Launched!
+              <div className="p-6 space-y-4 flex-grow flex flex-col">
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Regular total</span>
+                    <span className="font-medium text-gray-700">$28.99</span>
                   </div>
-                  <h2 className="text-5xl font-bold text-white mb-2">New Bottle Format</h2>
-                  <p className="text-2xl text-white">Now Available!</p>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">You pay</span>
+                    <span className="font-medium text-gray-700">$28.99</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Unit price</span>
+                    <span className="font-medium text-gray-700">$28.99</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Savings</span>
+                    <span className="font-medium text-gray-700">—</span>
+                  </div>
                 </div>
                 
-                {/* Product image in white area */}
-                <div className="bg-white/90 backdrop-blur-sm mx-auto w-4/5 max-w-[600px] -mt-4 pt-4 pb-8 rounded-t-xl">
-                  <Image 
-                    src="/OBEXTUBE.jpg" 
-                    alt="New OBEX bottle" 
-                    width={500} 
-                    height={500} 
-                    className="mx-auto" 
-                  />
-                </div>
-                
-                {/* Flavor text in cream area */}
-                <div className="relative bg-[#fff9e6]/90 backdrop-blur-sm pt-4 pb-16 px-8 text-center">
-                  <p className="text-[#8B4513] text-lg mb-12">
-                    Experience OBEX in three chef-inspired flavours:
-                    <br />
-                    <span className="font-medium">Orange Cream</span> • <span className="font-medium">Lemon Meringue</span> • <span className="font-medium">Refreshing Mint</span>
-                  </p>
-                  
-                  {/* Purchase button */}
-                  <AddToCartButton
-                    priceId="price_1CDEFGHIJKLMNOPQRSTUVWX"
-                    flavor="Refreshing Mint"
-                    className="absolute left-1/2 transform -translate-x-1/2 px-10 py-4 bg-[#E9C46A] text-[#264653] text-lg font-semibold rounded-lg hover:bg-[#e0bb5e] transition-all duration-300 shadow-md hover:shadow-xl text-center min-w-[200px]"
-                  />
-                </div>
-                
-                {/* Footer */}
-                <div className="bg-white/90 backdrop-blur-sm p-6 text-center">
-                  <p className="text-[#2A9D8F] text-lg italic">Experience the new OBEX – Available now!</p>
+                <div className="pt-4 border-t border-gray-200 flex-grow flex flex-col">
+                  <p className="text-sm text-gray-600 mb-6 mt-4">Canadian-made, female-owned</p>
+                  <div className="mt-auto">
+                    <AddToCartButton
+                      priceId="price_starter"
+                      flavor="Starter Package"
+                      bundleType="starter"
+                      className="w-full py-3 bg-[#E9C46A] text-[#264653] text-lg font-semibold rounded-lg hover:bg-[#e0bb5e] transition-all duration-300 shadow-md hover:shadow-xl"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </Card>
+            
+            {/* Value Package */}
+            <div className="bg-white rounded-xl overflow-hidden shadow-xl transform transition-all duration-300 hover:scale-105 hover:shadow-2xl relative flex flex-col h-full">
+              <div className="absolute top-0 right-0 bg-[#E9C46A] text-[#264653] py-1 px-4 rounded-bl-lg font-medium">
+                Popular
+              </div>
+              
+              <div className="bg-gray-100 p-6">
+                <h3 className="text-2xl font-bold text-[#264653] mb-1">Value</h3>
+                <div className="flex items-baseline">
+                  <span className="text-3xl font-bold text-[#2A9D8F]">$74.99</span>
+                  <span className="ml-2 text-sm line-through text-gray-500">$86.97</span>
+                </div>
+              </div>
+              
+              <div className="p-6 space-y-4 flex-grow flex flex-col">
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Regular total</span>
+                    <span className="font-medium text-gray-700">3×$28.99 = $86.97</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">You pay</span>
+                    <span className="font-medium text-green-600">$74.99</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Unit price</span>
+                    <span className="font-medium text-gray-700">$24.99</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Savings</span>
+                    <span className="font-medium text-green-600">14% off</span>
+                  </div>
+                </div>
+                
+                <div className="pt-4 border-t border-gray-200 flex-grow flex flex-col">
+                  <p className="text-sm text-gray-600 mt-4">Science-backed formula</p>
+                  <div className="flex justify-center mt-2">
+                    <span className="text-[#F4A261] font-medium">★ Most popular ★</span>
+                  </div>
+                  <div className="mt-auto">
+                    <AddToCartButton
+                      priceId="price_value"
+                      flavor="Value Package"
+                      bundleType="value"
+                      className="w-full py-3 bg-[#2A9D8F] text-white text-lg font-semibold rounded-lg hover:bg-[#238276] transition-all duration-300 shadow-md hover:shadow-xl"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Premium Package */}
+            <div className="bg-white rounded-xl overflow-hidden shadow-xl transform transition-all duration-300 hover:scale-105 hover:shadow-2xl flex flex-col h-full">
+              <div className="bg-gray-100 p-6">
+                <h3 className="text-2xl font-bold text-[#264653] mb-1">Premium</h3>
+                <div className="flex items-baseline">
+                  <span className="text-3xl font-bold text-[#2A9D8F]">$139.99</span>
+                  <span className="ml-2 text-sm line-through text-gray-500">$173.94</span>
+                </div>
+              </div>
+              
+              <div className="p-6 space-y-4 flex-grow flex flex-col">
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Regular total</span>
+                    <span className="font-medium text-gray-700">6×$28.99 = $173.94</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">You pay</span>
+                    <span className="font-medium text-green-600">$139.99</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Unit price</span>
+                    <span className="font-medium text-gray-700">$23.33</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Savings</span>
+                    <span className="font-medium text-green-600">20% off + free ship</span>
+                  </div>
+                </div>
+                
+                <div className="pt-4 border-t border-gray-200 flex-grow flex flex-col">
+                  <p className="text-sm text-gray-600 mt-4">Chef-inspired flavours</p>
+                  <div className="flex justify-center mt-2">
+                    <span className="text-[#F4A261] font-medium">🏆 Best value 🏆</span>
+                  </div>
+                  <div className="mt-auto">
+                    <AddToCartButton
+                      priceId="price_premium"
+                      flavor="Premium Package"
+                      bundleType="premium"
+                      className="w-full py-3 bg-[#E9C46A] text-[#264653] text-lg font-semibold rounded-lg hover:bg-[#e0bb5e] transition-all duration-300 shadow-md hover:shadow-xl"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-12 text-center">
+            <p className="text-white/80 max-w-2xl mx-auto mb-6">
+              All packages include our chef-crafted flavors: Orange Cream, Lemon Meringue, and Refreshing Mint
+            </p>
+            <Button 
+              onClick={() => scrollToSection('product_details')}
+              className="px-8 py-3 bg-white text-[#2A9D8F] font-medium rounded-lg hover:bg-gray-100 transition-all duration-300 shadow-md hover:shadow-xl"
+            >
+              Learn More About OBEX
+            </Button>
+          </div>
         </div>
       </section>
 

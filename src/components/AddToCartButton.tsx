@@ -8,9 +8,17 @@ interface AddToCartButtonProps {
   priceId: string;
   flavor: string;
   className?: string;
+  quantity?: number;
+  bundleType?: 'starter' | 'value' | 'premium';
 }
 
-export default function AddToCartButton({ priceId, flavor, className }: AddToCartButtonProps) {
+export default function AddToCartButton({ 
+  priceId, 
+  flavor, 
+  className,
+  quantity = 1,
+  bundleType
+}: AddToCartButtonProps) {
   const { addToCart } = useCart();
 
   const handleAddToCart = () => {
@@ -20,18 +28,33 @@ export default function AddToCartButton({ priceId, flavor, className }: AddToCar
       toast.error(`Sorry, this product is currently unavailable`);
       return;
     }
+
+    // ALWAYS use fixed values for bundles, completely ignoring quantity prop
+    let bottlesToAdd: number;
     
-    // Get price from environment variable with fallback to 28.99 if not set
-    const pricePerUnit = Number(process.env.NEXT_PUBLIC_BOTTLE_PRICE || 28.99);
+    if (bundleType === 'starter') {
+      bottlesToAdd = 1;
+    } else if (bundleType === 'value') {
+      bottlesToAdd = 3;
+    } else if (bundleType === 'premium') {
+      bottlesToAdd = 6;
+    } else {
+      // Only use quantity prop if no bundleType specified
+      bottlesToAdd = quantity;
+    }
     
+    console.log(`Adding ${bottlesToAdd} bottles for bundle type: ${bundleType}`);
+    
+    // Add bottles to cart
     addToCart({
       priceId,
       flavor,
-      name: "ØBEX Reflux Relief Bottle",
-      quantity: 1,
-      pricePerUnit
+      name: "ØBEX Reflux Relief",
+      quantity: bottlesToAdd,
+      pricePerUnit: Number(process.env.NEXT_PUBLIC_BOTTLE_PRICE || 28.99)
     });
-    toast.success(`Added ${flavor} ØBEX to cart`);
+    
+    toast.success(`Added ${bottlesToAdd} bottle${bottlesToAdd > 1 ? 's' : ''} to cart`);
   };
 
   return (

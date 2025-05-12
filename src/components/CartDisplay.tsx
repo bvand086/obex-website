@@ -3,23 +3,30 @@
 import { useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
-import { Minus, Plus, Trash2, Check, AlertCircle } from 'lucide-react';
+import { Minus, Plus, Trash2, Check, AlertCircle, Palette } from 'lucide-react';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
+import FlavorSelector, { FlavorCounts } from '@/components/FlavorSelector';
 
 export default function CartDisplay() {
-  const { cartItems, removeFromCart, updateQuantity, getCartTotal } = useCart();
+  const { cartItems, removeFromCart, updateQuantity, updateFlavors, getCartTotal, freeShippingUnlocked, bottlesUntilFreeShipping, totalBottles, getDiscountPercent, currentTier } = useCart();
   const [isLoading, setIsLoading] = useState(false);
   const [couponCode, setCouponCode] = useState('');
   const [couponError, setCouponError] = useState('');
   const [couponSuccess, setCouponSuccess] = useState('');
   const [validatingCoupon, setValidatingCoupon] = useState(false);
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [appliedDiscount, setAppliedDiscount] = useState<{
     code: string;
     percentOff?: number;
     amountOff?: number;
     currency?: string;
   } | null>(null);
+
+  // Get discount percentage for items
+  const getTierDiscount = (): number => {
+    return getDiscountPercent();
+  };
 
   const handleQuantityChange = (itemId: string, newQuantity: number) => {
     if (newQuantity >= 1) {
@@ -30,6 +37,17 @@ export default function CartDisplay() {
   const handleRemoveItem = (itemId: string) => {
     removeFromCart(itemId);
     toast.success('Item removed from cart');
+  };
+
+  const handleEditFlavors = (itemId: string) => {
+    setEditingItemId(itemId);
+  };
+
+  const handleFlavorUpdate = (flavors: FlavorCounts) => {
+    if (editingItemId) {
+      updateFlavors(editingItemId, flavors);
+      setEditingItemId(null);
+    }
   };
 
   const handleCouponChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,10 +131,12 @@ export default function CartDisplay() {
         throw new Error('Some items in your cart have invalid price IDs. Please try adding them again.');
       }
       
+      // Create checkout items
       const checkoutItems = cartItems.map(item => ({
         priceId: item.priceId,
         quantity: item.quantity,
-        flavorName: item.flavor
+        flavorName: item.flavor,
+        free_shipping: freeShippingUnlocked
       }));
 
       const requestData = {
@@ -161,44 +181,117 @@ export default function CartDisplay() {
     );
   }
 
+  // Find the current item being edited
+  const editingItem = editingItemId ? cartItems.find(item => item.id === editingItemId) : null;
+  // Calculate bundle size if editing a bundle
+  const editingBundleSize = editingItem ? editingItem.quantity : 0;
+
+  // Get the appropriate tier message and colors
+  const tierBgColor = currentTier === 'premium' ? 'bg-[#2A9D8F]/10' : currentTier === 'value' ? 'bg-[#F4A261]/10' : '';
+  const tierTextColor = currentTier === 'premium' ? 'text-[#2A9D8F]' : currentTier === 'value' ? 'text-[#F4A261]' : '';
+  const tierMessage = currentTier === 'premium' 
+    ? "You've reached the Premium tier (20% off + $6.99 flat-rate shipping)" 
+    : currentTier === 'value' 
+      ? "You've reached the Value tier (14% off)" 
+      : "Add more bottles for discounts";
+
+  // Get the border color based on tier
+  const getTierBorderColor = () => {
+    if (currentTier === 'premium') return 'border-[#2A9D8F]/30';
+    if (currentTier === 'value') return 'border-[#F4A261]/30';
+    return 'border-[#E9C46A]/30';
+  };
+
   return (
     <div className="p-6">
+      {/* Tier Message */}
+      {totalBottles > 0 && (
+        <div className={`mb-6 p-3 rounded-lg text-center border ${tierBgColor} ${tierTextColor} ${getTierBorderColor()}`}>
+          <div className="flex items-center justify-center">
+            {currentTier === 'premium' && <Check className="h-5 w-5 mr-2 text-[#2A9D8F]" />}
+            <span className="font-medium">{tierMessage}</span>
+          </div>
+        </div>
+      )}
+      
+      {/* Free Shipping Banner */}
+      <div className={`mb-6 p-3 rounded-lg text-center ${freeShippingUnlocked 
+        ? 'bg-green-50 border border-green-200 text-green-700' 
+        : 'bg-gray-50 border border-gray-200 text-gray-600'}`}>
+        {freeShippingUnlocked ? (
+          <div className="flex items-center justify-center">
+            <Check className="h-5 w-5 mr-2 text-green-500" />
+            <span className="font-medium">$6.99 flat-rate shipping unlocked ✓</span>
+          </div>
+        ) : (
+          <span>Add {bottlesUntilFreeShipping} more {bottlesUntilFreeShipping === 1 ? 'bottle' : 'bottles'} for $6.99 flat-rate shipping</span>
+        )}
+      </div>
+      
       <div className="space-y-6">
         {cartItems.map((item) => (
-          <div key={item.id} className="flex items-center justify-between p-4 bg-white rounded-lg shadow">
-            <div className="flex-1">
-              <h3 className="font-medium">{item.name}</h3>
-              <p className="text-sm text-gray-500">{item.flavor}</p>
-              <p className="text-sm font-medium">${item.pricePerUnit.toFixed(2)}</p>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
+          <div key={item.id} className="p-4 bg-white rounded-lg shadow">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex-1">
+                <h3 className="font-medium">{item.name}</h3>
+                <p className="text-sm text-gray-500">{item.flavor}</p>
+                <div className="flex items-center mt-1">
+                  <p className="text-sm font-medium">${item.pricePerUnit.toFixed(2)} each × {item.quantity}</p>
+                  {getTierDiscount() > 0 && (
+                    <span className="ml-2 text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">
+                      {getTierDiscount()}% off
+                    </span>
+                  )}
+                  {freeShippingUnlocked && (
+                    <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
+                      + $6.99 flat-rate shipping
+                    </span>
+                  )}
+                </div>
+              </div>
+              
+              <div className="flex items-center">
+                <div className="flex items-center space-x-2">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                    className="h-8 w-8"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <span className="w-8 text-center">{item.quantity}</span>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                    className="h-8 w-8"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="icon"
-                  onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                  className="h-8 w-8"
+                  onClick={() => handleRemoveItem(item.id)}
+                  className="text-red-500 hover:text-red-600 hover:bg-red-50 ml-2"
                 >
-                  <Minus className="h-4 w-4" />
-                </Button>
-                <span className="w-8 text-center">{item.quantity}</span>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                  className="h-8 w-8"
-                >
-                  <Plus className="h-4 w-4" />
+                  <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
+            </div>
+            
+            {/* Flavor Selection Button */}
+            <div className="mt-3 pt-3 border-t">
               <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleRemoveItem(item.id)}
-                className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                variant="outline"
+                size="sm"
+                onClick={() => handleEditFlavors(item.id)}
+                className="text-[#2A9D8F] hover:text-[#264653] bg-gradient-to-r from-[#2A9D8F]/5 to-[#E9C46A]/5 hover:bg-gradient-to-r hover:from-[#2A9D8F]/10 hover:to-[#E9C46A]/10 w-full relative overflow-hidden group border-[#2A9D8F]/20 hover:border-[#2A9D8F]/50 transition-all duration-300"
               >
-                <Trash2 className="h-4 w-4" />
+                <div className="absolute inset-0 w-3 bg-gradient-to-r from-[#2A9D8F]/30 to-[#E9C46A]/30 -translate-x-full group-hover:translate-x-[800px] transition-all duration-1500 ease-in-out"></div>
+                <Palette className="h-4 w-4 mr-2 text-[#E9C46A]" />
+                <span className="font-medium">Choose Flavors</span>
               </Button>
             </div>
           </div>
@@ -246,20 +339,83 @@ export default function CartDisplay() {
         <div className="bg-gray-50 p-4 rounded-lg mb-4">
           <h3 className="font-medium mb-3">Order Summary</h3>
           <div className="flex justify-between mb-2">
-            <span className="text-gray-600">Subtotal</span>
+            <span className="text-gray-600">Subtotal ({totalBottles} {totalBottles === 1 ? 'bottle' : 'bottles'})</span>
             <span>${getCartTotal().toFixed(2)}</span>
           </div>
           
-          {appliedDiscount && (
+          {/* Volume Discount Section */}
+          {getTierDiscount() > 0 && (
             <div className="flex justify-between mb-2 text-green-600">
-              <span>Discount ({appliedDiscount.percentOff ? `${appliedDiscount.percentOff}%` : `$${(appliedDiscount.amountOff || 0) / 100}`})</span>
-              <span>-${(getCartTotal() - calculateDiscountedTotal()).toFixed(2)}</span>
+              <span className="flex items-center">
+                <span>{currentTier === 'premium' ? 'Premium' : 'Value'} Tier Discount</span>
+                <span className="ml-1 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
+                  {getTierDiscount()}% off
+                </span>
+              </span>
+              <span>
+                (Included in price)
+              </span>
+            </div>
+          )}
+
+          {/* Free Shipping Badge */}
+          {freeShippingUnlocked && (
+            <div className="flex justify-between mb-2 text-blue-600">
+              <span>Shipping</span>
+              <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">$6.99 FLAT RATE</span>
             </div>
           )}
           
-          <div className="border-t border-gray-200 my-2 pt-2 flex justify-between font-medium">
+          {/* Coupon Discount */}
+          {appliedDiscount && (
+            <div className="flex justify-between mb-2 text-green-600">
+              <span>Coupon Discount</span>
+              <span>
+                {appliedDiscount.percentOff 
+                  ? `-$${((getCartTotal() * appliedDiscount.percentOff) / 100).toFixed(2)}`
+                  : appliedDiscount.amountOff 
+                    ? `-$${(appliedDiscount.amountOff / 100).toFixed(2)}` 
+                    : '$0.00'
+                }
+              </span>
+            </div>
+          )}
+
+          <div className="border-t mt-2 pt-2 flex justify-between font-medium">
             <span>Total</span>
             <span>${calculateDiscountedTotal().toFixed(2)}</span>
+          </div>
+
+          {/* Volume Discount Tiers Information */}
+          <div className="mt-4 pt-4 border-t border-dashed">
+            <h4 className="text-sm font-medium text-gray-700 mb-2">Volume Discount Tiers</h4>
+            <div className="space-y-1 text-xs text-gray-600">
+              <div className="flex justify-between">
+                <span>1-2 bottles</span>
+                <span>$28.99 each</span>
+              </div>
+              <div className="flex justify-between">
+                <span>3-5 bottles (Value Tier)</span>
+                <span className="flex items-center">
+                  $24.99 each
+                  <span className="ml-1 bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full text-[10px]">
+                    14% off
+                  </span>
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span>6+ bottles (Premium Tier)</span>
+                <span className="flex items-center">
+                  $23.33 each
+                  <span className="ml-1 bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full text-[10px]">
+                    20% off
+                  </span>
+                  <span className="ml-1 bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full text-[10px]">
+                    + $6.99 ship
+                  </span>
+                </span>
+              </div>
+            </div>
           </div>
         </div>
         
@@ -271,6 +427,17 @@ export default function CartDisplay() {
           {isLoading ? 'Processing...' : 'Proceed to Checkout'}
         </Button>
       </div>
+
+      {/* Flavor Selector Modal */}
+      {editingItemId && (
+        <FlavorSelector
+          bundleSize={editingBundleSize}
+          initialFlavors={{}}
+          onCancel={() => setEditingItemId(null)}
+          onConfirm={handleFlavorUpdate}
+          isOpen={!!editingItemId}
+        />
+      )}
     </div>
   );
 } 
