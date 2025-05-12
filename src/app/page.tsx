@@ -1063,7 +1063,7 @@ export default function Home() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-500">Savings</span>
-                    <span className="font-medium text-green-600">20% off + free ship</span>
+                    <span className="font-medium text-green-600">20% off + Std. Shipping Included</span>
                   </div>
                 </div>
                 

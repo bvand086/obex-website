@@ -79,71 +79,72 @@ export async function POST(request: NextRequest) {
     const cancel_url = `${origin}/cancel`;
 
     // Prepare shipping options
-    const shipping_options: Stripe.Checkout.SessionCreateParams.ShippingOption[] = [
-      {
-        shipping_rate_data: {
-          type: 'fixed_amount',
-          fixed_amount: {
-            amount: 629, // $6.29 shipping fee
-            currency: 'cad',
-          },
-          display_name: 'Standard Shipping',
-          delivery_estimate: {
-            minimum: {
-              unit: 'business_day' as Stripe.Checkout.SessionCreateParams.ShippingOption.ShippingRateData.DeliveryEstimate.Minimum.Unit,
-              value: 5,
-            },
-            maximum: {
-              unit: 'business_day' as Stripe.Checkout.SessionCreateParams.ShippingOption.ShippingRateData.DeliveryEstimate.Maximum.Unit,
-              value: 10,
-            },
-          },
-        },
-      },
-      {
-        shipping_rate_data: {
-          type: 'fixed_amount',
-          fixed_amount: {
-            amount: 1299, // $12.99 shipping fee
-            currency: 'cad',
-          },
-          display_name: 'Express Shipping',
-          delivery_estimate: {
-            minimum: {
-              unit: 'business_day' as Stripe.Checkout.SessionCreateParams.ShippingOption.ShippingRateData.DeliveryEstimate.Minimum.Unit,
-              value: 1,
-            },
-            maximum: {
-              unit: 'business_day' as Stripe.Checkout.SessionCreateParams.ShippingOption.ShippingRateData.DeliveryEstimate.Maximum.Unit,
-              value: 3,
-            },
-          },
-        },
-      },
-    ];
+    let shipping_options: Stripe.Checkout.SessionCreateParams.ShippingOption[];
 
-    // Add free shipping option if eligible
     if (hasFreeShipping) {
-      shipping_options.unshift({
-        shipping_rate_data: {
-          type: 'fixed_amount',
-          fixed_amount: {
-            amount: 699, // $6.99 free shipping rate
-            currency: 'cad',
-          },
-          display_name: 'Free Shipping (6+ Bottles)',
-          delivery_estimate: {
-            minimum: {
-              unit: 'business_day' as Stripe.Checkout.SessionCreateParams.ShippingOption.ShippingRateData.DeliveryEstimate.Minimum.Unit,
-              value: 5,
+      // Premium Tier: Standard is free, Express is an upgrade cost
+      shipping_options = [
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: {
+              amount: 0, // $0.00 for standard
+              currency: 'cad',
             },
-            maximum: {
-              unit: 'business_day' as Stripe.Checkout.SessionCreateParams.ShippingOption.ShippingRateData.DeliveryEstimate.Maximum.Unit,
-              value: 10,
+            display_name: 'Standard Shipping (Included)',
+            delivery_estimate: {
+              minimum: { unit: 'business_day', value: 5 },
+              maximum: { unit: 'business_day', value: 10 },
             },
           },
         },
-      });
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: {
+              amount: 669, // $6.69 for express upgrade
+              currency: 'cad',
+            },
+            display_name: 'Express Shipping (Upgrade)',
+            delivery_estimate: {
+              minimum: { unit: 'business_day', value: 1 },
+              maximum: { unit: 'business_day', value: 3 },
+            },
+          },
+        },
+      ];
+    } else {
+      // Starter/Value Tiers: Regular shipping prices
+      shipping_options = [
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: {
+              amount: 629, // $6.29 standard shipping fee
+              currency: 'cad',
+            },
+            display_name: 'Standard Shipping',
+            delivery_estimate: {
+              minimum: { unit: 'business_day', value: 5 },
+              maximum: { unit: 'business_day', value: 10 },
+            },
+          },
+        },
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: {
+              amount: 1299, // $12.99 express shipping fee
+              currency: 'cad',
+            },
+            display_name: 'Express Shipping',
+            delivery_estimate: {
+              minimum: { unit: 'business_day', value: 1 },
+              maximum: { unit: 'business_day', value: 3 },
+            },
+          },
+        },
+      ];
     }
 
     // Prepare checkout session configuration

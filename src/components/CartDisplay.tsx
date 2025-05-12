@@ -190,7 +190,7 @@ export default function CartDisplay() {
   const tierBgColor = currentTier === 'premium' ? 'bg-[#2A9D8F]/10' : currentTier === 'value' ? 'bg-[#F4A261]/10' : '';
   const tierTextColor = currentTier === 'premium' ? 'text-[#2A9D8F]' : currentTier === 'value' ? 'text-[#F4A261]' : '';
   const tierMessage = currentTier === 'premium' 
-    ? "You've reached the Premium tier (20% off + $6.99 flat-rate shipping)" 
+    ? "You've reached the Premium tier (20% off + $6.29 flat-rate shipping)" 
     : currentTier === 'value' 
       ? "You've reached the Value tier (14% off)" 
       : "Add more bottles for discounts";
@@ -221,10 +221,10 @@ export default function CartDisplay() {
         {freeShippingUnlocked ? (
           <div className="flex items-center justify-center">
             <Check className="h-5 w-5 mr-2 text-green-500" />
-            <span className="font-medium">$6.99 flat-rate shipping unlocked ✓</span>
+            <span className="font-medium">$6.29 flat-rate shipping unlocked ✓</span>
           </div>
         ) : (
-          <span>Add {bottlesUntilFreeShipping} more {bottlesUntilFreeShipping === 1 ? 'bottle' : 'bottles'} for $6.99 flat-rate shipping</span>
+          <span>Add {bottlesUntilFreeShipping} more {bottlesUntilFreeShipping === 1 ? 'bottle' : 'bottles'} for $6.29 flat-rate shipping</span>
         )}
       </div>
       
@@ -244,7 +244,7 @@ export default function CartDisplay() {
                   )}
                   {freeShippingUnlocked && (
                     <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
-                      + $6.99 flat-rate shipping
+                      + $6.29 flat-rate shipping
                     </span>
                   )}
                 </div>
@@ -362,7 +362,7 @@ export default function CartDisplay() {
           {freeShippingUnlocked && (
             <div className="flex justify-between mb-2 text-blue-600">
               <span>Shipping</span>
-              <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">$6.99 FLAT RATE</span>
+              <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">$6.29 FLAT RATE</span>
             </div>
           )}
           
@@ -411,7 +411,7 @@ export default function CartDisplay() {
                     20% off
                   </span>
                   <span className="ml-1 bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full text-[10px]">
-                    + $6.99 ship
+                    + $6.29 ship
                   </span>
                 </span>
               </div>
