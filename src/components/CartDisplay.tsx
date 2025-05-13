@@ -48,7 +48,7 @@ const parseCartItemFlavorToCounts = (itemFlavor: string, itemQuantity: number): 
 };
 
 export default function CartDisplay() {
-  const { cartItems, removeFromCart, updateQuantity, updateFlavors, getCartTotal, freeShippingUnlocked, bottlesUntilFreeShipping, totalBottles, getDiscountPercent, currentTier } = useCart();
+  const { cartItems, removeFromCart, updateQuantity, updateFlavors, getCartTotal, freeShippingUnlocked, bottlesUntilFreeShipping, totalBottles, getDiscountPercent, currentTier, getUnitPrice } = useCart();
   const [isLoading, setIsLoading] = useState(false);
   const [couponCode, setCouponCode] = useState('');
   const [couponError, setCouponError] = useState('');
@@ -65,6 +65,11 @@ export default function CartDisplay() {
   // Get discount percentage for items
   const getTierDiscount = (): number => {
     return getDiscountPercent();
+  };
+
+  // Get the current unit price
+  const getCurrentUnitPrice = (): number => {
+    return getUnitPrice();
   };
 
   const handleQuantityChange = (itemId: string, newQuantity: number) => {
@@ -441,7 +446,7 @@ export default function CartDisplay() {
                 <span>1-2 bottles</span>
                 <span>$28.99 each</span>
               </div>
-              <div className="flex justify-between">
+              <div className={`flex justify-between ${currentTier === 'value' ? 'font-medium text-green-700' : ''}`}>
                 <span>3-5 bottles (Value Tier)</span>
                 <span className="flex items-center">
                   $24.99 each
@@ -450,7 +455,7 @@ export default function CartDisplay() {
                   </span>
                 </span>
               </div>
-              <div className="flex justify-between">
+              <div className={`flex justify-between ${currentTier === 'premium' ? 'font-medium text-green-700' : ''}`}>
                 <span>6+ bottles (Premium Tier)</span>
                 <span className="flex items-center">
                   $23.33 each

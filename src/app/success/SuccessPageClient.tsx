@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import Link from 'next/link';
@@ -36,41 +36,56 @@ interface OrderDetails {
 }
 
 export default function SuccessPageClient() {
-  const searchParams = useSearchParams();
-  const { clearCart } = useCart();
-  const sessionId = searchParams.get('session_id');
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
+  const [error, setError] = useState(false);
+  const searchParams = useSearchParams();
+  const { clearCart } = useCart();
+  const fetchAttempted = useRef(false);
+  
   useEffect(() => {
-    async function fetchOrderDetails() {
-      if (!sessionId) {
-        setLoading(false);
-        return;
-      }
-
+    clearCart();
+    
+    const sessionId = searchParams.get('session_id');
+    
+    if (!sessionId || fetchAttempted.current) return;
+    
+    const fetchOrderDetails = async () => {
+      fetchAttempted.current = true;
+      
       try {
         const response = await fetch(`/api/checkout-sessions/${sessionId}`);
+        if (!response.ok) throw new Error('Failed to fetch order details');
         
-        if (!response.ok) {
-          throw new Error('Failed to fetch order details');
-        }
-
         const data = await response.json();
         setOrderDetails(data);
-        clearCart();
       } catch (err) {
         console.error('Error fetching order details:', err);
-        setError('Unable to load order details. Your order has been placed successfully.');
+        setError(true);
       } finally {
         setLoading(false);
       }
-    }
-
+    };
+    
     fetchOrderDetails();
-  }, [sessionId, clearCart]);
+  }, [searchParams, clearCart]);
 
+  if (loading) {
+    return <div className="flex justify-center items-center min-h-[50vh]">
+      <Loader2 className="h-8 w-8 animate-spin text-[#2A9D8F]" />
+      <span className="ml-2">Loading order details...</span>
+    </div>;
+  }
+  
+  if (error) {
+    return <div className="text-center py-12">
+      <p className="text-red-500 mb-4">Failed to load order details.</p>
+      <Button asChild variant="outline">
+        <Link href="/">Return Home</Link>
+      </Button>
+    </div>;
+  }
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FAFAF9] to-[#F4F6F6]">
       {/* Background decorative elements */}
@@ -82,21 +97,13 @@ export default function SuccessPageClient() {
       <div className="max-w-md w-full space-y-8 p-8 bg-white/80 backdrop-blur-sm rounded-lg shadow-lg relative">
         <div className="text-center">
           <div className="flex justify-center mb-4">
-            {loading ? (
-              <Loader2 className="h-16 w-16 text-[#2A9D8F] animate-spin" />
-            ) : (
-              <CheckCircle className="h-16 w-16 text-green-500" />
-            )}
+            <CheckCircle className="h-16 w-16 text-green-500" />
           </div>
           
           <h1 className="text-3xl font-bold text-[#2A9D8F] mb-4">Thank You!</h1>
           <p className="text-xl text-gray-600 mb-8">Your order has been confirmed.</p>
           
-          {loading ? (
-            <p className="text-gray-500">Loading order details...</p>
-          ) : error ? (
-            <p className="text-gray-500">{error}</p>
-          ) : orderDetails ? (
+          {orderDetails && (
             <div className="space-y-6 text-left">
               <div className="border-b pb-4">
                 <h2 className="text-lg font-semibold text-[#264653] mb-2">Order Summary</h2>
@@ -139,8 +146,6 @@ export default function SuccessPageClient() {
                 </div>
               )}
             </div>
-          ) : (
-            <p className="text-gray-500">No order details available.</p>
           )}
           
           <div className="space-y-4 mt-8">

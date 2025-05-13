@@ -84,6 +84,9 @@ export function generateWelcome3Email(customerName: string, metadata: any) {
           
           <p style="font-size: 16px; margin-bottom: 30px;">Combining these strategies with your regular use of ØBEX can help provide some relief. As always, if you have any questions, please contact us at <a href="mailto:support@obexcanada.com" style="color: #2A9D8F; text-decoration: none;">support@obexcanada.com</a></p>
           
+          <p style="font-size: 16px; margin-bottom: 20px;">You selected the following flavors: ${metadata?.flavorSummary || 'your chosen flavors'}.</p>
+          <p style="font-size: 16px; margin-bottom: 20px;">Thanks to our new bundled pricing, you’re now getting the best value we’ve ever offered. These volume discounts mean more relief, for less.</p>
+          
           <p style="font-size: 16px;">To your health,<br>The ØBEX Team</p>
         </div>
       </body>
@@ -105,6 +108,9 @@ export function generateWelcome4Email(customerName: string, metadata: any) {
           <p style="font-size: 16px; margin-bottom: 20px;">Dear ${customerName},</p>
           
           <p style="font-size: 16px; margin-bottom: 25px;">We hope your ØBEX Reflux Relief is helping you enjoy your days with more comfort! We've created spaces where our community of users share their experiences, tips, and success stories, and we'd love for you to join us.</p>
+          
+          <p style="font-size: 16px; margin-bottom: 20px;">You selected the following flavors: ${metadata?.flavorSummary || 'your chosen flavors'}.</p>
+          <p style="font-size: 16px; margin-bottom: 20px;">Thanks to our new bundled pricing, you’re now getting the best value we’ve ever offered. These volume discounts mean more relief, for less.</p>
           
           <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
             <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Connect With Us</h2>
@@ -143,6 +149,9 @@ export function generateWelcome5Email(customerName: string, metadata: any) {
           <p style="font-size: 16px; margin-bottom: 20px;">Dear ${customerName},</p>
           
           <p style="font-size: 16px; margin-bottom: 25px;">We'd love to hear about your experience with ØBEX! Your feedback is invaluable as we continue to improve our products and help more people find natural relief from acid reflux.</p>
+          
+          <p style="font-size: 16px; margin-bottom: 20px;">You selected the following flavors: ${metadata?.flavorSummary || 'your chosen flavors'}.</p>
+          <p style="font-size: 16px; margin-bottom: 20px;">Thanks to our new bundled pricing, you’re now getting the best value we’ve ever offered. These volume discounts mean more relief, for less.</p>
           
           <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
             <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Share Your Feedback</h2>

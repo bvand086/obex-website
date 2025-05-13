@@ -77,10 +77,14 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     // Calculate item count (number of unique products)
     setItemCount(cartItems.length);
     
+  }, [cartItems]); // Only depend on cartItems for this effect
+
+  // Separate effect for pricing updates to avoid circular dependency
+  useEffect(() => {
     // Apply appropriate pricing based on tier
-    updatePricing(); // This calls setCartItems again, potentially causing loop? Let's log after it too.
-    console.log('[Effect] Finished updating pricing.'); // Log end of effect
-  }, [cartItems]); // Dependency on cartItems
+    updatePricing();
+    console.log('[Effect] Finished updating pricing.'); 
+  }, [totalBottles, currentTier]); // Depend on tier and totalBottles instead of cartItems
 
   // Get current discount percentage based on tier
   const getDiscountPercent = (): number => {
@@ -111,21 +115,19 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       console.log('[updatePricing] Current items before update:', currentItems); // Add log
       let changed = false;
       const updatedItems = currentItems.map(item => {
-        if (item.pricePerUnit !== unitPrice) {
-          changed = true;
-          return { ...item, pricePerUnit: unitPrice };
-        }
-        return item;
+        // Always update the price based on current tier to ensure consistency
+        changed = true;
+        return { ...item, pricePerUnit: unitPrice };
       });
       console.log('[updatePricing] Items after potential update:', updatedItems);
 
-      // Only update state if any item's price actually changed
-      if (!changed) {
-         console.log('[updatePricing] No actual price change in items, skipping setCartItems.');
+      // Only update state if there are items in the cart
+      if (updatedItems.length === 0) {
+         console.log('[updatePricing] Empty cart, skipping setCartItems.');
          return currentItems; // Return original items (same reference)
       }
 
-      console.log('[updatePricing] Prices changed, calling setCartItems.');
+      console.log('[updatePricing] Returning updated items with new prices.');
       return updatedItems; // Return the new array with updated prices
     });
   };
@@ -243,7 +245,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const getCartTotal = (): number => {
-    return cartItems.reduce((total, item) => total + item.pricePerUnit * item.quantity, 0);
+    // Use the current unit price based on tier to calculate cart total
+    return cartItems.reduce((total, item) => {
+      // Calculate price based on current tier discount
+      return total + item.pricePerUnit * item.quantity;
+    }, 0);
   };
 
   return (
