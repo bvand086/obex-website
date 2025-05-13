@@ -6,7 +6,46 @@ import { Button } from '@/components/ui/button';
 import { Minus, Plus, Trash2, Check, AlertCircle, Palette } from 'lucide-react';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
-import FlavorSelector, { FlavorCounts } from '@/components/FlavorSelector';
+import FlavorSelector, { FlavorCounts, FLAVORS } from '@/components/FlavorSelector';
+
+// Helper function to parse cart item flavor string to FlavorCounts
+const parseCartItemFlavorToCounts = (itemFlavor: string, itemQuantity: number): FlavorCounts => {
+  const counts: FlavorCounts = {};
+  let parsedCountTotal = 0;
+
+  // Try to parse "Flavor Name (count), Another (count)"
+  const complexParts = itemFlavor.split(', ');
+  const entryPattern = /(.+?)\s\((\d+)\)/; // Non-greedy name, then count
+
+  for (const part of complexParts) {
+    const match = part.match(entryPattern);
+    if (match) {
+      const name = match[1].trim();
+      const count = parseInt(match[2], 10);
+      const flavorDetail = FLAVORS.find(f => f.name === name);
+      if (flavorDetail) {
+        counts[flavorDetail.id] = (counts[flavorDetail.id] || 0) + count;
+        parsedCountTotal += count;
+      } else {
+         console.warn(`Parsed flavor name "${name}" not found in FLAVORS list.`);
+      }
+    }
+  }
+
+  // If complex parsing successfully accounts for the itemQuantity, use those counts.
+  if (parsedCountTotal === itemQuantity && Object.keys(counts).length > 0) {
+    return counts;
+  }
+
+  // If not fully parsed by complex (or not complex at all), try as a simple flavor name.
+  const singleFlavorDetail = FLAVORS.find(f => f.name === itemFlavor);
+  if (singleFlavorDetail) {
+    return { [singleFlavorDetail.id]: itemQuantity };
+  }
+  
+  console.warn(`Could not parse flavor string "${itemFlavor}" for quantity ${itemQuantity}. FlavorSelector will use default distribution.`);
+  return {}; 
+};
 
 export default function CartDisplay() {
   const { cartItems, removeFromCart, updateQuantity, updateFlavors, getCartTotal, freeShippingUnlocked, bottlesUntilFreeShipping, totalBottles, getDiscountPercent, currentTier } = useCart();
@@ -185,6 +224,12 @@ export default function CartDisplay() {
   const editingItem = editingItemId ? cartItems.find(item => item.id === editingItemId) : null;
   // Calculate bundle size if editing a bundle
   const editingBundleSize = editingItem ? editingItem.quantity : 0;
+
+  // Calculate initialFlavorCounts for the FlavorSelector
+  let initialFlavorCounts: FlavorCounts = {};
+  if (editingItem) {
+    initialFlavorCounts = parseCartItemFlavorToCounts(editingItem.flavor, editingItem.quantity);
+  }
 
   // Get the appropriate tier message and colors
   const tierBgColor = currentTier === 'premium' ? 'bg-[#2A9D8F]/10' : currentTier === 'value' ? 'bg-[#F4A261]/10' : '';
@@ -429,10 +474,10 @@ export default function CartDisplay() {
       </div>
 
       {/* Flavor Selector Modal */}
-      {editingItemId && (
+      {editingItemId && editingItem && (
         <FlavorSelector
-          bundleSize={editingBundleSize}
-          initialFlavors={{}}
+          bundleSize={editingItem.quantity}
+          initialFlavors={initialFlavorCounts}
           onCancel={() => setEditingItemId(null)}
           onConfirm={handleFlavorUpdate}
           isOpen={!!editingItemId}

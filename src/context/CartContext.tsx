@@ -143,38 +143,40 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       console.log('[addToCart Update] Running with prevItems:', prevItems);
       console.log('[addToCart Update] Item to add quantity:', itemToAdd.quantity);
 
-      // Check if the consolidated item already exists
-      const existingItem = prevItems.find(item => item.name === "ØBEX Reflux Relief"); // Or use a more robust ID check if needed
+      // Check if the item with the specific flavor already exists
+      const existingItem = prevItems.find(item => item.name === "ØBEX Reflux Relief" && item.flavor === itemToAdd.flavor);
 
       if (existingItem) {
         // Calculate the new quantity idempotently
         const newQuantity = existingItem.quantity + itemToAdd.quantity;
-        console.log(`[addToCart Update] Existing quantity: ${existingItem.quantity}, New calculated quantity: ${newQuantity}`);
+        console.log(`[addToCart Update] Existing flavor: ${existingItem.flavor}, Existing quantity: ${existingItem.quantity}, New calculated quantity: ${newQuantity}`);
 
         // Return a new array with the updated item
-        const updatedItems = [
-          {
-            ...existingItem,
-            quantity: newQuantity,
-            priceId: itemToAdd.priceId, // Ensure priceId is updated if needed (e.g., from different bundle buttons)
-            pricePerUnit: itemToAdd.pricePerUnit // Carry over initial price, useEffect will adjust
-          }
-        ];
-        toast.success(`Added ${itemToAdd.quantity} bottle(s). Total: ${newQuantity}`);
-        console.log('[addToCart Update] Returning updated item:', updatedItems);
+        const updatedItems = prevItems.map(item =>
+          item.id === existingItem.id
+            ? {
+                ...item,
+                quantity: newQuantity,
+                priceId: itemToAdd.priceId, // Ensure priceId is updated if needed
+                pricePerUnit: itemToAdd.pricePerUnit // Carry over initial price, useEffect will adjust
+              }
+            : item
+        );
+        toast.success(`Added ${itemToAdd.quantity} ${itemToAdd.flavor} bottle(s). Total: ${newQuantity}`);
+        console.log('[addToCart Update] Returning updated item list:', updatedItems);
         return updatedItems;
 
       } else {
-        // Add the first item to the cart
+        // Add the new item with its specific flavor to the cart
         const newItem: CartItem = {
           ...itemToAdd,
-          id: `obex-bottle-${Date.now()}`, // Use a consistent ID prefix
+          id: `obex-${itemToAdd.flavor.replace(/\s+/g, '-').toLowerCase()}-${Date.now()}`, // Unique ID including flavor
           name: "ØBEX Reflux Relief",      // Ensure consistent name
           // quantity is already set correctly in itemToAdd
         };
-        toast.success(`Added ${itemToAdd.quantity} bottle(s) to cart`);
+        toast.success(`Added ${itemToAdd.quantity} ${itemToAdd.flavor} bottle(s) to cart`);
         console.log('[addToCart Update] Adding new item:', newItem);
-        return [newItem];
+        return [...prevItems, newItem];
       }
     });
   };
