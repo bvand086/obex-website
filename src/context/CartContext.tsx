@@ -11,12 +11,13 @@ export interface CartItem {
   quantity: number;
   name: string;
   pricePerUnit: number;
-  flavor_breakdown: string;
+  flavor_breakdown: string; // Human-readable breakdown of flavors
+  flavor_counts?: Record<string, number>; // Structured mapping of flavor IDs to counts
 }
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (item: Omit<CartItem, 'id' | 'flavor_breakdown'> & { flavor_breakdown?: string }) => void;
+  addToCart: (item: Omit<CartItem, 'id' | 'flavor_breakdown'> & { flavor_breakdown?: string, flavor_counts?: Record<string, number> }) => void;
   removeFromCart: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   updateFlavors: (itemId: string, flavors: FlavorCounts) => void;
@@ -139,7 +140,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [cartItems]);
 
-  const addToCart = (itemToAdd: Omit<CartItem, 'id' | 'flavor_breakdown'> & { flavor_breakdown?: string }) => {
+  const addToCart = (itemToAdd: Omit<CartItem, 'id' | 'flavor_breakdown'> & { flavor_breakdown?: string, flavor_counts?: Record<string, number> }) => {
     console.log('[addToCart] Called with item:', itemToAdd);
     
     setCartItems(prevItems => {
@@ -154,6 +155,20 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         const newQuantity = existingItem.quantity + itemToAdd.quantity;
         console.log(`[addToCart Update] Existing flavor: ${existingItem.flavor}, Existing quantity: ${existingItem.quantity}, New calculated quantity: ${newQuantity}`);
 
+        // Create flavor counts object
+        const flavorName = itemToAdd.flavor;
+        const flavorId = FLAVORS.find(f => f.name === flavorName)?.id || 'default';
+        const flavorCounts = existingItem.flavor_counts ? { ...existingItem.flavor_counts } : {};
+        flavorCounts[flavorId] = (flavorCounts[flavorId] || 0) + itemToAdd.quantity;
+
+        // Create a readable breakdown
+        const flavorBreakdown = Object.entries(flavorCounts)
+          .map(([id, count]) => {
+            const name = FLAVORS.find(f => f.id === id)?.name || id;
+            return `${name}: ${count}`;
+          })
+          .join(', ');
+
         // Return a new array with the updated item
         const updatedItems = prevItems.map(item =>
           item.id === existingItem.id
@@ -162,7 +177,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
                 quantity: newQuantity,
                 priceId: itemToAdd.priceId, // Ensure priceId is updated if needed
                 pricePerUnit: itemToAdd.pricePerUnit, // Carry over initial price, useEffect will adjust
-                flavor_breakdown: JSON.stringify({ [item.flavor]: newQuantity }), // Update flavor_breakdown
+                flavor_breakdown: flavorBreakdown,
+                flavor_counts: flavorCounts
               }
             : item
         );
@@ -171,13 +187,21 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         return updatedItems;
 
       } else {
+        // Create flavor counts for a new item
+        const flavorName = itemToAdd.flavor;
+        const flavorId = FLAVORS.find(f => f.name === flavorName)?.id || 'default';
+        const flavorCounts = { [flavorId]: itemToAdd.quantity };
+
+        // Create a readable breakdown
+        const flavorBreakdown = `${flavorName}: ${itemToAdd.quantity}`;
+
         // Add the new item with its specific flavor to the cart
         const newItem: CartItem = {
           ...itemToAdd,
           id: `obex-${itemToAdd.flavor.replace(/\s+/g, '-').toLowerCase()}-${Date.now()}`, // Unique ID including flavor
           name: "ØBEX Reflux Relief",      // Ensure consistent name
-          flavor_breakdown: JSON.stringify({ [itemToAdd.flavor]: itemToAdd.quantity }), // Initialize flavor_breakdown
-          // quantity is already set correctly in itemToAdd
+          flavor_breakdown: flavorBreakdown,
+          flavor_counts: flavorCounts
         };
         toast.success(`Added ${itemToAdd.quantity} ${itemToAdd.flavor} bottle(s) to cart`);
         console.log('[addToCart Update] Adding new item:', newItem);
@@ -200,29 +224,61 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     if (quantity <= 0) {
       removeFromCart(itemId);
     } else {
-      setCartItems(prevItems =>
-        prevItems.map(item =>
-          item.id === itemId ? { 
-            ...item, 
-            quantity: quantity,
-            flavor_breakdown: JSON.stringify({ [item.flavor]: quantity }) // Update flavor_breakdown
-          } : item
-        )
-      );
+      setCartItems(prevItems => {
+        return prevItems.map(item => {
+          if (item.id === itemId) {
+            // Update the flavor_counts with the new quantity
+            const flavorCounts = item.flavor_counts || {};
+            
+            // If we have a single flavor, update its count
+            if (Object.keys(flavorCounts).length === 1) {
+              const flavorId = Object.keys(flavorCounts)[0];
+              flavorCounts[flavorId] = quantity;
+            } 
+            // If multiple flavors, adjust proportionally
+            else if (Object.keys(flavorCounts).length > 1) {
+              const totalCurrentCount = Object.values(flavorCounts).reduce((sum, count) => sum + count, 0);
+              if (totalCurrentCount > 0) {
+                Object.keys(flavorCounts).forEach(flavorId => {
+                  const ratio = flavorCounts[flavorId] / totalCurrentCount;
+                  flavorCounts[flavorId] = Math.round(ratio * quantity);
+                });
+                
+                // Adjust for rounding errors
+                const newTotal = Object.values(flavorCounts).reduce((sum, count) => sum + count, 0);
+                if (newTotal !== quantity) {
+                  const diff = quantity - newTotal;
+                  const firstFlavorId = Object.keys(flavorCounts)[0];
+                  flavorCounts[firstFlavorId] += diff;
+                }
+              }
+            }
+            
+            // Generate updated flavor breakdown text
+            const flavorBreakdown = Object.entries(flavorCounts)
+              .map(([id, count]) => {
+                const name = FLAVORS.find(f => f.id === id)?.name || id;
+                return `${name}: ${count}`;
+              })
+              .join(', ');
+              
+            return { 
+              ...item, 
+              quantity, 
+              flavor_breakdown: flavorBreakdown,
+              flavor_counts: flavorCounts
+            };
+          }
+          return item;
+        });
+      });
     }
   };
 
   const updateFlavors = (itemId: string, flavors: FlavorCounts) => {
-    // For our simplified approach, we're not dealing with flavor counts directly
-    // This would be a place to update the flavor of an item if needed
-    // NB: The previous logic here created a composite item.flavor string, which is not desired.
-    // This function's usage and interaction with FlavorSelector should be reviewed.
-    // For now, it will not modify item flavor data to prevent incorrect states.
-    console.warn(`[updateFlavors] Called for itemId: ${itemId}. Flavor update logic needs review for the new cart item structure. Input flavors:`, flavors);
-    /*
     setCartItems(prevItems => prevItems.map(item => {
       if (item.id === itemId) {
-        // Convert flavors to a single flavor string
+        // Generate a human-readable flavor string
         const flavorString = Object.entries(flavors)
           .filter(([_, count]) => count > 0)
           .map(([flavorId, count]) => {
@@ -231,12 +287,26 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           })
           .join(', ');
         
-        return { ...item, flavor: flavorString };
+        // Create a readable breakdown for display
+        const flavorBreakdown = Object.entries(flavors)
+          .filter(([_, count]) => count > 0)
+          .map(([flavorId, count]) => {
+            const flavorName = FLAVORS.find(f => f.id === flavorId)?.name || flavorId;
+            return `${flavorName}: ${count}`;
+          })
+          .join(', ');
+        
+        return { 
+          ...item, 
+          flavor: flavorString,
+          flavor_breakdown: flavorBreakdown,
+          flavor_counts: { ...flavors } // Store structured flavor data
+        };
       }
       return item;
     }));
-    */
-    toast.success('Updated flavor selection (pending review of update logic)');
+    
+    toast.success('Updated flavor selection');
   };
 
   const clearCart = () => {

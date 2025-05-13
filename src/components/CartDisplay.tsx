@@ -175,15 +175,30 @@ export default function CartDisplay() {
         throw new Error('Some items in your cart have invalid price IDs. Please try adding them again.');
       }
       
-      // Create checkout items
-      const checkoutItems = cartItems.map(item => ({
-        priceId: item.priceId,
-        quantity: item.quantity,
-        flavorName: item.flavor,
-        free_shipping: freeShippingUnlocked,
-        pricePerUnit: item.pricePerUnit,
-        flavor_breakdown: item.flavor_breakdown
-      }));
+      // Create checkout items with detailed flavor breakdown
+      const checkoutItems = cartItems.map(item => {
+        // Parse flavor information into a structured format
+        const flavorCounts = parseCartItemFlavorToCounts(item.flavor, item.quantity);
+        
+        // Create a readable flavor breakdown for shipping purposes
+        const flavorBreakdown = Object.entries(flavorCounts)
+          .map(([flavorId, count]) => {
+            const flavor = FLAVORS.find(f => f.id === flavorId);
+            return flavor ? `${flavor.name}: ${count}` : null;
+          })
+          .filter(Boolean)
+          .join(', ');
+
+        return {
+          priceId: item.priceId,
+          quantity: item.quantity,
+          flavorName: item.flavor,
+          free_shipping: freeShippingUnlocked,
+          pricePerUnit: item.pricePerUnit,
+          flavor_breakdown: flavorBreakdown,
+          flavor_counts: flavorCounts // Send structured data for processing
+        };
+      });
 
       const requestData = {
         cartItems: checkoutItems,

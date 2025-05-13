@@ -13,7 +13,8 @@ interface CartItem {
   priceId: string;
   quantity: number;
   flavorName?: string;
-  flavor_breakdown?: string; // JSON string of flavor counts
+  flavor_breakdown?: string; // Readable breakdown of flavors (e.g. "Mint: 2, Cherry: 3")
+  flavor_counts?: Record<string, number>; // Structured format of flavor IDs to quantities
   free_shipping?: boolean;
   pricePerUnit: number; // Added to receive discounted price from frontend
 }
@@ -66,7 +67,9 @@ export async function POST(request: NextRequest) {
         currency: 'cad',
         product_data: {
           name: 'ØBEX Reflux Relief Bottle',
-          description: `Flavor: ${item.flavorName || 'Not specified'}`,
+          description: item.flavor_breakdown 
+            ? `Flavors: ${item.flavor_breakdown}` 
+            : `Flavor: ${item.flavorName || 'Not specified'}`,
           metadata: {
             flavor_breakdown: item.flavor_breakdown || '',
           },
@@ -164,6 +167,7 @@ export async function POST(request: NextRequest) {
           flavor: item.flavorName,
           qty: item.quantity,
           flavor_breakdown: item.flavor_breakdown || '',
+          flavor_details: item.flavor_counts || {},
           free_shipping: item.free_shipping || false
         }))),
       },
