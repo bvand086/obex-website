@@ -11,11 +11,12 @@ export interface CartItem {
   quantity: number;
   name: string;
   pricePerUnit: number;
+  flavor_breakdown: string;
 }
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (item: Omit<CartItem, 'id'>) => void;
+  addToCart: (item: Omit<CartItem, 'id' | 'flavor_breakdown'> & { flavor_breakdown?: string }) => void;
   removeFromCart: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   updateFlavors: (itemId: string, flavors: FlavorCounts) => void;
@@ -136,7 +137,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [cartItems]);
 
-  const addToCart = (itemToAdd: Omit<CartItem, 'id'>) => {
+  const addToCart = (itemToAdd: Omit<CartItem, 'id' | 'flavor_breakdown'> & { flavor_breakdown?: string }) => {
     console.log('[addToCart] Called with item:', itemToAdd);
     
     setCartItems(prevItems => {
@@ -158,7 +159,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
                 ...item,
                 quantity: newQuantity,
                 priceId: itemToAdd.priceId, // Ensure priceId is updated if needed
-                pricePerUnit: itemToAdd.pricePerUnit // Carry over initial price, useEffect will adjust
+                pricePerUnit: itemToAdd.pricePerUnit, // Carry over initial price, useEffect will adjust
+                flavor_breakdown: JSON.stringify({ [item.flavor]: newQuantity }), // Update flavor_breakdown
               }
             : item
         );
@@ -172,6 +174,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           ...itemToAdd,
           id: `obex-${itemToAdd.flavor.replace(/\s+/g, '-').toLowerCase()}-${Date.now()}`, // Unique ID including flavor
           name: "ØBEX Reflux Relief",      // Ensure consistent name
+          flavor_breakdown: JSON.stringify({ [itemToAdd.flavor]: itemToAdd.quantity }), // Initialize flavor_breakdown
           // quantity is already set correctly in itemToAdd
         };
         toast.success(`Added ${itemToAdd.quantity} ${itemToAdd.flavor} bottle(s) to cart`);
@@ -197,7 +200,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     } else {
       setCartItems(prevItems =>
         prevItems.map(item =>
-          item.id === itemId ? { ...item, quantity: quantity } : item
+          item.id === itemId ? { 
+            ...item, 
+            quantity: quantity,
+            flavor_breakdown: JSON.stringify({ [item.flavor]: quantity }) // Update flavor_breakdown
+          } : item
         )
       );
     }
@@ -206,6 +213,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const updateFlavors = (itemId: string, flavors: FlavorCounts) => {
     // For our simplified approach, we're not dealing with flavor counts directly
     // This would be a place to update the flavor of an item if needed
+    // NB: The previous logic here created a composite item.flavor string, which is not desired.
+    // This function's usage and interaction with FlavorSelector should be reviewed.
+    // For now, it will not modify item flavor data to prevent incorrect states.
+    console.warn(`[updateFlavors] Called for itemId: ${itemId}. Flavor update logic needs review for the new cart item structure. Input flavors:`, flavors);
+    /*
     setCartItems(prevItems => prevItems.map(item => {
       if (item.id === itemId) {
         // Convert flavors to a single flavor string
@@ -221,8 +233,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       }
       return item;
     }));
-    
-    toast.success('Updated flavor selection');
+    */
+    toast.success('Updated flavor selection (pending review of update logic)');
   };
 
   const clearCart = () => {

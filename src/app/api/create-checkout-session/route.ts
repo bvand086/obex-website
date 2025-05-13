@@ -15,6 +15,7 @@ interface CartItem {
   flavorName?: string;
   flavor_breakdown?: string; // JSON string of flavor counts
   free_shipping?: boolean;
+  pricePerUnit: number; // Added to receive discounted price from frontend
 }
 
 interface CheckoutRequest {
@@ -70,7 +71,7 @@ export async function POST(request: NextRequest) {
             flavor_breakdown: item.flavor_breakdown || '',
           },
         },
-        unit_amount: 2899, // Amount in cents ($28.99)
+        unit_amount: Math.round(item.pricePerUnit * 100), // Use discounted price from frontend
       }
     }));
 

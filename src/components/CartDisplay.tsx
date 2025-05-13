@@ -175,7 +175,9 @@ export default function CartDisplay() {
         priceId: item.priceId,
         quantity: item.quantity,
         flavorName: item.flavor,
-        free_shipping: freeShippingUnlocked
+        free_shipping: freeShippingUnlocked,
+        pricePerUnit: item.pricePerUnit,
+        flavor_breakdown: item.flavor_breakdown
       }));
 
       const requestData = {
