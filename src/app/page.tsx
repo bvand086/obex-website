@@ -758,11 +758,11 @@ export default function Home() {
                   </div>
                 </div>
                 
-                <h3 className="text-2xl font-bold text-center text-green-700 mb-4">Refreshing Mint</h3>
+                <h3 className="text-2xl font-bold text-center text-green-700 mb-4">Smooth Mint</h3>
                 
                 <div className="relative flex-grow overflow-hidden">
                   <div className="h-[180px] flex items-center">
-                    <p className="text-gray-700 leading-relaxed transform transition-transform duration-500 group-hover:translate-y-[-8px] opacity-100 group-hover:opacity-0">Experience the crisp and invigorating taste of refreshing mint. This classic flavour not only soothes your senses but also provides a cooling comforting sensation.</p>
+                    <p className="text-gray-700 leading-relaxed transform transition-transform duration-500 group-hover:translate-y-[-8px] opacity-100 group-hover:opacity-0">Experience the crisp and invigorating taste of smooth mint. This classic flavour not only soothes your senses but also provides a cooling comforting sensation.</p>
                   </div>
 
                   {/* Hover details */}
@@ -784,7 +784,7 @@ export default function Home() {
                     </ul>
                     <AddToCartButton
                       priceId="price_1CDEFGHIJKLMNOPQRSTUVWX"
-                      flavor="Refreshing Mint"
+                      flavor="Smooth Mint"
                       className="mt-4 mx-auto px-6 py-2 bg-gradient-to-r from-green-400 to-green-600 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all transform hover:scale-105"
                     />
                   </div>
@@ -1087,7 +1087,7 @@ export default function Home() {
           
           <div className="mt-12 text-center">
             <p className="text-white/80 max-w-2xl mx-auto mb-6">
-              All packages include our chef-crafted flavors: Orange Cream, Lemon Meringue, and Refreshing Mint
+              All packages include our chef-crafted flavors: Orange Cream, Lemon Meringue, and Smooth Mint
             </p>
             <Button 
               onClick={() => scrollToSection('product_details')}

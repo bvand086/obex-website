@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 
 // Available flavors and their display info
 export const FLAVORS = [
-  { id: 'mint', name: 'Refreshing Mint', color: 'green', bgColor: '#2A9D8F', textColor: '#FFFFFF' },
+  { id: 'mint', name: 'Smooth Mint', color: 'green', bgColor: '#2A9D8F', textColor: '#FFFFFF' },
   { id: 'lemon', name: 'Lemon Meringue', color: 'yellow', bgColor: '#E9C46A', textColor: '#264653' },
   { id: 'orange', name: 'Orange Cream', color: 'orange', bgColor: '#F4A261', textColor: '#264653' }
 ];
