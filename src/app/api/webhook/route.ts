@@ -118,25 +118,88 @@ export async function POST(req: NextRequest) {
           }
 
           // Get cart items from metadata if available
-          let cartItems: {flavor?: string, qty?: number}[] = [];
+          let cartItems: {
+            flavor?: string, 
+            qty?: number, 
+            flavor_breakdown?: string,
+            ship_flavors?: string,
+            order_summary?: string,
+            flavor_details?: Record<string, number>
+          }[] = [];
           let productDetailsHtml = '';
           
           if (session.metadata?.cart_details) {
             try {
               cartItems = JSON.parse(session.metadata.cart_details);
+              console.log('🛒 Cart details parsed:', JSON.stringify(cartItems, null, 2));
               
-              // Generate HTML for multiple items if available
+              // Generate HTML for multiple items with detailed flavor information
               if (cartItems.length > 0) {
-                productDetailsHtml = cartItems.map(item => 
-                  `<p style="margin: 10px 0;"><strong>${item.qty}x</strong> ØBEX Reflux Relief - ${item.flavor || 'Not specified'}</p>`
-                ).join('');
+                productDetailsHtml = cartItems.map(item => {
+                  // Use the most detailed flavor information available
+                  const flavorInfo = item.ship_flavors || item.flavor_breakdown || item.flavor || 'Not specified';
+                  
+                  return `
+                    <div style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                      <p style="margin: 5px 0;"><strong>${item.qty || 1}x ØBEX Reflux Relief</strong></p>
+                      <p style="margin: 5px 0; color: #e63946; font-weight: bold;">SHIP THESE FLAVORS: ${flavorInfo}</p>
+                    </div>
+                  `;
+                }).join('');
               }
             } catch (error) {
               console.error('Error parsing cart details:', error);
+              console.error('Raw cart_details:', session.metadata.cart_details);
+            }
+          }
+
+          // If we have the shipping_guide in metadata, add it prominently
+          if (session.metadata?.SHIPPING_GUIDE) {
+            productDetailsHtml = `
+              <div style="background-color: #fde2e2; border: 2px solid #e63946; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                <h3 style="color: #e63946; margin-top: 0;">IMPORTANT - SHIPPING INSTRUCTIONS</h3>
+                <p style="font-weight: bold; color: #333;">${session.metadata.SHIPPING_GUIDE}</p>
+              </div>
+            ` + productDetailsHtml;
+          }
+          
+          // Look for flavor information in line items if cart details don't have flavor info
+          if (!productDetailsHtml.includes('SHIP THESE FLAVORS') && session.line_items) {
+            try {
+              const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
+              
+              if (lineItems.data && lineItems.data.length > 0) {
+                const itemsHtml = lineItems.data.map(item => {
+                  // Extract flavor info from the description or name
+                  const description = item.description || '';
+                  const name = item.description || '';
+                  
+                  let flavorInfo = 'Not specified';
+                  if (description.includes('FLAVORS TO SHIP:')) {
+                    flavorInfo = description.split('FLAVORS TO SHIP:')[1].trim();
+                  } else if (name.includes('SHIP:')) {
+                    flavorInfo = name.split('SHIP:')[1].trim();
+                  }
+                  
+                  return `
+                    <div style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                      <p style="margin: 5px 0;"><strong>${item.quantity}x ${item.description || 'ØBEX Reflux Relief'}</strong></p>
+                      <p style="margin: 5px 0; color: #e63946; font-weight: bold;">SHIP THESE FLAVORS: ${flavorInfo}</p>
+                    </div>
+                  `;
+                }).join('');
+                
+                // If we got flavors from line items, use that
+                if (itemsHtml.includes('SHIP THESE FLAVORS')) {
+                  productDetailsHtml = itemsHtml;
+                }
+              }
+            } catch (error) {
+              console.error('Error retrieving line items:', error);
             }
           }
           
-          // If no cart details found, fall back to the custom fields approach
+          // If no cart details found with flavor info, fall back to the default approach
           if (productDetailsHtml === '') {
             let selectedFlavor = 'Not specified';
             if (session.custom_fields && session.custom_fields.length > 0) {
@@ -156,8 +219,12 @@ export async function POST(req: NextRequest) {
               }
             }
             
-            productDetailsHtml = `<p style="margin: 10px 0;"><strong>Product:</strong> ØBEX Reflux Relief</p>
-                                 <p style="margin: 10px 0;"><strong>Flavor:</strong> ${selectedFlavor}</p>`;
+            productDetailsHtml = `
+              <div style="margin-bottom: 15px;">
+                <p style="margin: 5px 0;"><strong>Product:</strong> ØBEX Reflux Relief</p>
+                <p style="margin: 5px 0;"><strong>Flavor:</strong> ${selectedFlavor}</p>
+              </div>
+            `;
           }
 
           // Determine product name
@@ -212,17 +279,24 @@ export async function POST(req: NextRequest) {
 
           console.log('📧 Customer confirmation email sent');
 
-          // Send internal notification email
+          // Send internal notification email with prominent flavor information
           await resend.emails.send({
             from: 'ØBEX Orders <support@obexcanada.com>',
             to: ['obexincorporated@gmail.com'],
-            subject: `New ØBEX Order - ${session.id}`,
+            subject: `New ØBEX Order - SHIP: ${session.metadata?.shipping_flavors || 'Check flavors in order details'}`,
             html: `
               <!DOCTYPE html>
               <html>
                 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #ffffff;">
                   <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
                     <h1 style="color: #2A9D8F; margin-bottom: 25px;">New Order Received</h1>
+                    
+                    ${session.metadata?.SHIPPING_GUIDE ? `
+                      <div style="background-color: #f8eaec; border: 2px solid #e63946; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                        <h3 style="color: #e63946; margin-top: 0; margin-bottom: 10px;">⚠️ SHIPPING INSTRUCTIONS ⚠️</h3>
+                        <p style="font-weight: bold; font-size: 16px;">${session.metadata.SHIPPING_GUIDE}</p>
+                      </div>
+                    ` : ''}
                     
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
                       <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Order Details</h2>

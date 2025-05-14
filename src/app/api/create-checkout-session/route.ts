@@ -61,22 +61,31 @@ export async function POST(request: NextRequest) {
 
     // ALTERNATIVE APPROACH: Don't use priceId but create a line item with adjustable pricing
     // This works in both test and live modes regardless of price ID existence
-    const line_items = validCartItems.map((item) => ({
-      quantity: item.quantity,
-      price_data: {
-        currency: 'cad',
-        product_data: {
-          name: 'ØBEX Reflux Relief Bottle',
-          description: item.flavor_breakdown 
-            ? `Flavors: ${item.flavor_breakdown}` 
-            : `Flavor: ${item.flavorName || 'Not specified'}`,
-          metadata: {
-            flavor_breakdown: item.flavor_breakdown || '',
+    const line_items = validCartItems.map((item) => {
+      // Format flavor breakdown for the product name and description
+      const flavorDetails = item.flavor_breakdown 
+        ? item.flavor_breakdown 
+        : (item.flavorName ? item.flavorName : 'Not specified');
+
+      return {
+        quantity: item.quantity,
+        price_data: {
+          currency: 'cad',
+          product_data: {
+            name: `ØBEX Reflux Relief - SHIP: ${flavorDetails}`,
+            description: item.flavor_breakdown 
+              ? `IMPORTANT - FLAVORS TO SHIP: ${item.flavor_breakdown}` 
+              : `IMPORTANT - Flavor to ship: ${item.flavorName || 'Not specified'}`,
+            metadata: {
+              flavors_to_ship: item.flavor_breakdown || item.flavorName || 'Not specified',
+              flavor_counts: JSON.stringify(item.flavor_counts || {}),
+              flavor_summary: `Total: ${item.quantity} bottles - ${item.flavor_breakdown || item.flavorName || 'Not specified'}`
+            },
           },
-        },
-        unit_amount: Math.round(item.pricePerUnit * 100), // Use discounted price from frontend
-      }
-    }));
+          unit_amount: Math.round(item.pricePerUnit * 100), // Use discounted price from frontend
+        }
+      };
+    });
 
     const origin = request.headers.get('origin') || 'http://localhost:3000';
     const success_url = `${origin}/success?session_id={CHECKOUT_SESSION_ID}`;
@@ -164,12 +173,26 @@ export async function POST(request: NextRequest) {
       shipping_options,
       metadata: {
         cart_details: JSON.stringify(validCartItems.map(item => ({
+          order_summary: `${item.quantity} bottles - ${item.flavor_breakdown || item.flavorName || 'Not specified'}`,
+          ship_flavors: item.flavor_breakdown || item.flavorName || 'Not specified',
+          quantity: item.quantity,
           flavor: item.flavorName,
-          qty: item.quantity,
           flavor_breakdown: item.flavor_breakdown || '',
           flavor_details: item.flavor_counts || {},
           free_shipping: item.free_shipping || false
         }))),
+        // Add summarized flavor information at the top level
+        flavors_summary: validCartItems.map(item => 
+          `${item.quantity} bottles: ${item.flavor_breakdown || item.flavorName || 'Not specified'}`
+        ).join(' | '),
+        shipping_flavors: validCartItems.map(item => 
+          item.flavor_breakdown || item.flavorName || 'Not specified'
+        ).join(' | '),
+        total_bottles: validCartItems.reduce((sum, item) => sum + item.quantity, 0).toString(),
+        // Add a clear shipping guide at the top level
+        SHIPPING_GUIDE: validCartItems.map(item => 
+          `SHIP: ${item.quantity} bottles - ${item.flavor_breakdown || item.flavorName || 'Not specified'}`
+        ).join(' | ')
       },
     };
 
