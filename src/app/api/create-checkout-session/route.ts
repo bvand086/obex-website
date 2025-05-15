@@ -9,6 +9,20 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2024-04-10',
 });
 
+// Define server-side version of the FLAVORS array
+const SERVER_FLAVORS = [
+  { id: 'mint', name: 'Smooth Mint' },
+  { id: 'lemon', name: 'Lemon Meringue' },
+  { id: 'orange', name: 'Orange Cream' }
+];
+
+// Helper function to check if a string contains any flavor names
+function containsFlavorName(str: string): boolean {
+  if (!str) return false;
+  const lowercaseStr = str.toLowerCase();
+  return SERVER_FLAVORS.some(flavor => lowercaseStr.includes(flavor.name.toLowerCase()));
+}
+
 interface CartItem {
   priceId: string;
   quantity: number;
@@ -63,9 +77,27 @@ export async function POST(request: NextRequest) {
     // This works in both test and live modes regardless of price ID existence
     const line_items = validCartItems.map((item) => {
       // Format flavor breakdown for the product name and description
-      const flavorDetails = item.flavor_breakdown 
-        ? item.flavor_breakdown 
-        : (item.flavorName ? item.flavorName : 'Not specified');
+      let flavorDetails = item.flavor_breakdown;
+      
+      // If flavor_breakdown is empty or appears to be a package name (not containing any flavor names)
+      if (!flavorDetails || 
+          !containsFlavorName(flavorDetails) || 
+          flavorDetails.toLowerCase().includes('package')) {
+        
+        // Use flavorName if it contains actual flavor information
+        if (item.flavorName && containsFlavorName(item.flavorName)) {
+          flavorDetails = item.flavorName;
+        } else {
+          // Generate default even distribution if all else fails
+          const baseCount = Math.floor(item.quantity / SERVER_FLAVORS.length);
+          const remainder = item.quantity % SERVER_FLAVORS.length;
+          
+          flavorDetails = SERVER_FLAVORS.map((flavor, index: number) => {
+            const count = baseCount + (index < remainder ? 1 : 0);
+            return `${flavor.name}: ${count}`;
+          }).join(', ');
+        }
+      }
 
       return {
         quantity: item.quantity,
@@ -73,13 +105,11 @@ export async function POST(request: NextRequest) {
           currency: 'cad',
           product_data: {
             name: `ØBEX Reflux Relief - SHIP: ${flavorDetails}`,
-            description: item.flavor_breakdown 
-              ? `IMPORTANT - FLAVORS TO SHIP: ${item.flavor_breakdown}` 
-              : `IMPORTANT - Flavor to ship: ${item.flavorName || 'Not specified'}`,
+            description: `IMPORTANT - FLAVORS TO SHIP: ${flavorDetails}`,
             metadata: {
-              flavors_to_ship: item.flavor_breakdown || item.flavorName || 'Not specified',
+              flavors_to_ship: flavorDetails || 'Not specified',
               flavor_counts: JSON.stringify(item.flavor_counts || {}),
-              flavor_summary: `Total: ${item.quantity} bottles - ${item.flavor_breakdown || item.flavorName || 'Not specified'}`
+              flavor_summary: `Total: ${item.quantity} bottles - ${flavorDetails}`
             },
           },
           unit_amount: Math.round(item.pricePerUnit * 100), // Use discounted price from frontend
@@ -172,27 +202,90 @@ export async function POST(request: NextRequest) {
       },
       shipping_options,
       metadata: {
-        cart_details: JSON.stringify(validCartItems.map(item => ({
-          order_summary: `${item.quantity} bottles - ${item.flavor_breakdown || item.flavorName || 'Not specified'}`,
-          ship_flavors: item.flavor_breakdown || item.flavorName || 'Not specified',
-          quantity: item.quantity,
-          flavor: item.flavorName,
-          flavor_breakdown: item.flavor_breakdown || '',
-          flavor_details: item.flavor_counts || {},
-          free_shipping: item.free_shipping || false
-        }))),
+        cart_details: JSON.stringify(validCartItems.map(item => {
+          // Ensure flavor information is never a package name
+          let flavorInfo = item.flavor_breakdown || item.flavorName || 'Not specified';
+          
+          // Check if flavor info appears to be a package name
+          if (!containsFlavorName(flavorInfo) || 
+              flavorInfo.toLowerCase().includes('package')) {
+            // Generate default even distribution
+            const baseCount = Math.floor(item.quantity / SERVER_FLAVORS.length);
+            const remainder = item.quantity % SERVER_FLAVORS.length;
+            
+            flavorInfo = SERVER_FLAVORS.map((flavor, index: number) => {
+              const count = baseCount + (index < remainder ? 1 : 0);
+              return `${flavor.name}: ${count}`;
+            }).join(', ');
+          }
+          
+          return {
+            order_summary: `${item.quantity} bottles - ${flavorInfo}`,
+            ship_flavors: flavorInfo,
+            quantity: item.quantity,
+            flavor: item.flavorName,
+            flavor_breakdown: item.flavor_breakdown || '',
+            flavor_details: item.flavor_counts || {},
+            free_shipping: item.free_shipping || false
+          };
+        })),
         // Add summarized flavor information at the top level
-        flavors_summary: validCartItems.map(item => 
-          `${item.quantity} bottles: ${item.flavor_breakdown || item.flavorName || 'Not specified'}`
-        ).join(' | '),
-        shipping_flavors: validCartItems.map(item => 
-          item.flavor_breakdown || item.flavorName || 'Not specified'
-        ).join(' | '),
+        flavors_summary: validCartItems.map(item => {
+          let flavorInfo = item.flavor_breakdown || item.flavorName || 'Not specified';
+          
+          // Check if flavor info appears to be a package name
+          if (!containsFlavorName(flavorInfo) || 
+              flavorInfo.toLowerCase().includes('package')) {
+            // Generate default even distribution
+            const baseCount = Math.floor(item.quantity / SERVER_FLAVORS.length);
+            const remainder = item.quantity % SERVER_FLAVORS.length;
+            
+            flavorInfo = SERVER_FLAVORS.map((flavor, index: number) => {
+              const count = baseCount + (index < remainder ? 1 : 0);
+              return `${flavor.name}: ${count}`;
+            }).join(', ');
+          }
+          
+          return `${item.quantity} bottles: ${flavorInfo}`;
+        }).join(' | '),
+        shipping_flavors: validCartItems.map(item => {
+          let flavorInfo = item.flavor_breakdown || item.flavorName || 'Not specified';
+          
+          // Check if flavor info appears to be a package name
+          if (!containsFlavorName(flavorInfo) || 
+              flavorInfo.toLowerCase().includes('package')) {
+            // Generate default even distribution
+            const baseCount = Math.floor(item.quantity / SERVER_FLAVORS.length);
+            const remainder = item.quantity % SERVER_FLAVORS.length;
+            
+            flavorInfo = SERVER_FLAVORS.map((flavor, index: number) => {
+              const count = baseCount + (index < remainder ? 1 : 0);
+              return `${flavor.name}: ${count}`;
+            }).join(', ');
+          }
+          
+          return flavorInfo;
+        }).join(' | '),
         total_bottles: validCartItems.reduce((sum, item) => sum + item.quantity, 0).toString(),
         // Add a clear shipping guide at the top level
-        SHIPPING_GUIDE: validCartItems.map(item => 
-          `SHIP: ${item.quantity} bottles - ${item.flavor_breakdown || item.flavorName || 'Not specified'}`
-        ).join(' | ')
+        SHIPPING_GUIDE: validCartItems.map(item => {
+          let flavorInfo = item.flavor_breakdown || item.flavorName || 'Not specified';
+          
+          // Check if flavor info appears to be a package name
+          if (!containsFlavorName(flavorInfo) || 
+              flavorInfo.toLowerCase().includes('package')) {
+            // Generate default even distribution
+            const baseCount = Math.floor(item.quantity / SERVER_FLAVORS.length);
+            const remainder = item.quantity % SERVER_FLAVORS.length;
+            
+            flavorInfo = SERVER_FLAVORS.map((flavor, index: number) => {
+              const count = baseCount + (index < remainder ? 1 : 0);
+              return `${flavor.name}: ${count}`;
+            }).join(', ');
+          }
+          
+          return `SHIP: ${item.quantity} bottles - ${flavorInfo}`;
+        }).join(' | ')
       },
     };
 

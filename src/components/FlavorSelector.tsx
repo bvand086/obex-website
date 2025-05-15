@@ -21,6 +21,7 @@ interface FlavorSelectorProps {
   onCancel: () => void;
   onConfirm: (selectedFlavors: FlavorCounts) => void;
   isOpen: boolean;
+  isConfirmation?: boolean;
 }
 
 const FlavorSelector: React.FC<FlavorSelectorProps> = ({ 
@@ -28,7 +29,8 @@ const FlavorSelector: React.FC<FlavorSelectorProps> = ({
   initialFlavors,
   onCancel, 
   onConfirm, 
-  isOpen 
+  isOpen,
+  isConfirmation = false
 }) => {
   const [selectedFlavors, setSelectedFlavors] = useState<FlavorCounts>({});
   const [error, setError] = useState<string | null>(null);
@@ -106,10 +108,21 @@ const FlavorSelector: React.FC<FlavorSelectorProps> = ({
         </button>
         
         <div className="relative">
-          <h2 className="text-2xl font-bold text-[#264653] mb-2">Choose Your Flavors</h2>
+          <h2 className="text-2xl font-bold text-[#264653] mb-2">
+            {isConfirmation ? 'Confirm Your Flavors' : 'Choose Your Flavors'}
+          </h2>
           <p className="text-gray-600 mb-6">
-            Select how many of each flavor you'd like in your {bundleSize}-bottle bundle
+            {isConfirmation 
+              ? `Please confirm the flavors for your ${bundleSize}-bottle bundle before checkout`
+              : `Select how many of each flavor you'd like in your ${bundleSize}-bottle bundle`
+            }
           </p>
+          
+          {isConfirmation && (
+            <div className="mb-4 bg-blue-50 border border-blue-200 rounded-md p-3 text-blue-700 text-sm">
+              <p>This is your final chance to verify your flavor selection before checkout. Please ensure your selection is correct.</p>
+            </div>
+          )}
           
           <div className="space-y-4 mb-8">
             {FLAVORS.map((flavor) => {
@@ -184,14 +197,14 @@ const FlavorSelector: React.FC<FlavorSelectorProps> = ({
               onClick={onCancel}
               className="flex-1 border-[#264653]/20 text-[#264653] hover:bg-[#264653]/5"
             >
-              Cancel
+              {isConfirmation ? 'Skip' : 'Cancel'}
             </Button>
             <Button
               onClick={handleConfirm}
               className="flex-1 bg-gradient-to-r from-[#2A9D8F] to-[#264653] hover:from-[#264653] hover:to-[#2A9D8F] text-white transition-all duration-300 transform hover:scale-[1.02]"
               disabled={totalSelected !== bundleSize}
             >
-              Confirm
+              {isConfirmation ? 'Confirm Flavors' : 'Confirm'}
             </Button>
           </div>
         </div>

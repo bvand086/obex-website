@@ -55,6 +55,9 @@ export default function CartDisplay() {
   const [couponSuccess, setCouponSuccess] = useState('');
   const [validatingCoupon, setValidatingCoupon] = useState(false);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [confirmingItemId, setConfirmingItemId] = useState<string | null>(null);
+  const [currentConfirmIndex, setCurrentConfirmIndex] = useState<number>(0);
+  const [confirmedItems, setConfirmedItems] = useState<string[]>([]);
   const [appliedDiscount, setAppliedDiscount] = useState<{
     code: string;
     percentOff?: number;
@@ -167,6 +170,56 @@ export default function CartDisplay() {
   };
 
   const handleCheckout = async () => {
+    // Start the flavor confirmation process instead of proceeding directly to checkout
+    if (cartItems.length > 0) {
+      setCurrentConfirmIndex(0);
+      setConfirmedItems([]);
+      setConfirmingItemId(cartItems[0].id);
+    } else {
+      toast.error('Your cart is empty');
+    }
+  };
+
+  const handleConfirmFlavor = (flavors: FlavorCounts) => {
+    // Update the flavors for the confirming item
+    if (confirmingItemId) {
+      updateFlavors(confirmingItemId, flavors);
+      
+      // Add this item to the confirmed list
+      setConfirmedItems(prev => [...prev, confirmingItemId]);
+      
+      // Move to the next item or proceed to checkout if all items are confirmed
+      const nextIndex = currentConfirmIndex + 1;
+      if (nextIndex < cartItems.length) {
+        setCurrentConfirmIndex(nextIndex);
+        setConfirmingItemId(cartItems[nextIndex].id);
+      } else {
+        // All items confirmed, proceed to actual checkout
+        setConfirmingItemId(null);
+        proceedToCheckout();
+      }
+    }
+  };
+
+  const handleSkipFlavor = () => {
+    // Skip flavor confirmation for this item but add it to confirmed list
+    if (confirmingItemId) {
+      setConfirmedItems(prev => [...prev, confirmingItemId]);
+      
+      // Move to the next item or proceed to checkout if all items are confirmed
+      const nextIndex = currentConfirmIndex + 1;
+      if (nextIndex < cartItems.length) {
+        setCurrentConfirmIndex(nextIndex);
+        setConfirmingItemId(cartItems[nextIndex].id);
+      } else {
+        // All items confirmed, proceed to actual checkout
+        setConfirmingItemId(null);
+        proceedToCheckout();
+      }
+    }
+  };
+
+  const proceedToCheckout = async () => {
     setIsLoading(true);
     try {
       // Validate cart items have valid price IDs before proceeding
@@ -180,8 +233,18 @@ export default function CartDisplay() {
         // Parse flavor information into a structured format
         const flavorCounts = parseCartItemFlavorToCounts(item.flavor, item.quantity);
         
+        // If flavorCounts is empty (couldn't parse the flavor string), use default distribution
+        const finalFlavorCounts = Object.keys(flavorCounts).length === 0 
+          ? FLAVORS.reduce((counts, flavor, index) => {
+              const baseCount = Math.floor(item.quantity / FLAVORS.length);
+              const remainder = item.quantity % FLAVORS.length;
+              counts[flavor.id] = baseCount + (index < remainder ? 1 : 0);
+              return counts;
+            }, {} as FlavorCounts)
+          : flavorCounts;
+
         // Create a readable flavor breakdown for shipping purposes
-        const flavorBreakdown = Object.entries(flavorCounts)
+        const flavorBreakdown = Object.entries(finalFlavorCounts)
           .map(([flavorId, count]) => {
             const flavor = FLAVORS.find(f => f.id === flavorId);
             return flavor ? `${flavor.name}: ${count}` : null;
@@ -192,11 +255,11 @@ export default function CartDisplay() {
         return {
           priceId: item.priceId,
           quantity: item.quantity,
-          flavorName: item.flavor,
+          flavorName: flavorBreakdown, // Use flavor breakdown instead of item.flavor
           free_shipping: freeShippingUnlocked,
           pricePerUnit: item.pricePerUnit,
           flavor_breakdown: flavorBreakdown,
-          flavor_counts: flavorCounts // Send structured data for processing
+          flavor_counts: finalFlavorCounts
         };
       });
 
@@ -495,7 +558,7 @@ export default function CartDisplay() {
         </Button>
       </div>
 
-      {/* Flavor Selector Modal */}
+      {/* Flavor Selector Modal for Editing */}
       {editingItemId && editingItem && (
         <FlavorSelector
           bundleSize={editingItem.quantity}
@@ -504,6 +567,36 @@ export default function CartDisplay() {
           onConfirm={handleFlavorUpdate}
           isOpen={!!editingItemId}
         />
+      )}
+
+      {/* Flavor Confirmation Modal before Checkout */}
+      {confirmingItemId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="relative bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-auto p-6 shadow-xl border border-[#2A9D8F]/20">
+            <div className="mb-4 text-center">
+              <h2 className="text-xl font-bold text-[#264653]">Confirm Your Flavors</h2>
+              <p className="text-sm text-gray-600">Item {currentConfirmIndex + 1} of {cartItems.length}</p>
+            </div>
+            
+            {(() => {
+              const confirmingItem = cartItems.find(item => item.id === confirmingItemId);
+              if (!confirmingItem) return null;
+              
+              const confirmFlavorCounts = parseCartItemFlavorToCounts(confirmingItem.flavor, confirmingItem.quantity);
+              
+              return (
+                <FlavorSelector
+                  bundleSize={confirmingItem.quantity}
+                  initialFlavors={confirmFlavorCounts}
+                  onCancel={handleSkipFlavor}
+                  onConfirm={handleConfirmFlavor}
+                  isOpen={true}
+                  isConfirmation={true}
+                />
+              );
+            })()}
+          </div>
+        </div>
       )}
     </div>
   );
