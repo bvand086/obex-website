@@ -78,7 +78,7 @@ export async function GET(request: Request) {
             htmlContent = generateWelcome4Email(customerName, metadata);
             break;
           case 'welcome_5_feedback':
-            subject = 'How is ØBEX working for you?';
+            subject = 'How is ØBEX working for you? We\'d love to hear!';
             htmlContent = generateWelcome5Email(customerName, metadata);
             break;
           default:

@@ -279,43 +279,70 @@ export async function POST(req: NextRequest) {
 
           console.log('📧 Customer confirmation email sent');
 
+          // Extract flavor information using bulletproof function
+          const flavorInfo = extractFlavorInformation(session, cartItems);
+          
+          // Create prominent flavor display for internal email
+          const flavorDisplayHtml = `
+            <div style="background-color: ${flavorInfo.source === 'none' ? '#ffebee' : '#e8f5e9'}; 
+                        border: 3px solid ${flavorInfo.source === 'none' ? '#f44336' : '#4caf50'}; 
+                        padding: 20px; border-radius: 8px; margin: 25px 0;">
+              <h2 style="color: ${flavorInfo.source === 'none' ? '#d32f2f' : '#2e7d32'}; 
+                         margin-top: 0; font-size: 20px; text-transform: uppercase;">
+                🍃 FLAVORS TO SHIP 🍃
+              </h2>
+              <p style="font-size: 18px; font-weight: bold; margin: 10px 0; color: #333;">
+                ${flavorInfo.displayText}
+              </p>
+              <p style="font-size: 14px; color: #666; margin: 5px 0;">
+                Source: ${flavorInfo.source} | Session: ${session.id}
+              </p>
+              ${flavorInfo.source === 'none' ? 
+                '<p style="color: #d32f2f; font-weight: bold;">⚠️ MANUAL REVIEW REQUIRED - Check Stripe dashboard for flavor details</p>' : 
+                ''
+              }
+            </div>
+          `;
+
           // Send internal notification email with prominent flavor information
           await resend.emails.send({
             from: 'ØBEX Orders <support@obexcanada.com>',
             to: ['obexincorporated@gmail.com'],
-            subject: `New ØBEX Order - SHIP: ${session.metadata?.shipping_flavors || 'Check flavors in order details'}`,
+            subject: `🚨 NEW ØBEX ORDER - ${flavorInfo.displayText}`,
             html: `
               <!DOCTYPE html>
               <html>
                 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #ffffff;">
                   <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-                    <h1 style="color: #2A9D8F; margin-bottom: 25px;">New Order Received</h1>
+                    <h1 style="color: #2A9D8F; margin-bottom: 25px;">🛒 New Order Received - URGENT PROCESSING REQUIRED</h1>
+                    
+                    ${flavorDisplayHtml}
                     
                     ${session.metadata?.SHIPPING_GUIDE ? `
-                      <div style="background-color: #f8eaec; border: 2px solid #e63946; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-                        <h3 style="color: #e63946; margin-top: 0; margin-bottom: 10px;">⚠️ SHIPPING INSTRUCTIONS ⚠️</h3>
+                      <div style="background-color: #fff3e0; border: 2px solid #ff9800; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                        <h3 style="color: #ef6c00; margin-top: 0; margin-bottom: 10px;">📋 ADDITIONAL SHIPPING NOTES</h3>
                         <p style="font-weight: bold; font-size: 16px;">${session.metadata.SHIPPING_GUIDE}</p>
                       </div>
                     ` : ''}
                     
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
-                      <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Order Details</h2>
+                      <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">📦 Order Details</h2>
                       <p style="margin: 10px 0;"><strong>Order ID:</strong> ${session.id}</p>
                       ${productDetailsHtml}
                       <p style="margin: 10px 0;"><strong>Shipping Method:</strong> ${shippingMethod}</p>
                       <p style="margin: 10px 0;"><strong>Shipping Cost:</strong> $${shippingCost.toFixed(2)} CAD</p>
                       <p style="margin: 10px 0;"><strong>Total Amount:</strong> $${amountTotal.toFixed(2)} CAD</p>
-                      <p style="margin: 10px 0;"><strong>Date:</strong> ${new Date().toLocaleString('en-CA', { timeZone: 'America/Toronto' })}</p>
+                      <p style="margin: 10px 0;"><strong>Order Date:</strong> ${new Date().toLocaleString('en-CA', { timeZone: 'America/Toronto' })}</p>
                     </div>
 
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
-                      <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Customer Information</h2>
+                      <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">👤 Customer Information</h2>
                       <p style="margin: 10px 0;"><strong>Name:</strong> ${customerName || 'Not provided'}</p>
                       <p style="margin: 10px 0;"><strong>Email:</strong> ${customerEmail}</p>
                     </div>
                     
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
-                      <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Shipping Address</h2>
+                      <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">🚚 Shipping Address</h2>
                       <p style="margin: 10px 0;">
                         ${address?.line1 || ''}<br>
                         ${address?.line2 ? address.line2 + '<br>' : ''}
@@ -326,7 +353,13 @@ export async function POST(req: NextRequest) {
                       </p>
                     </div>
 
-                    <p style="font-size: 16px; color: #666;">This order needs to be processed and shipped. Please update the customer with tracking information once shipped.</p>
+                    <div style="background-color: #e3f2fd; border: 1px solid #2196f3; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                      <p style="margin: 0; font-weight: bold; color: #1976d2;">
+                        🔍 Debug Info: Flavor extracted from ${flavorInfo.source}
+                      </p>
+                    </div>
+
+                    <p style="font-size: 16px; color: #666;">Process this order and update customer with tracking information once shipped.</p>
                   </div>
                 </body>
               </html>
@@ -335,14 +368,14 @@ export async function POST(req: NextRequest) {
 
           console.log('📧 Internal notification email sent');
           
-          // --- START: New Email Scheduling Logic ---
+          // Updated email scheduling with new timing and order
           try {
             const now = new Date();
             const schedule = [
               { type: 'welcome_2_usage', days: 3 },
               { type: 'welcome_3_education', days: 10 },
-              { type: 'welcome_4_community', days: 24 },
-              { type: 'welcome_5_feedback', days: 38 },
+              { type: 'welcome_5_feedback', days: 21 },      // Moved feedback to 3rd position, day 21
+              { type: 'welcome_4_community', days: 35 },     // Moved community to 4th position, day 35
             ];
 
             const emailsToSchedule = schedule.map(item => {
@@ -361,7 +394,9 @@ export async function POST(req: NextRequest) {
                   shippingCost: shippingCost.toFixed(2),
                   amountTotal: amountTotal.toFixed(2),
                   currency: 'CAD',
-                  shippingAddress: address
+                  shippingAddress: address,
+                  flavorInfo: flavorInfo.displayText,
+                  flavorSummary: flavorInfo.displayText
                 },
                 order_id: session.id,
                 attempt_count: 0,
@@ -382,7 +417,6 @@ export async function POST(req: NextRequest) {
             console.error(`❌ Error scheduling follow-up emails for ${customerEmail}:`, scheduleError);
             // We don't throw the main error since the order processing succeeded
           }
-          // --- END: New Email Scheduling Logic ---
           
           console.log('✅ Order processed successfully');
 
@@ -420,4 +454,99 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+/**
+ * Extract flavor information with multiple fallback strategies
+ * This is critical for internal processing - we MUST capture flavor info
+ */
+function extractFlavorInformation(session: Stripe.Checkout.Session, cartItems: any[] = []) {
+  let flavorInfo = {
+    displayText: 'FLAVOR INFORMATION NOT FOUND - PLEASE CHECK ORDER MANUALLY',
+    rawData: {} as any,
+    source: 'none'
+  };
+
+  // Strategy 1: Check session metadata for shipping flavors (highest priority)
+  if (session.metadata?.shipping_flavors) {
+    flavorInfo = {
+      displayText: session.metadata.shipping_flavors,
+      rawData: { shipping_flavors: session.metadata.shipping_flavors },
+      source: 'metadata_shipping_flavors'
+    };
+    return flavorInfo;
+  }
+
+  // Strategy 2: Check session metadata for SHIPPING_GUIDE
+  if (session.metadata?.SHIPPING_GUIDE) {
+    flavorInfo = {
+      displayText: session.metadata.SHIPPING_GUIDE,
+      rawData: { SHIPPING_GUIDE: session.metadata.SHIPPING_GUIDE },
+      source: 'metadata_shipping_guide'
+    };
+    return flavorInfo;
+  }
+
+  // Strategy 3: Check cart details for detailed flavor information
+  if (cartItems && cartItems.length > 0) {
+    for (const item of cartItems) {
+      if (item.ship_flavors) {
+        flavorInfo = {
+          displayText: item.ship_flavors,
+          rawData: { cart_ship_flavors: item.ship_flavors, full_item: item },
+          source: 'cart_ship_flavors'
+        };
+        return flavorInfo;
+      }
+      if (item.flavor_breakdown) {
+        flavorInfo = {
+          displayText: item.flavor_breakdown,
+          rawData: { cart_flavor_breakdown: item.flavor_breakdown, full_item: item },
+          source: 'cart_flavor_breakdown'
+        };
+        return flavorInfo;
+      }
+      if (item.flavor) {
+        flavorInfo = {
+          displayText: item.flavor,
+          rawData: { cart_flavor: item.flavor, full_item: item },
+          source: 'cart_flavor'
+        };
+        return flavorInfo;
+      }
+    }
+  }
+
+  // Strategy 4: Check custom fields
+  if (session.custom_fields && session.custom_fields.length > 0) {
+    const flavorField = session.custom_fields.find(field => field.key === 'chooseyourflavour');
+    if (flavorField && 
+        'dropdown' in flavorField && 
+        flavorField.dropdown && 
+        typeof flavorField.dropdown === 'object' && 
+        flavorField.dropdown.value) {
+      const flavorMap: Record<string, string> = {
+        'lemonmeringue': 'Lemon Meringue',
+        'orangecream': 'Orange Cream',
+        'soothingmint': 'Soothing Mint'
+      };
+      const displayFlavor = flavorMap[flavorField.dropdown.value] || flavorField.dropdown.value;
+      flavorInfo = {
+        displayText: displayFlavor,
+        rawData: { custom_field: flavorField },
+        source: 'custom_fields'
+      };
+      return flavorInfo;
+    }
+  }
+
+  // Log the failure for debugging
+  console.error('🚨 CRITICAL: Failed to extract flavor information from order:', {
+    sessionId: session.id,
+    metadata: session.metadata,
+    cartItemsCount: cartItems?.length || 0,
+    customFieldsCount: session.custom_fields?.length || 0
+  });
+
+  return flavorInfo;
 }

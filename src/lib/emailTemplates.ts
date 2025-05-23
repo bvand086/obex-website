@@ -26,7 +26,7 @@ export function generateWelcome2Email(customerName: string, metadata: any) {
             <p style="margin: 10px 0;"><strong>3. As Needed:</strong> ØBEX is a rescue medication - take it with meals or when you experience symptoms, rather than on a fixed schedule</p>
           </div>
           
-          <p style="font-size: 16px; margin-bottom: 20px;">With your ${metadata?.selectedFlavor || 'selected'} flavor, you'll find that ØBEX is an enjoyable part of your daily routine. Most of our customers report noticeable improvement within 7-14 days of consistent use.</p>
+          <p style="font-size: 16px; margin-bottom: 20px;">With your ${metadata?.flavorSummary || metadata?.flavorInfo || 'selected'} flavor, you'll find that ØBEX is an enjoyable part of your daily routine. Most of our customers report noticeable improvement within 7-14 days of consistent use.</p>
           
           <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
             <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Quick Tip</h2>
@@ -36,6 +36,16 @@ export function generateWelcome2Email(customerName: string, metadata: any) {
           <p style="font-size: 16px; margin-bottom: 30px;">If you have any questions about using your ØBEX, please reach out to us at <a href="mailto:support@obexcanada.com" style="color: #2A9D8F; text-decoration: none;">support@obexcanada.com</a></p>
           
           <p style="font-size: 16px;">To your health,<br>The ØBEX Team</p>
+          
+          <!-- Unsubscribe Footer -->
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e9ecef; text-align: center;">
+            <p style="font-size: 12px; color: #666; margin: 5px 0;">
+              You're receiving this email because you purchased ØBEX Reflux Relief.
+            </p>
+            <p style="font-size: 12px; color: #666; margin: 5px 0;">
+              Don't want these helpful tips? <a href="mailto:support@obexcanada.com?subject=Unsubscribe%20from%20ØBEX%20emails&body=Please%20remove%20me%20from%20your%20email%20list." style="color: #2A9D8F; text-decoration: underline;">Click here to unsubscribe</a>
+            </p>
+          </div>
         </div>
       </body>
     </html>`;
@@ -82,12 +92,22 @@ export function generateWelcome3Email(customerName: string, metadata: any) {
             <p style="margin: 15px 0;"><strong>5. Natural Supplements:</strong> Your ØBEX contains carefully selected ingredients that support digestive health</p>
           </div>
           
-          <p style="font-size: 16px; margin-bottom: 30px;">Combining these strategies with your regular use of ØBEX can help provide some relief. As always, if you have any questions, please contact us at <a href="mailto:support@obexcanada.com" style="color: #2A9D8F; text-decoration: none;">support@obexcanada.com</a></p>
+          <p style="font-size: 16px; margin-bottom: 20px;">You selected the following flavors: ${metadata?.flavorSummary || metadata?.flavorInfo || 'your chosen flavors'}.</p>
+          <p style="font-size: 16px; margin-bottom: 20px;">Thanks to our new bundled pricing, you're now getting the best value we've ever offered. These volume discounts mean more relief, for less.</p>
           
-          <p style="font-size: 16px; margin-bottom: 20px;">You selected the following flavors: ${metadata?.flavorSummary || 'your chosen flavors'}.</p>
-          <p style="font-size: 16px; margin-bottom: 20px;">Thanks to our new bundled pricing, you’re now getting the best value we’ve ever offered. These volume discounts mean more relief, for less.</p>
+          <p style="font-size: 16px; margin-bottom: 30px;">Combining these strategies with your regular use of ØBEX can help provide lasting relief. As always, if you have any questions, please contact us at <a href="mailto:support@obexcanada.com" style="color: #2A9D8F; text-decoration: none;">support@obexcanada.com</a></p>
           
           <p style="font-size: 16px;">To your health,<br>The ØBEX Team</p>
+          
+          <!-- Unsubscribe Footer -->
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e9ecef; text-align: center;">
+            <p style="font-size: 12px; color: #666; margin: 5px 0;">
+              You're receiving this email because you purchased ØBEX Reflux Relief.
+            </p>
+            <p style="font-size: 12px; color: #666; margin: 5px 0;">
+              Don't want these helpful tips? <a href="mailto:support@obexcanada.com?subject=Unsubscribe%20from%20ØBEX%20emails&body=Please%20remove%20me%20from%20your%20email%20list." style="color: #2A9D8F; text-decoration: underline;">Click here to unsubscribe</a>
+            </p>
+          </div>
         </div>
       </body>
     </html>`;
@@ -109,8 +129,8 @@ export function generateWelcome4Email(customerName: string, metadata: any) {
           
           <p style="font-size: 16px; margin-bottom: 25px;">We hope your ØBEX Reflux Relief is helping you enjoy your days with more comfort! We've created spaces where our community of users share their experiences, tips, and success stories, and we'd love for you to join us.</p>
           
-          <p style="font-size: 16px; margin-bottom: 20px;">You selected the following flavors: ${metadata?.flavorSummary || 'your chosen flavors'}.</p>
-          <p style="font-size: 16px; margin-bottom: 20px;">Thanks to our new bundled pricing, you’re now getting the best value we’ve ever offered. These volume discounts mean more relief, for less.</p>
+          <p style="font-size: 16px; margin-bottom: 20px;">You selected the following flavors: ${metadata?.flavorSummary || metadata?.flavorInfo || 'your chosen flavors'}.</p>
+          <p style="font-size: 16px; margin-bottom: 20px;">Thanks to our new bundled pricing, you're now getting the best value we've ever offered. These volume discounts mean more relief, for less.</p>
           
           <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
             <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Connect With Us</h2>
@@ -129,6 +149,16 @@ export function generateWelcome4Email(customerName: string, metadata: any) {
           <p style="font-size: 16px; margin-bottom: 30px;">Being part of the ØBEX community means you're never alone on your wellness journey. We're here to support you every step of the way!</p>
           
           <p style="font-size: 16px;">To your health,<br>The ØBEX Team</p>
+          
+          <!-- Unsubscribe Footer -->
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e9ecef; text-align: center;">
+            <p style="font-size: 12px; color: #666; margin: 5px 0;">
+              You're receiving this email because you purchased ØBEX Reflux Relief.
+            </p>
+            <p style="font-size: 12px; color: #666; margin: 5px 0;">
+              Don't want these helpful tips? <a href="mailto:support@obexcanada.com?subject=Unsubscribe%20from%20ØBEX%20emails&body=Please%20remove%20me%20from%20your%20email%20list." style="color: #2A9D8F; text-decoration: underline;">Click here to unsubscribe</a>
+            </p>
+          </div>
         </div>
       </body>
     </html>`;
@@ -150,8 +180,8 @@ export function generateWelcome5Email(customerName: string, metadata: any) {
           
           <p style="font-size: 16px; margin-bottom: 25px;">We'd love to hear about your experience with ØBEX! Your feedback is invaluable as we continue to improve our products and help more people find natural relief from acid reflux.</p>
           
-          <p style="font-size: 16px; margin-bottom: 20px;">You selected the following flavors: ${metadata?.flavorSummary || 'your chosen flavors'}.</p>
-          <p style="font-size: 16px; margin-bottom: 20px;">Thanks to our new bundled pricing, you’re now getting the best value we’ve ever offered. These volume discounts mean more relief, for less.</p>
+          <p style="font-size: 16px; margin-bottom: 20px;">You selected the following flavors: ${metadata?.flavorSummary || metadata?.flavorInfo || 'your chosen flavors'}.</p>
+          <p style="font-size: 16px; margin-bottom: 20px;">Thanks to our new bundled pricing, you're now getting the best value we've ever offered. These volume discounts mean more relief, for less.</p>
           
           <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
             <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Share Your Feedback</h2>
@@ -181,6 +211,16 @@ export function generateWelcome5Email(customerName: string, metadata: any) {
           <p style="font-size: 16px; margin-bottom: 30px;">Thank you for choosing ØBEX for your digestive health. We appreciate your support and feedback!</p>
           
           <p style="font-size: 16px;">To your continued digestive wellness,<br>The ØBEX Team</p>
+          
+          <!-- Unsubscribe Footer -->
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e9ecef; text-align: center;">
+            <p style="font-size: 12px; color: #666; margin: 5px 0;">
+              You're receiving this email because you purchased ØBEX Reflux Relief.
+            </p>
+            <p style="font-size: 12px; color: #666; margin: 5px 0;">
+              Don't want these helpful tips? <a href="mailto:support@obexcanada.com?subject=Unsubscribe%20from%20ØBEX%20emails&body=Please%20remove%20me%20from%20your%20email%20list." style="color: #2A9D8F; text-decoration: underline;">Click here to unsubscribe</a>
+            </p>
+          </div>
         </div>
       </body>
     </html>`;

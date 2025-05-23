@@ -4,6 +4,7 @@ import "./globals.css";
 import "./typography.css";
 import { Toaster } from "@/components/ui/toaster";
 import { CartProvider } from "@/context/CartContext";
+import Header from "@/components/Header";
 
 const raleway = Raleway({ subsets: ["latin"], display: "swap", variable: "--font-raleway" });
 const openSans = Open_Sans({ subsets: ["latin"], display: "swap", variable: "--font-open-sans" });
@@ -108,6 +109,7 @@ export default function RootLayout({
       </head>
       <body className={`${raleway.variable} ${openSans.variable} ${playfairDisplay.variable} font-sans`}>
         <CartProvider>
+          <Header />
           {children}
           <Toaster />
         </CartProvider>

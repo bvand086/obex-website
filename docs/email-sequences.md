@@ -35,18 +35,19 @@ The system supports the following email types:
 1. **welcome_1**: Order confirmation (sent immediately by the webhook)
 2. **welcome_2_usage**: Usage instructions (sent 3 days after purchase)
 3. **welcome_3_education**: Educational content about acid reflux (sent 10 days after purchase)
-4. **welcome_4_community**: Information about joining the community (sent 24 days after purchase)
-5. **welcome_5_feedback**: Request for product feedback (sent 38 days after purchase)
+4. **welcome_5_feedback**: Request for product feedback (sent 21 days after purchase)
+5. **welcome_4_community**: Information about joining the community (sent 35 days after purchase)
 
 ## Process Flow
 
 1. **Order Placed**: Customer completes checkout via Stripe.
 2. **Webhook Triggered**: Stripe sends a webhook event to `/api/webhook`.
-3. **Initial Email**: Confirmation email is sent immediately to the customer.
-4. **Emails Scheduled**: Follow-up emails are scheduled in the Supabase `scheduled_emails` table.
-5. **Cron Job Execution**: Vercel runs the cron job every 15 minutes.
-6. **Email Processing**: The cron job handler checks for due emails, sends them via Resend, and updates their status.
-7. **Retry Logic**: Failed emails are retried up to 3 times before being marked as permanently failed.
+3. **Flavor Extraction**: Bulletproof flavor information extraction with multiple fallback strategies.
+4. **Initial Emails**: Confirmation email sent to customer and detailed internal notification sent to staff.
+5. **Emails Scheduled**: Follow-up emails are scheduled in the Supabase `scheduled_emails` table.
+6. **Cron Job Execution**: Vercel runs the cron job every 15 minutes.
+7. **Email Processing**: The cron job handler checks for due emails, sends them via Resend, and updates their status.
+8. **Retry Logic**: Failed emails are retried up to 3 times before being marked as permanently failed.
 
 ## Implementation Details
 
@@ -79,14 +80,14 @@ The cron job endpoint is protected by the `CRON_SECRET` environment variable. Ve
 
 ### Email Schedule Timing
 
-The timing for follow-up emails is defined in the webhook handler:
+The timing for follow-up emails is optimized for customer engagement without being annoying:
 
 ```typescript
 const schedule = [
-  { type: 'welcome_2_usage', days: 3 },
-  { type: 'welcome_3_education', days: 10 },
-  { type: 'welcome_4_community', days: 24 },
-  { type: 'welcome_5_feedback', days: 38 },
+  { type: 'welcome_2_usage', days: 3 },      // Usage tips when they first receive the product
+  { type: 'welcome_3_education', days: 10 }, // Educational content after they've tried it
+  { type: 'welcome_5_feedback', days: 21 },  // Feedback request after 3 weeks of use
+  { type: 'welcome_4_community', days: 35 }, // Community engagement when they're committed
 ];
 ```
 
@@ -116,6 +117,22 @@ The following environment variables are required:
 - `STRIPE_SECRET_KEY`: Stripe secret key
 - `STRIPE_WEBHOOK_SECRET`: Stripe webhook signing secret
 - `CRON_SECRET`: Secret for authenticating cron job requests
+
+## Flavor Information Extraction
+
+The system now includes bulletproof flavor extraction with multiple fallback strategies:
+
+1. **Primary**: `session.metadata.shipping_flavors`
+2. **Secondary**: `session.metadata.SHIPPING_GUIDE`
+3. **Tertiary**: Cart items (`ship_flavors`, `flavor_breakdown`, `flavor`)
+4. **Fallback**: Custom fields (`chooseyourflavour`)
+
+If all strategies fail, the system will:
+- Display a prominent warning in the internal email
+- Log detailed debugging information
+- Request manual review of the order
+
+This ensures that flavor information is NEVER lost and internal processing can continue reliably.
 
 ## Customization
 
