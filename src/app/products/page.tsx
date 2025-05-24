@@ -34,7 +34,7 @@ export default function Products() {
           <div className="absolute inset-0 bg-gradient-to-br from-[#2A9D8F]/10 to-[#E9C46A]/10 rounded-2xl transform transition-transform duration-500"></div>
           <div className="relative bg-white/90 backdrop-blur-sm p-12 rounded-2xl shadow-xl border border-[#2A9D8F]/10 overflow-hidden">
             {/* Background Product Image */}
-            <div className="absolute inset-0 opacity-95 flex flex-col">
+            <div className="absolute inset-0 opacity-100 flex flex-col">
               <Image
                 src="/studio_image_medley.png"
                 alt="OBEX Product Photography Medley"
