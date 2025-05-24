@@ -26,7 +26,7 @@ export function generateWelcome2Email(customerName: string, metadata: any) {
             <p style="margin: 10px 0;"><strong>3. As Needed:</strong> ØBEX is a rescue medication - take it with meals or when you experience symptoms, rather than on a fixed schedule</p>
           </div>
           
-          <p style="font-size: 16px; margin-bottom: 20px;">With your ${metadata?.flavorSummary || metadata?.flavorInfo || 'selected'} flavor, you'll find that ØBEX is an enjoyable part of your daily routine. Most of our customers report noticeable improvement within 7-14 days of consistent use.</p>
+          <p style="font-size: 16px; margin-bottom: 20px;">With your ${metadata?.flavorSummary || metadata?.flavorInfo || 'selected'} flavour, you'll find that ØBEX is an enjoyable part of your daily routine. Most of our customers report noticeable improvement within 7-14 days of consistent use.</p>
           
           <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
             <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Quick Tip</h2>
@@ -92,7 +92,7 @@ export function generateWelcome3Email(customerName: string, metadata: any) {
             <p style="margin: 15px 0;"><strong>5. Natural Supplements:</strong> Your ØBEX contains carefully selected ingredients that support digestive health</p>
           </div>
           
-          <p style="font-size: 16px; margin-bottom: 20px;">You selected the following flavors: ${metadata?.flavorSummary || metadata?.flavorInfo || 'your chosen flavors'}.</p>
+          <p style="font-size: 16px; margin-bottom: 20px;">You selected the following flavours: ${metadata?.flavorSummary || metadata?.flavorInfo || 'your chosen flavours'}.</p>
           <p style="font-size: 16px; margin-bottom: 20px;">Thanks to our new bundled pricing, you're now getting the best value we've ever offered. These volume discounts mean more relief, for less.</p>
           
           <p style="font-size: 16px; margin-bottom: 30px;">Combining these strategies with your regular use of ØBEX can help provide lasting relief. As always, if you have any questions, please contact us at <a href="mailto:support@obexcanada.com" style="color: #2A9D8F; text-decoration: none;">support@obexcanada.com</a></p>
@@ -129,7 +129,7 @@ export function generateWelcome4Email(customerName: string, metadata: any) {
           
           <p style="font-size: 16px; margin-bottom: 25px;">We hope your ØBEX Reflux Relief is helping you enjoy your days with more comfort! We've created spaces where our community of users share their experiences, tips, and success stories, and we'd love for you to join us.</p>
           
-          <p style="font-size: 16px; margin-bottom: 20px;">You selected the following flavors: ${metadata?.flavorSummary || metadata?.flavorInfo || 'your chosen flavors'}.</p>
+          <p style="font-size: 16px; margin-bottom: 20px;">You selected the following flavours: ${metadata?.flavorSummary || metadata?.flavorInfo || 'your chosen flavours'}.</p>
           <p style="font-size: 16px; margin-bottom: 20px;">Thanks to our new bundled pricing, you're now getting the best value we've ever offered. These volume discounts mean more relief, for less.</p>
           
           <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
@@ -180,7 +180,7 @@ export function generateWelcome5Email(customerName: string, metadata: any) {
           
           <p style="font-size: 16px; margin-bottom: 25px;">We'd love to hear about your experience with ØBEX! Your feedback is invaluable as we continue to improve our products and help more people find natural relief from acid reflux.</p>
           
-          <p style="font-size: 16px; margin-bottom: 20px;">You selected the following flavors: ${metadata?.flavorSummary || metadata?.flavorInfo || 'your chosen flavors'}.</p>
+          <p style="font-size: 16px; margin-bottom: 20px;">You selected the following flavours: ${metadata?.flavorSummary || metadata?.flavorInfo || 'your chosen flavours'}.</p>
           <p style="font-size: 16px; margin-bottom: 20px;">Thanks to our new bundled pricing, you're now getting the best value we've ever offered. These volume discounts mean more relief, for less.</p>
           
           <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">

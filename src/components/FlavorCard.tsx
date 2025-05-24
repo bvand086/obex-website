@@ -21,12 +21,12 @@ const FlavorCard: React.FC<FlavorCardProps> = ({ flavor, className = '' }) => {
         <div className={`absolute top-0 left-0 w-40 h-40 bg-${flavor.color}-500/10 rounded-br-[100px] -translate-x-10 -translate-y-10 blur-md`}></div>
         <div className={`absolute top-4 right-4 w-16 h-16 rounded-full bg-gradient-to-br from-${flavor.color}-100 to-${flavor.color}-300 opacity-70 blur-md`}></div>
         
-        {/* Flavor icon */}
+        {/* Flavour icon */}
         <div className="flex justify-center mb-6">
           <div className={`w-20 h-20 rounded-full bg-gradient-to-br from-${flavor.gradientFrom} to-${flavor.gradientTo} flex items-center justify-center transform transition-transform duration-500 group-hover:rotate-12`}>
             <Image 
               src="/white_transparent_OSlashLogo.png" 
-              alt={`${flavor.name} Flavor`} 
+              alt={`${flavor.name} Flavour`} 
               width={40} 
               height={40} 
               className="object-contain"

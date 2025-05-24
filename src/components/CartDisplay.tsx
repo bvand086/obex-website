@@ -8,12 +8,12 @@ import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import FlavorSelector, { FlavorCounts, FLAVORS } from '@/components/FlavorSelector';
 
-// Helper function to parse cart item flavor string to FlavorCounts
+// Helper function to parse cart item flavour string to FlavorCounts
 const parseCartItemFlavorToCounts = (itemFlavor: string, itemQuantity: number): FlavorCounts => {
   const counts: FlavorCounts = {};
   let parsedCountTotal = 0;
 
-  // Try to parse "Flavor Name (count), Another (count)"
+  // Try to parse "Flavour Name (count), Another (count)"
   const complexParts = itemFlavor.split(', ');
   const entryPattern = /(.+?)\s\((\d+)\)/; // Non-greedy name, then count
 
@@ -27,7 +27,7 @@ const parseCartItemFlavorToCounts = (itemFlavor: string, itemQuantity: number): 
         counts[flavorDetail.id] = (counts[flavorDetail.id] || 0) + count;
         parsedCountTotal += count;
       } else {
-         console.warn(`Parsed flavor name "${name}" not found in FLAVORS list.`);
+         console.warn(`Parsed flavour name "${name}" not found in FLAVORS list.`);
       }
     }
   }
@@ -37,13 +37,13 @@ const parseCartItemFlavorToCounts = (itemFlavor: string, itemQuantity: number): 
     return counts;
   }
 
-  // If not fully parsed by complex (or not complex at all), try as a simple flavor name.
+      // If not fully parsed by complex (or not complex at all), try as a simple flavour name.
   const singleFlavorDetail = FLAVORS.find(f => f.name === itemFlavor);
   if (singleFlavorDetail) {
     return { [singleFlavorDetail.id]: itemQuantity };
   }
   
-  console.warn(`Could not parse flavor string "${itemFlavor}" for quantity ${itemQuantity}. FlavorSelector will use default distribution.`);
+        console.warn(`Could not parse flavour string "${itemFlavor}" for quantity ${itemQuantity}. FlavorSelector will use default distribution.`);
   return {}; 
 };
 
@@ -170,7 +170,7 @@ export default function CartDisplay() {
   };
 
   const handleCheckout = async () => {
-    // Start the flavor confirmation process instead of proceeding directly to checkout
+          // Start the flavour confirmation process instead of proceeding directly to checkout
     if (cartItems.length > 0) {
       setCurrentConfirmIndex(0);
       setConfirmedItems([]);
@@ -202,7 +202,7 @@ export default function CartDisplay() {
   };
 
   const handleSkipFlavor = () => {
-    // Skip flavor confirmation for this item but add it to confirmed list
+            // Skip flavour confirmation for this item but add it to confirmed list
     if (confirmingItemId) {
       setConfirmedItems(prev => [...prev, confirmingItemId]);
       
@@ -228,12 +228,12 @@ export default function CartDisplay() {
         throw new Error('Some items in your cart have invalid price IDs. Please try adding them again.');
       }
       
-      // Create checkout items with detailed flavor breakdown
+      // Create checkout items with detailed flavour breakdown
       const checkoutItems = cartItems.map(item => {
-        // Parse flavor information into a structured format
+        // Parse flavour information into a structured format
         const flavorCounts = parseCartItemFlavorToCounts(item.flavor, item.quantity);
         
-        // If flavorCounts is empty (couldn't parse the flavor string), use default distribution
+        // If flavorCounts is empty (couldn't parse the flavour string), use default distribution
         const finalFlavorCounts = Object.keys(flavorCounts).length === 0 
           ? FLAVORS.reduce((counts, flavor, index) => {
               const baseCount = Math.floor(item.quantity / FLAVORS.length);
@@ -243,7 +243,7 @@ export default function CartDisplay() {
             }, {} as FlavorCounts)
           : flavorCounts;
 
-        // Create a readable flavor breakdown for shipping purposes
+        // Create a readable flavour breakdown for shipping purposes
         const flavorBreakdown = Object.entries(finalFlavorCounts)
           .map(([flavorId, count]) => {
             const flavor = FLAVORS.find(f => f.id === flavorId);
@@ -255,7 +255,7 @@ export default function CartDisplay() {
         return {
           priceId: item.priceId,
           quantity: item.quantity,
-          flavorName: flavorBreakdown, // Use flavor breakdown instead of item.flavor
+          flavorName: flavorBreakdown, // Use flavour breakdown instead of item.flavor
           free_shipping: freeShippingUnlocked,
           pricePerUnit: item.pricePerUnit,
           flavor_breakdown: flavorBreakdown,
@@ -310,7 +310,7 @@ export default function CartDisplay() {
   // Calculate bundle size if editing a bundle
   const editingBundleSize = editingItem ? editingItem.quantity : 0;
 
-  // Calculate initialFlavorCounts for the FlavorSelector
+          // Calculate initialFlavorCounts for the FlavorSelector
   let initialFlavorCounts: FlavorCounts = {};
   if (editingItem) {
     initialFlavorCounts = parseCartItemFlavorToCounts(editingItem.flavor, editingItem.quantity);
@@ -411,7 +411,7 @@ export default function CartDisplay() {
               </div>
             </div>
             
-            {/* Flavor Selection Button */}
+            {/* Flavour Selection Button */}
             <div className="mt-3 pt-3 border-t">
               <Button
                 variant="outline"
@@ -421,7 +421,7 @@ export default function CartDisplay() {
               >
                 <div className="absolute inset-0 w-3 bg-gradient-to-r from-[#2A9D8F]/30 to-[#E9C46A]/30 -translate-x-full group-hover:translate-x-[800px] transition-all duration-1500 ease-in-out"></div>
                 <Palette className="h-4 w-4 mr-2 text-[#E9C46A]" />
-                <span className="font-medium">Choose Flavors</span>
+                <span className="font-medium">Choose Flavours</span>
               </Button>
             </div>
           </div>
@@ -558,7 +558,7 @@ export default function CartDisplay() {
         </Button>
       </div>
 
-      {/* Flavor Selector Modal for Editing */}
+      {/* Flavour Selector Modal for Editing */}
       {editingItemId && editingItem && (
         <FlavorSelector
           bundleSize={editingItem.quantity}
@@ -569,12 +569,12 @@ export default function CartDisplay() {
         />
       )}
 
-      {/* Flavor Confirmation Modal before Checkout */}
+      {/* Flavour Confirmation Modal before Checkout */}
       {confirmingItemId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="relative bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-auto p-6 shadow-xl border border-[#2A9D8F]/20">
             <div className="mb-4 text-center">
-              <h2 className="text-xl font-bold text-[#264653]">Confirm Your Flavors</h2>
+              <h2 className="text-xl font-bold text-[#264653]">Confirm Your Flavours</h2>
               <p className="text-sm text-gray-600">Item {currentConfirmIndex + 1} of {cartItems.length}</p>
             </div>
             

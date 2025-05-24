@@ -26,22 +26,22 @@ export default function Products() {
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
               Discover our complete range of natural heartburn relief products. 
-              Each flavor is carefully crafted by chefs to provide both effective relief and an enjoyable taste experience.
+              Each flavour is carefully crafted by chefs to provide both effective relief and an enjoyable taste experience.
             </p>
           </div>
         </div>
 
-        {/* Flavor Cards Section */}
+        {/* Flavour Cards Section */}
         <div className="relative mb-16">
           <div className="max-w-3xl mx-auto text-center mb-12">
-            <span className="inline-block px-4 py-1 bg-[#E9C46A]/10 text-[#E9C46A] rounded-full text-sm font-medium mb-4">Available Flavors</span>
+            <span className="inline-block px-4 py-1 bg-[#E9C46A]/10 text-[#E9C46A] rounded-full text-sm font-medium mb-4">Available Flavours</span>
             <h2 className="text-4xl font-bold text-[#2A9D8F] mb-4">Chef Developed Flavours</h2>
             <p className="text-gray-600 text-lg">
-              Choose from three expertly crafted flavors, each designed to provide natural heartburn relief with an exceptional taste experience.
+              Choose from three expertly crafted flavours, each designed to provide natural heartburn relief with an exceptional taste experience.
             </p>
           </div>
           
-          {/* Flavor Cards Grid */}
+          {/* Flavour Cards Grid */}
           <div className="grid gap-8 md:grid-cols-3 mb-12">
             {FLAVOR_DATA.map((flavor) => (
               <FlavorCard key={flavor.id} flavor={flavor} />
@@ -62,9 +62,9 @@ export default function Products() {
                   that prevents acid reflux. This natural approach provides effective relief without harsh chemicals.
                 </p>
                 
-                <h3 className="text-xl font-semibold text-[#2A9D8F] mb-4">Chef-Crafted Flavors</h3>
+                <h3 className="text-xl font-semibold text-[#2A9D8F] mb-4">Chef-Crafted Flavours</h3>
                 <p className="text-gray-600">
-                  Our flavors are developed by professional chefs to ensure an enjoyable taste experience. 
+                  Our flavours are developed by professional chefs to ensure an enjoyable taste experience. 
                   Say goodbye to chalky, medicinal-tasting antacids and hello to delicious relief.
                 </p>
               </div>
@@ -105,7 +105,7 @@ export default function Products() {
                 <p className="text-2xl font-bold text-[#2A9D8F] mb-4">$28.99</p>
                 <ul className="text-sm text-gray-600 space-y-2 mb-6">
                   <li>• 1 bottle of OBEX</li>
-                  <li>• Choose your flavor</li>
+                  <li>• Choose your flavour</li>
                   <li>• Perfect for trying OBEX</li>
                 </ul>
                 <Button className="w-full bg-[#E9C46A] text-[#264653] hover:bg-[#e0bb5e]">
@@ -123,7 +123,7 @@ export default function Products() {
                 <p className="text-sm text-gray-500 line-through mb-4">$86.97</p>
                 <ul className="text-sm text-gray-600 space-y-2 mb-6">
                   <li>• 3 bottles of OBEX</li>
-                  <li>• Mix and match flavors</li>
+                  <li>• Mix and match flavours</li>
                   <li>• 14% savings</li>
                 </ul>
                 <Button className="w-full bg-[#2A9D8F] text-white hover:bg-[#238276]">
@@ -138,7 +138,7 @@ export default function Products() {
                 <p className="text-sm text-gray-500 line-through mb-4">$173.94</p>
                 <ul className="text-sm text-gray-600 space-y-2 mb-6">
                   <li>• 6 bottles of OBEX</li>
-                  <li>• All three flavors included</li>
+                  <li>• All three flavours included</li>
                   <li>• 20% savings + free shipping</li>
                 </ul>
                 <Button className="w-full bg-[#264653] text-white hover:bg-[#1e3a3a]">

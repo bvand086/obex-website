@@ -496,7 +496,7 @@ export default function Home() {
           
           <div className="mt-12 text-center">
             <p className="text-white/80 max-w-2xl mx-auto mb-6">
-              All packages include our chef-crafted flavors: Orange Cream, Lemon Meringue, and Smooth Mint
+              All packages include our chef-crafted flavours: Orange Cream, Lemon Meringue, and Smooth Mint
             </p>
             <Button 
               onClick={() => scrollToSection('product_details')}

@@ -16,7 +16,7 @@ const SERVER_FLAVORS = [
   { id: 'orange', name: 'Orange Cream' }
 ];
 
-// Helper function to check if a string contains any flavor names
+  // Helper function to check if a string contains any flavour names
 function containsFlavorName(str: string): boolean {
   if (!str) return false;
   const lowercaseStr = str.toLowerCase();
@@ -27,7 +27,7 @@ interface CartItem {
   priceId: string;
   quantity: number;
   flavorName?: string;
-  flavor_breakdown?: string; // Readable breakdown of flavors (e.g. "Mint: 2, Cherry: 3")
+  flavor_breakdown?: string; // Readable breakdown of flavours (e.g. "Mint: 2, Cherry: 3")
   flavor_counts?: Record<string, number>; // Structured format of flavor IDs to quantities
   free_shipping?: boolean;
   pricePerUnit: number; // Added to receive discounted price from frontend
@@ -76,15 +76,15 @@ export async function POST(request: NextRequest) {
     // ALTERNATIVE APPROACH: Don't use priceId but create a line item with adjustable pricing
     // This works in both test and live modes regardless of price ID existence
     const line_items = validCartItems.map((item) => {
-      // Format flavor breakdown for the product name and description
+      // Format flavour breakdown for the product name and description
       let flavorDetails = item.flavor_breakdown;
       
-      // If flavor_breakdown is empty or appears to be a package name (not containing any flavor names)
+              // If flavor_breakdown is empty or appears to be a package name (not containing any flavour names)
       if (!flavorDetails || 
           !containsFlavorName(flavorDetails) || 
           flavorDetails.toLowerCase().includes('package')) {
         
-        // Use flavorName if it contains actual flavor information
+                  // Use flavorName if it contains actual flavour information
         if (item.flavorName && containsFlavorName(item.flavorName)) {
           flavorDetails = item.flavorName;
         } else {
@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
           currency: 'cad',
           product_data: {
             name: `ØBEX Reflux Relief - SHIP: ${flavorDetails}`,
-            description: `IMPORTANT - FLAVORS TO SHIP: ${flavorDetails}`,
+            description: `IMPORTANT - FLAVOURS TO SHIP: ${flavorDetails}`,
             metadata: {
               flavors_to_ship: flavorDetails || 'Not specified',
               flavor_counts: JSON.stringify(item.flavor_counts || {}),
@@ -201,12 +201,12 @@ export async function POST(request: NextRequest) {
         allowed_countries: ['CA', 'US'],
       },
       shipping_options,
-      metadata: {
-        cart_details: JSON.stringify(validCartItems.map(item => {
-          // Ensure flavor information is never a package name
-          let flavorInfo = item.flavor_breakdown || item.flavorName || 'Not specified';
-          
-          // Check if flavor info appears to be a package name
+              metadata: {
+          cart_details: JSON.stringify(validCartItems.map(item => {
+            // Ensure flavour information is never a package name
+            let flavorInfo = item.flavor_breakdown || item.flavorName || 'Not specified';
+            
+            // Check if flavour info appears to be a package name
           if (!containsFlavorName(flavorInfo) || 
               flavorInfo.toLowerCase().includes('package')) {
             // Generate default even distribution
@@ -229,11 +229,11 @@ export async function POST(request: NextRequest) {
             free_shipping: item.free_shipping || false
           };
         })),
-        // Add summarized flavor information at the top level
+        // Add summarized flavour information at the top level
         flavors_summary: validCartItems.map(item => {
           let flavorInfo = item.flavor_breakdown || item.flavorName || 'Not specified';
           
-          // Check if flavor info appears to be a package name
+          // Check if flavour info appears to be a package name
           if (!containsFlavorName(flavorInfo) || 
               flavorInfo.toLowerCase().includes('package')) {
             // Generate default even distribution
@@ -251,7 +251,7 @@ export async function POST(request: NextRequest) {
         shipping_flavors: validCartItems.map(item => {
           let flavorInfo = item.flavor_breakdown || item.flavorName || 'Not specified';
           
-          // Check if flavor info appears to be a package name
+          // Check if flavour info appears to be a package name
           if (!containsFlavorName(flavorInfo) || 
               flavorInfo.toLowerCase().includes('package')) {
             // Generate default even distribution
@@ -271,7 +271,7 @@ export async function POST(request: NextRequest) {
         SHIPPING_GUIDE: validCartItems.map(item => {
           let flavorInfo = item.flavor_breakdown || item.flavorName || 'Not specified';
           
-          // Check if flavor info appears to be a package name
+          // Check if flavour info appears to be a package name
           if (!containsFlavorName(flavorInfo) || 
               flavorInfo.toLowerCase().includes('package')) {
             // Generate default even distribution

@@ -27,7 +27,7 @@ export const FLAVOR_DATA: FlavorInfo[] = [
     description: 'Experience the crisp and invigorating taste of smooth mint. This classic flavour not only soothes your senses but also provides a cooling comforting sensation.',
     hoverDescription: 'Perfect For:',
     perfectFor: [
-      'After meals with strong flavors',
+      'After meals with strong flavours',
       'When you want a cool sensation',
       'A refreshing daytime option'
     ],

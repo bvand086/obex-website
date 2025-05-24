@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-// Available flavors and their display info
+// Available flavours and their display info
 export const FLAVORS = [
   { id: 'mint', name: 'Smooth Mint', color: 'green', bgColor: '#2A9D8F', textColor: '#FFFFFF' },
   { id: 'lemon', name: 'Lemon Meringue', color: 'yellow', bgColor: '#E9C46A', textColor: '#264653' },
@@ -35,16 +35,16 @@ const FlavorSelector: React.FC<FlavorSelectorProps> = ({
   const [selectedFlavors, setSelectedFlavors] = useState<FlavorCounts>({});
   const [error, setError] = useState<string | null>(null);
 
-  // Calculate total flavors selected
+  // Calculate total flavours selected
   const totalSelected = Object.values(selectedFlavors).reduce((sum, count) => sum + count, 0);
   
-  // Initialize with equal distribution of flavors or use provided initialFlavors
+      // Initialize with equal distribution of flavours or use provided initialFlavors
   useEffect(() => {
     if (isOpen) {
       if (initialFlavors && Object.keys(initialFlavors).length > 0) {
         setSelectedFlavors(initialFlavors);
       } else {
-        // Auto-fill with even distribution, extras go to first flavors
+        // Auto-fill with even distribution, extras go to first flavours
         const flavorCount = FLAVORS.length;
         const baseAmount = Math.floor(bundleSize / flavorCount);
         const remainder = bundleSize % flavorCount;
@@ -109,18 +109,18 @@ const FlavorSelector: React.FC<FlavorSelectorProps> = ({
         
         <div className="relative">
           <h2 className="text-2xl font-bold text-[#264653] mb-2">
-            {isConfirmation ? 'Confirm Your Flavors' : 'Choose Your Flavors'}
+            {isConfirmation ? 'Confirm Your Flavours' : 'Choose Your Flavours'}
           </h2>
           <p className="text-gray-600 mb-6">
             {isConfirmation 
-              ? `Please confirm the flavors for your ${bundleSize}-bottle bundle before checkout`
-              : `Select how many of each flavor you'd like in your ${bundleSize}-bottle bundle`
+              ? `Please confirm the flavours for your ${bundleSize}-bottle bundle before checkout`
+              : `Select how many of each flavour you'd like in your ${bundleSize}-bottle bundle`
             }
           </p>
           
           {isConfirmation && (
             <div className="mb-4 bg-blue-50 border border-blue-200 rounded-md p-3 text-blue-700 text-sm">
-              <p>This is your final chance to verify your flavor selection before checkout. Please ensure your selection is correct.</p>
+              <p>This is your final chance to verify your flavour selection before checkout. Please ensure your selection is correct.</p>
             </div>
           )}
           
@@ -204,7 +204,7 @@ const FlavorSelector: React.FC<FlavorSelectorProps> = ({
               className="flex-1 bg-gradient-to-r from-[#2A9D8F] to-[#264653] hover:from-[#264653] hover:to-[#2A9D8F] text-white transition-all duration-300 transform hover:scale-[1.02]"
               disabled={totalSelected !== bundleSize}
             >
-              {isConfirmation ? 'Confirm Flavors' : 'Confirm'}
+              {isConfirmation ? 'Confirm Flavours' : 'Confirm'}
             </Button>
           </div>
         </div>
