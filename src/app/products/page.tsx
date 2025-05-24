@@ -28,13 +28,13 @@ export default function Products() {
       </div>
 
       {/* Main Content */}
-      <section className="relative z-10 max-w-6xl mx-auto px-6 py-20">
+      <section className="relative z-20 max-w-6xl mx-auto px-6 py-20">
         {/* Hero Section */}
         <div className="relative mb-16">
           <div className="absolute inset-0 bg-gradient-to-br from-[#2A9D8F]/10 to-[#E9C46A]/10 rounded-2xl transform transition-transform duration-500"></div>
-          <div className="relative bg-white/90 backdrop-blur-sm p-12 rounded-2xl shadow-xl border border-[#2A9D8F]/10 overflow-hidden">
+          <div className="relative bg-white/55 backdrop-blur-md p-12 rounded-2xl shadow-xl border border-[#2A9D8F]/10 overflow-hidden z-30">
             {/* Background Product Image */}
-            <div className="absolute inset-0 opacity-100 flex flex-col">
+            <div className="absolute inset-0 opacity-40 flex flex-col">
               <Image
                 src="/studio_image_medley.png"
                 alt="OBEX Product Photography Medley"
@@ -60,7 +60,7 @@ export default function Products() {
         </div>
 
         {/* Flavour Cards Section */}
-        <div className="relative mb-16">
+        <div className="relative mb-16 z-30">
           <div className="max-w-3xl mx-auto text-center mb-12 relative z-10">
             <span className="inline-block px-4 py-1 bg-white/85 text-[#E9C46A] rounded-full text-sm font-medium mb-4 shadow-sm">Available Flavours</span>
             <h2 className="text-4xl font-bold text-[#2A9D8F] mb-4">Chef Developed Flavours</h2>
@@ -78,7 +78,7 @@ export default function Products() {
         </div>
 
         {/* Distributed Background Product Photography */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="fixed inset-0 overflow-hidden pointer-events-none z-5">
           {/* Product Photo 1 - Mint (Upper section) */}
           <div className="absolute -left-20 top-[20%] w-[28rem] h-[32rem] transform -rotate-12">
             <div className="relative w-full h-full rounded-3xl shadow-2xl opacity-35 overflow-hidden">
@@ -123,9 +123,9 @@ export default function Products() {
         </div>
 
         {/* Product Information Section */}
-        <div className="relative mb-16">
+        <div className="relative mb-16 z-30">
           <div className="absolute inset-0 bg-gradient-to-br from-[#E9C46A]/5 to-[#2A9D8F]/5 rounded-2xl transform transition-transform duration-500"></div>
-          <div className="relative bg-white/90 backdrop-blur-sm p-12 rounded-2xl shadow-xl border border-[#E9C46A]/10">
+          <div className="relative bg-white/95 backdrop-blur-md p-12 rounded-2xl shadow-xl border border-[#E9C46A]/10">
             <h2 className="text-3xl font-bold text-[#264653] mb-6">About OBEX</h2>
             <div className="grid md:grid-cols-2 gap-8">
               <div>
@@ -160,7 +160,7 @@ export default function Products() {
         </div>
 
         {/* Bundle Options Section */}
-        <div className="relative mb-16">
+        <div className="relative mb-16 z-30">
           <div className="absolute inset-0 bg-gradient-to-br from-[#2A9D8F]/5 to-[#264653]/5 rounded-2xl transform transition-transform duration-500"></div>
           
           {/* Bundle background product elements */}
@@ -177,7 +177,7 @@ export default function Products() {
               </div>
             </div>
           </div>
-          <div className="relative bg-white/90 backdrop-blur-sm p-12 rounded-2xl shadow-xl border border-[#2A9D8F]/10">
+          <div className="relative bg-white/95 backdrop-blur-md p-12 rounded-2xl shadow-xl border border-[#2A9D8F]/10">
             <div className="text-center mb-8">
               <span className="inline-block px-4 py-1 bg-[#264653]/10 text-[#264653] rounded-full text-sm font-medium mb-4">Bundle Options</span>
               <h2 className="text-3xl font-bold text-[#264653] mb-4">Choose Your Package</h2>
@@ -255,7 +255,7 @@ export default function Products() {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 bg-[#264653] text-white py-12">
+      <footer className="relative z-20 bg-[#264653] text-white py-12">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <div className="mb-8">
             <Image 
