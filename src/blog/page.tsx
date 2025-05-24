@@ -24,7 +24,7 @@ export default async function Blog() {
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
               <Image src="/OSlashLogo.png" alt="OBEX Logo" width={40} height={40} className="rounded-full" />
-              <h1 className="text-2xl font-bold">OBEX</h1>
+              <span className="text-2xl font-bold">OBEX</span>
             </Link>
             <nav>
               <Link href="/" className="text-white hover:text-green-200 transition-colors">
@@ -36,9 +36,6 @@ export default async function Blog() {
       </header>
 
       <section className="max-w-4xl mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold mb-8 text-green-800">OBEX Blog</h1>
-        <p className="text-xl mb-8 text-gray-700">Stay informed about the latest in natural heartburn relief and digestive health.</p>
-        
         {blogPosts.map((post: BlogPost) => (
           <BlogPostCard key={post.id} {...post} />
         ))}

@@ -87,6 +87,17 @@ const Header: React.FC<HeaderProps> = ({ onScrollToSection }) => {
           </Link>
           
           <Link 
+            href="/products"
+            className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+              isActive('/products') 
+                ? 'text-[#264653] bg-[#2A9D8F]/10' 
+                : 'text-[#2A9D8F] hover:text-[#264653] hover:bg-[#2A9D8F]/5'
+            }`}
+          >
+            Products
+          </Link>
+          
+          <Link 
             href="/blog"
             className={`px-4 py-2 rounded-lg transition-all duration-300 ${
               pathname.startsWith('/blog') 
@@ -202,6 +213,18 @@ const Header: React.FC<HeaderProps> = ({ onScrollToSection }) => {
             }`}
           >
             Research
+          </Link>
+          
+          <Link 
+            href="/products"
+            onClick={() => setIsMenuOpen(false)}
+            className={`block w-full text-left px-4 py-2 rounded-lg transition-all duration-300 ${
+              isActive('/products') 
+                ? 'text-[#264653] bg-[#2A9D8F]/10' 
+                : 'text-[#2A9D8F] hover:text-[#264653] hover:bg-[#2A9D8F]/5'
+            }`}
+          >
+            Products
           </Link>
           
           <Link 

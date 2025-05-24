@@ -27,6 +27,8 @@ import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import Link from 'next/link';
 import AddToCartButton from '@/components/AddToCartButton';
+import FlavorCard from '@/components/FlavorCard';
+import { FLAVOR_DATA } from '@/lib/flavorData';
 
 interface ControlInputProps {
   label: string;
@@ -314,198 +316,27 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {/* Mint Flavor Card */}
-            <div className="flavor-card group h-[520px] relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-green-100 rounded-2xl transform transition-transform duration-500 group-hover:scale-[0.98]"></div>
-              <div className="absolute -inset-0.5 bg-gradient-to-br from-green-200 to-green-400 opacity-50 rounded-2xl blur-sm group-hover:opacity-80 transition duration-500"></div>
-              <div className="relative flex flex-col h-full bg-white/80 backdrop-blur-md p-8 rounded-2xl border border-green-200/50 shadow-xl transition-all duration-500 group-hover:shadow-green-200/40 overflow-hidden">
-                {/* Top decorative accent */}
-                <div className="absolute top-0 left-0 w-40 h-40 bg-green-500/10 rounded-br-[100px] -translate-x-10 -translate-y-10 blur-md"></div>
-                <div className="absolute top-4 right-4 w-16 h-16 rounded-full bg-gradient-to-br from-green-100 to-green-300 opacity-70 blur-md"></div>
-                
-                {/* Flavor icon */}
-                <div className="flex justify-center mb-6">
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center transform transition-transform duration-500 group-hover:rotate-12">
-                    <Image 
-                      src="/white_transparent_OSlashLogo.png" 
-                      alt="Mint Flavor" 
-                      width={40} 
-                      height={40} 
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-                
-                <h3 className="text-2xl font-bold text-center text-green-700 mb-4">Smooth Mint</h3>
-                
-                <div className="relative flex-grow overflow-hidden">
-                  <div className="h-[180px] flex items-center">
-                    <p className="text-gray-700 leading-relaxed transform transition-transform duration-500 group-hover:translate-y-[-8px] opacity-100 group-hover:opacity-0">Experience the crisp and invigorating taste of smooth mint. This classic flavour not only soothes your senses but also provides a cooling comforting sensation.</p>
-                  </div>
-
-                  {/* Hover details */}
-                  <div className="absolute inset-0 flex flex-col justify-center transform transition-all duration-500 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
-                    <span className="text-green-700 font-semibold mb-2">Perfect For:</span>
-                    <ul className="text-gray-700 text-sm mb-4">
-                      <li className="flex items-center mb-1">
-                        <span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                        After meals with strong flavors
-                      </li>
-                      <li className="flex items-center mb-1">
-                        <span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                        When you want a cool sensation
-                      </li>
-                      <li className="flex items-center">
-                        <span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-                        A refreshing daytime option
-                      </li>
-                    </ul>
-                    <AddToCartButton
-                      priceId="price_1CDEFGHIJKLMNOPQRSTUVWX"
-                      flavor="Smooth Mint"
-                      className="mt-4 mx-auto px-6 py-2 bg-gradient-to-r from-green-400 to-green-600 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all transform hover:scale-105"
-                    />
-                  </div>
-                </div>
-                
-                {/* Bottom accent */}
-                <div className="mt-auto flex justify-center">
-                  <div className="w-16 h-1 bg-gradient-to-r from-green-300 to-green-500 rounded-full"></div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Lemon Meringue Flavor Card */}
-            <div className="flavor-card group h-[520px] relative mt-0">
-              <div className="absolute inset-0 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl transform transition-transform duration-500 group-hover:scale-[0.98]"></div>
-              <div className="absolute -inset-0.5 bg-gradient-to-br from-yellow-200 to-yellow-400 opacity-50 rounded-2xl blur-sm group-hover:opacity-80 transition duration-500"></div>
-              <div className="relative flex flex-col h-full bg-white/80 backdrop-blur-md p-8 rounded-2xl border border-yellow-200/50 shadow-xl transition-all duration-500 group-hover:shadow-yellow-200/40 overflow-hidden">
-                {/* Top decorative accent */}
-                <div className="absolute top-0 left-0 w-40 h-40 bg-yellow-500/10 rounded-br-[100px] -translate-x-10 -translate-y-10 blur-md"></div>
-                <div className="absolute top-4 right-4 w-16 h-16 rounded-full bg-gradient-to-br from-yellow-100 to-yellow-300 opacity-70 blur-md"></div>
-                
-                {/* Flavor icon */}
-                <div className="flex justify-center mb-6">
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-500 flex items-center justify-center transform transition-transform duration-500 group-hover:rotate-12">
-                    <Image 
-                      src="/white_transparent_OSlashLogo.png" 
-                      alt="Lemon Flavor" 
-                      width={40} 
-                      height={40} 
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-                
-                <h3 className="text-2xl font-bold text-center text-yellow-700 mb-4">Lemon Meringue</h3>
-                
-                <div className="relative flex-grow overflow-hidden">
-                  <div className="h-[180px] flex items-center">
-                    <p className="text-gray-700 leading-relaxed transform transition-transform duration-500 group-hover:translate-y-[-8px] opacity-100 group-hover:opacity-0">Indulge in the delightful tang of lemon meringue, reminiscent of a classic dessert. The perfect balance of zesty lemon and sweet meringue creates a delectable treat that will brighten your day while keeping you comfortable.</p>
-                  </div>
-
-                  {/* Hover details */}
-                  <div className="absolute inset-0 flex flex-col justify-center transform transition-all duration-500 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
-                    <span className="text-yellow-700 font-semibold mb-2">Perfect For:</span>
-                    <ul className="text-gray-700 text-sm mb-4">
-                      <li className="flex items-center mb-1">
-                        <span className="w-2 h-2 rounded-full bg-yellow-500 mr-2"></span>
-                        After citrus or acidic meals
-                      </li>
-                      <li className="flex items-center mb-1">
-                        <span className="w-2 h-2 rounded-full bg-yellow-500 mr-2"></span>
-                        When you need a mood boost
-                      </li>
-                      <li className="flex items-center">
-                        <span className="w-2 h-2 rounded-full bg-yellow-500 mr-2"></span>
-                        A bright morning option
-                      </li>
-                    </ul>
-                    <AddToCartButton
-                      priceId="price_2CDEFGHIJKLMNOPQRSTUVWX"
-                      flavor="Lemon Meringue"
-                      className="mt-4 mx-auto px-6 py-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all transform hover:scale-105"
-                    />
-                  </div>
-                </div>
-                
-                {/* Bottom accent */}
-                <div className="mt-auto flex justify-center">
-                  <div className="w-16 h-1 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-full"></div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Orange Cream Flavor Card */}
-            <div className="flavor-card group h-[520px] relative mt-0">
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl transform transition-transform duration-500 group-hover:scale-[0.98]"></div>
-              <div className="absolute -inset-0.5 bg-gradient-to-br from-orange-200 to-orange-400 opacity-50 rounded-2xl blur-sm group-hover:opacity-80 transition duration-500"></div>
-              <div className="relative flex flex-col h-full bg-white/80 backdrop-blur-md p-8 rounded-2xl border border-orange-200/50 shadow-xl transition-all duration-500 group-hover:shadow-orange-200/40 overflow-hidden">
-                {/* Top decorative accent */}
-                <div className="absolute top-0 left-0 w-40 h-40 bg-orange-500/10 rounded-br-[100px] -translate-x-10 -translate-y-10 blur-md"></div>
-                <div className="absolute top-4 right-4 w-16 h-16 rounded-full bg-gradient-to-br from-orange-100 to-orange-300 opacity-70 blur-md"></div>
-                
-                {/* Flavor icon */}
-                <div className="flex justify-center mb-6">
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center transform transition-transform duration-500 group-hover:rotate-12">
-                    <Image 
-                      src="/white_transparent_OSlashLogo.png" 
-                      alt="Orange Flavor" 
-                      width={40} 
-                      height={40} 
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-                
-                <h3 className="text-2xl font-bold text-center text-orange-700 mb-4">Orange Cream</h3>
-                
-                <div className="relative flex-grow overflow-hidden">
-                  <div className="h-[180px] flex items-center">
-                    <p className="text-gray-700 leading-relaxed transform transition-transform duration-500 group-hover:translate-y-[-8px] opacity-100 group-hover:opacity-0">Savour the nostalgic blend of creamy vanilla and bright orange with our orange creamsicle flavour. This comforting and luscious option takes you back to childhood summers, offering a soothing and enjoyable way to manage reflux.</p>
-                  </div>
-
-                  {/* Hover details */}
-                  <div className="absolute inset-0 flex flex-col justify-center transform transition-all duration-500 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
-                    <span className="text-orange-700 font-semibold mb-2">Perfect For:</span>
-                    <ul className="text-gray-700 text-sm mb-4">
-                      <li className="flex items-center mb-1">
-                        <span className="w-2 h-2 rounded-full bg-orange-500 mr-2"></span>
-                        After spicy meals
-                      </li>
-                      <li className="flex items-center mb-1">
-                        <span className="w-2 h-2 rounded-full bg-orange-500 mr-2"></span>
-                        When seeking comfort
-                      </li>
-                      <li className="flex items-center">
-                        <span className="w-2 h-2 rounded-full bg-orange-500 mr-2"></span>
-                        A soothing evening option
-                      </li>
-                    </ul>
-                    <AddToCartButton
-                      priceId="price_3CDEFGHIJKLMNOPQRSTUVWX"
-                      flavor="Orange Cream"
-                      className="mt-4 mx-auto px-6 py-2 bg-gradient-to-r from-orange-400 to-orange-600 text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all transform hover:scale-105"
-                    />
-                  </div>
-                </div>
-                
-                {/* Bottom accent */}
-                <div className="mt-auto flex justify-center">
-                  <div className="w-16 h-1 bg-gradient-to-r from-orange-300 to-orange-500 rounded-full"></div>
-                </div>
-              </div>
-            </div>
+            {FLAVOR_DATA.map((flavor) => (
+              <FlavorCard key={flavor.id} flavor={flavor} />
+            ))}
           </div>
           
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-gray-600 text-lg">Each flavour is crafted with care to provide an enjoyable taste experience. Say goodbye to the bland and medicinal, and hello to the delicious and natural with OBEX.</p>
-            <div className="mt-12 inline-block">
+            <div className="mt-12 inline-block flex gap-4 justify-center">
+              <Link href="/products">
+                <Button
+                  className="bg-[#2A9D8F] text-white hover:bg-[#238276] shadow-md hover:shadow-xl transition-all duration-300 px-8 py-4 rounded-lg text-lg font-medium transform hover:scale-105"
+                >
+                  Explore Our Products
+                </Button>
+              </Link>
               <Button
                 onClick={() => scrollToSection('cta-section')}
-                className="bg-[#2A9D8F] text-white hover:bg-[#238276] shadow-md hover:shadow-xl transition-all duration-300 px-8 py-4 rounded-lg text-lg font-medium transform hover:scale-105"
+                variant="outline"
+                className="border-[#2A9D8F] text-[#2A9D8F] hover:bg-[#2A9D8F] hover:text-white shadow-md hover:shadow-xl transition-all duration-300 px-8 py-4 rounded-lg text-lg font-medium transform hover:scale-105"
               >
-                Explore Our Products
+                Buy Now
               </Button>
             </div>
           </div>
