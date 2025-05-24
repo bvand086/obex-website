@@ -61,51 +61,8 @@ export default function Products() {
 
         {/* Flavour Cards Section */}
         <div className="relative mb-16">
-          {/* Background Product Photography Gallery */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {/* Product Photo 1 - Left background */}
-            <div className="absolute -left-16 top-1/6 w-[28rem] h-[32rem] transform -rotate-12">
-              <div className="w-full h-full rounded-3xl shadow-2xl opacity-45 overflow-hidden bg-gradient-to-br from-[#2A9D8F] to-[#2A9D8F]/80">
-                {/* Placeholder content */}
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="text-center text-white/60">
-                    <div className="w-24 h-48 bg-white/20 rounded-full mx-auto mb-4"></div>
-                    <p className="text-lg font-medium">Product Photo 1</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Product Photo 2 - Center background (Lemon) */}
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-24 w-[32rem] h-[36rem] rotate-3">
-              <div className="relative w-full h-full rounded-3xl shadow-2xl opacity-50 overflow-hidden">
-                <Image
-                  src="/studio_image_lemon.png"
-                  alt="OBEX Lemon Flavor Product Photography"
-                  fill
-                  className="object-cover object-center"
-                  priority={true}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#E9C46A]/5 to-transparent"></div>
-              </div>
-            </div>
-
-            {/* Product Photo 3 - Right background */}
-            <div className="absolute -right-16 top-1/4 w-[28rem] h-[32rem] transform rotate-8">
-              <div className="w-full h-full rounded-3xl shadow-2xl opacity-45 overflow-hidden bg-gradient-to-br from-[#264653] to-[#264653]/80">
-                {/* Placeholder content */}
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="text-center text-white/60">
-                    <div className="w-24 h-48 bg-white/20 rounded-full mx-auto mb-4"></div>
-                    <p className="text-lg font-medium">Product Photo 3</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <div className="max-w-3xl mx-auto text-center mb-12 relative z-10">
-            <span className="inline-block px-4 py-1 bg-[#E9C46A]/10 text-[#E9C46A] rounded-full text-sm font-medium mb-4">Available Flavours</span>
+            <span className="inline-block px-4 py-1 bg-white/85 text-[#E9C46A] rounded-full text-sm font-medium mb-4 shadow-sm">Available Flavours</span>
             <h2 className="text-4xl font-bold text-[#2A9D8F] mb-4">Chef Developed Flavours</h2>
             <p className="text-gray-600 text-lg">
               Choose from three expertly crafted flavours, each designed to provide natural heartburn relief with an exceptional taste experience.
@@ -117,6 +74,51 @@ export default function Products() {
             {FLAVOR_DATA.map((flavor) => (
               <FlavorCard key={flavor.id} flavor={flavor} />
             ))}
+          </div>
+        </div>
+
+        {/* Distributed Background Product Photography */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+          {/* Product Photo 1 - Mint (Upper section) */}
+          <div className="absolute -left-20 top-[20%] w-[28rem] h-[32rem] transform -rotate-12">
+            <div className="relative w-full h-full rounded-3xl shadow-2xl opacity-35 overflow-hidden">
+              <Image
+                src="/studio_image_mint.png"
+                alt="OBEX Mint Flavor Product Photography"
+                fill
+                className="object-cover object-center"
+                priority={true}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#2A9D8F]/5 to-transparent"></div>
+            </div>
+          </div>
+
+          {/* Product Photo 2 - Lemon (Middle section) */}
+          <div className="absolute top-[45%] left-1/2 transform -translate-x-1/2 w-[32rem] h-[36rem] rotate-3">
+            <div className="relative w-full h-full rounded-3xl shadow-2xl opacity-40 overflow-hidden">
+              <Image
+                src="/studio_image_lemon.png"
+                alt="OBEX Lemon Flavor Product Photography"
+                fill
+                className="object-cover object-center"
+                priority={true}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#E9C46A]/5 to-transparent"></div>
+            </div>
+          </div>
+
+          {/* Product Photo 3 - Orange (Lower section) */}
+          <div className="absolute -right-20 top-[70%] w-[28rem] h-[32rem] transform rotate-8">
+            <div className="relative w-full h-full rounded-3xl shadow-2xl opacity-35 overflow-hidden">
+              <Image
+                src="/studio_image_orange.png"
+                alt="OBEX Orange Flavor Product Photography"
+                fill
+                className="object-cover object-center"
+                priority={true}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#264653]/5 to-transparent"></div>
+            </div>
           </div>
         </div>
 
