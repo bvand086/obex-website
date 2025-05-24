@@ -12,6 +12,19 @@ export default function Products() {
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#2A9D8F]/5 rounded-full blur-3xl transform -translate-y-1/2 translate-x-1/2"></div>
         <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-[#E9C46A]/5 rounded-full blur-3xl transform translate-y-1/4 -translate-x-1/4"></div>
+        
+        {/* Additional product photography elements */}
+        <div className="absolute top-1/4 right-1/4 w-32 h-48 transform rotate-12">
+          <div className="w-full h-full bg-gradient-to-b from-[#2A9D8F]/8 to-transparent rounded-2xl">
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-20 bg-white/10 rounded-full"></div>
+          </div>
+        </div>
+        
+        <div className="absolute bottom-1/3 right-1/6 w-24 h-36 transform -rotate-6">
+          <div className="w-full h-full bg-gradient-to-b from-[#264653]/6 to-transparent rounded-2xl">
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-16 bg-white/8 rounded-full"></div>
+          </div>
+        </div>
       </div>
 
       {/* Main Content */}
@@ -19,21 +32,79 @@ export default function Products() {
         {/* Hero Section */}
         <div className="relative mb-16">
           <div className="absolute inset-0 bg-gradient-to-br from-[#2A9D8F]/10 to-[#E9C46A]/10 rounded-2xl transform transition-transform duration-500"></div>
-          <div className="relative bg-white/90 backdrop-blur-sm p-12 rounded-2xl shadow-xl border border-[#2A9D8F]/10">
-            <span className="inline-block px-4 py-1 bg-[#2A9D8F]/10 text-[#2A9D8F] rounded-full text-sm font-medium mb-4">Chef-Crafted</span>
-            <h1 className="text-5xl font-bold mb-6 text-[#264653] leading-tight">
-              OBEX Products
-            </h1>
-            <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
-              Discover our complete range of natural heartburn relief products. 
-              Each flavour is carefully crafted by chefs to provide both effective relief and an enjoyable taste experience.
-            </p>
+          <div className="relative bg-white/90 backdrop-blur-sm p-12 rounded-2xl shadow-xl border border-[#2A9D8F]/10 overflow-hidden">
+            {/* Background Product Image */}
+            <div className="absolute inset-0 opacity-95 flex flex-col">
+              <Image
+                src="/studio_image_medley.png"
+                alt="OBEX Product Photography Medley"
+                fill
+                className="object-cover object-center"
+                priority={true}
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-white/60 to-white/40"></div>
+            </div>
+            
+            {/* Content */}
+            <div className="relative z-10">
+              <span className="inline-block px-4 py-1 bg-[#2A9D8F]/10 text-[#2A9D8F] rounded-full text-sm font-medium mb-4">Chef-Crafted</span>
+              <h1 className="text-5xl font-bold mb-6 text-[#264653] leading-tight">
+                OBEX Products
+              </h1>
+              <p className="text-xl text-gray-600 leading-relaxed max-w-2xl">
+                Discover our complete range of natural heartburn relief products. 
+                Each flavour is carefully crafted by chefs to provide both effective relief and an enjoyable taste experience.
+              </p>
+            </div>
           </div>
         </div>
 
         {/* Flavour Cards Section */}
         <div className="relative mb-16">
-          <div className="max-w-3xl mx-auto text-center mb-12">
+          {/* Background Product Photography Gallery */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {/* Product Photo 1 - Left background */}
+            <div className="absolute -left-16 top-1/6 w-[28rem] h-[32rem] transform -rotate-12">
+              <div className="w-full h-full rounded-3xl shadow-2xl opacity-45 overflow-hidden bg-gradient-to-br from-[#2A9D8F] to-[#2A9D8F]/80">
+                {/* Placeholder content */}
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="text-center text-white/60">
+                    <div className="w-24 h-48 bg-white/20 rounded-full mx-auto mb-4"></div>
+                    <p className="text-lg font-medium">Product Photo 1</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Product Photo 2 - Center background (Lemon) */}
+            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-24 w-[32rem] h-[36rem] rotate-3">
+              <div className="relative w-full h-full rounded-3xl shadow-2xl opacity-50 overflow-hidden">
+                <Image
+                  src="/studio_image_lemon.png"
+                  alt="OBEX Lemon Flavor Product Photography"
+                  fill
+                  className="object-cover object-center"
+                  priority={true}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#E9C46A]/5 to-transparent"></div>
+              </div>
+            </div>
+
+            {/* Product Photo 3 - Right background */}
+            <div className="absolute -right-16 top-1/4 w-[28rem] h-[32rem] transform rotate-8">
+              <div className="w-full h-full rounded-3xl shadow-2xl opacity-45 overflow-hidden bg-gradient-to-br from-[#264653] to-[#264653]/80">
+                {/* Placeholder content */}
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="text-center text-white/60">
+                    <div className="w-24 h-48 bg-white/20 rounded-full mx-auto mb-4"></div>
+                    <p className="text-lg font-medium">Product Photo 3</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="max-w-3xl mx-auto text-center mb-12 relative z-10">
             <span className="inline-block px-4 py-1 bg-[#E9C46A]/10 text-[#E9C46A] rounded-full text-sm font-medium mb-4">Available Flavours</span>
             <h2 className="text-4xl font-bold text-[#2A9D8F] mb-4">Chef Developed Flavours</h2>
             <p className="text-gray-600 text-lg">
@@ -42,7 +113,7 @@ export default function Products() {
           </div>
           
           {/* Flavour Cards Grid */}
-          <div className="grid gap-8 md:grid-cols-3 mb-12">
+          <div className="grid gap-8 md:grid-cols-3 mb-12 relative z-10">
             {FLAVOR_DATA.map((flavor) => (
               <FlavorCard key={flavor.id} flavor={flavor} />
             ))}
@@ -89,6 +160,21 @@ export default function Products() {
         {/* Bundle Options Section */}
         <div className="relative mb-16">
           <div className="absolute inset-0 bg-gradient-to-br from-[#2A9D8F]/5 to-[#264653]/5 rounded-2xl transform transition-transform duration-500"></div>
+          
+          {/* Bundle background product elements */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute -top-8 -left-8 w-40 h-56 transform -rotate-12 opacity-5">
+              <div className="w-full h-full bg-gradient-to-br from-[#E9C46A] to-[#E9C46A]/60 rounded-2xl">
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-24 bg-white/30 rounded-full"></div>
+              </div>
+            </div>
+            
+            <div className="absolute -bottom-6 -right-6 w-36 h-48 transform rotate-6 opacity-5">
+              <div className="w-full h-full bg-gradient-to-br from-[#2A9D8F] to-[#2A9D8F]/60 rounded-2xl">
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-9 h-20 bg-white/30 rounded-full"></div>
+              </div>
+            </div>
+          </div>
           <div className="relative bg-white/90 backdrop-blur-sm p-12 rounded-2xl shadow-xl border border-[#2A9D8F]/10">
             <div className="text-center mb-8">
               <span className="inline-block px-4 py-1 bg-[#264653]/10 text-[#264653] rounded-full text-sm font-medium mb-4">Bundle Options</span>
@@ -100,48 +186,55 @@ export default function Products() {
             
             <div className="grid md:grid-cols-3 gap-6">
               {/* Starter Bundle */}
-              <div className="bg-gradient-to-br from-[#E9C46A]/10 to-white p-6 rounded-xl border border-[#E9C46A]/20">
-                <h3 className="text-xl font-bold text-[#264653] mb-2">Starter</h3>
-                <p className="text-2xl font-bold text-[#2A9D8F] mb-4">$28.99</p>
-                <ul className="text-sm text-gray-600 space-y-2 mb-6">
-                  <li>• 1 bottle of OBEX</li>
-                  <li>• Choose your flavour</li>
-                  <li>• Perfect for trying OBEX</li>
-                </ul>
-                <Button className="w-full bg-[#E9C46A] text-[#264653] hover:bg-[#e0bb5e]">
+              <div className="bg-gradient-to-br from-[#E9C46A]/10 to-white p-6 rounded-xl border border-[#E9C46A]/20 flex flex-col h-full">
+                <div className="flex-grow">
+                  <h3 className="text-xl font-bold text-[#264653] mb-2">Starter</h3>
+                  <p className="text-2xl font-bold text-[#2A9D8F] mb-1">$28.99</p>
+                  <div className="h-6 mb-4"></div> {/* Spacer for alignment */}
+                  <ul className="text-sm text-gray-600 space-y-2 mb-6">
+                    <li>• 1 bottle of OBEX</li>
+                    <li>• Choose your flavour</li>
+                    <li>• Perfect for trying OBEX</li>
+                  </ul>
+                </div>
+                <Button className="w-full bg-[#E9C46A] text-[#264653] hover:bg-[#e0bb5e] mt-auto">
                   Select Starter
                 </Button>
               </div>
               
               {/* Value Bundle */}
-              <div className="bg-gradient-to-br from-[#2A9D8F]/10 to-white p-6 rounded-xl border border-[#2A9D8F]/20 relative">
+              <div className="bg-gradient-to-br from-[#2A9D8F]/10 to-white p-6 rounded-xl border border-[#2A9D8F]/20 relative flex flex-col h-full">
                 <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-[#2A9D8F] text-white px-3 py-1 rounded-full text-xs font-medium">
                   Most Popular
                 </div>
-                <h3 className="text-xl font-bold text-[#264653] mb-2">Value</h3>
-                <p className="text-2xl font-bold text-[#2A9D8F] mb-1">$74.99</p>
-                <p className="text-sm text-gray-500 line-through mb-4">$86.97</p>
-                <ul className="text-sm text-gray-600 space-y-2 mb-6">
-                  <li>• 3 bottles of OBEX</li>
-                  <li>• Mix and match flavours</li>
-                  <li>• 14% savings</li>
-                </ul>
-                <Button className="w-full bg-[#2A9D8F] text-white hover:bg-[#238276]">
+                <div className="flex-grow">
+                  <h3 className="text-xl font-bold text-[#264653] mb-2">Value</h3>
+                  <p className="text-2xl font-bold text-[#2A9D8F] mb-1">$74.99</p>
+                  <p className="text-sm text-gray-500 line-through mb-4">$86.97</p>
+                  <ul className="text-sm text-gray-600 space-y-2 mb-6">
+                    <li>• 3 bottles of OBEX</li>
+                    <li>• Mix and match flavours</li>
+                    <li>• 14% savings</li>
+                  </ul>
+                </div>
+                <Button className="w-full bg-[#2A9D8F] text-white hover:bg-[#238276] mt-auto">
                   Select Value
                 </Button>
               </div>
               
               {/* Premium Bundle */}
-              <div className="bg-gradient-to-br from-[#264653]/10 to-white p-6 rounded-xl border border-[#264653]/20">
-                <h3 className="text-xl font-bold text-[#264653] mb-2">Premium</h3>
-                <p className="text-2xl font-bold text-[#2A9D8F] mb-1">$139.99</p>
-                <p className="text-sm text-gray-500 line-through mb-4">$173.94</p>
-                <ul className="text-sm text-gray-600 space-y-2 mb-6">
-                  <li>• 6 bottles of OBEX</li>
-                  <li>• All three flavours included</li>
-                  <li>• 20% savings + free shipping</li>
-                </ul>
-                <Button className="w-full bg-[#264653] text-white hover:bg-[#1e3a3a]">
+              <div className="bg-gradient-to-br from-[#264653]/10 to-white p-6 rounded-xl border border-[#264653]/20 flex flex-col h-full">
+                <div className="flex-grow">
+                  <h3 className="text-xl font-bold text-[#264653] mb-2">Premium</h3>
+                  <p className="text-2xl font-bold text-[#2A9D8F] mb-1">$139.99</p>
+                  <p className="text-sm text-gray-500 line-through mb-4">$173.94</p>
+                  <ul className="text-sm text-gray-600 space-y-2 mb-6">
+                    <li>• 6 bottles of OBEX</li>
+                    <li>• All three flavours included</li>
+                    <li>• 20% savings + free shipping</li>
+                  </ul>
+                </div>
+                <Button className="w-full bg-[#264653] text-white hover:bg-[#1e3a3a] mt-auto">
                   Select Premium
                 </Button>
               </div>
