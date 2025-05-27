@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS public.addresses (
   city TEXT NOT NULL,
   state TEXT,
   postal_code TEXT NOT NULL,
-  country TEXT NOT NULL DEFAULT 'CA',
+  country TEXT NOT NULL DEFAULT 'CA' CHECK (country = 'CA'),
   is_default BOOLEAN DEFAULT FALSE
 );
 

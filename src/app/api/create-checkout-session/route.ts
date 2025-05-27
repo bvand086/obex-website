@@ -198,7 +198,7 @@ export async function POST(request: NextRequest) {
       success_url: success_url,
       cancel_url: cancel_url,
       shipping_address_collection: {
-        allowed_countries: ['CA', 'US'],
+        allowed_countries: ['CA'],
       },
       shipping_options,
               metadata: {

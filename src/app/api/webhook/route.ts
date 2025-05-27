@@ -88,6 +88,113 @@ export async function POST(req: NextRequest) {
           throw new Error('Customer email not found in session');
         }
 
+        // Validate shipping address is Canadian
+        if (address && address.country && address.country !== 'CA') {
+          console.error('⚠️ Non-Canadian shipping address detected:', {
+            sessionId: session.id,
+            country: address.country,
+            customerEmail: customerEmail
+          });
+
+          // Send notification to customer about shipping restriction
+          try {
+            await resend.emails.send({
+              from: 'ØBEX <support@obexcanada.com>',
+              to: [customerEmail],
+              subject: 'Order Processing Issue - Shipping Restriction',
+              html: `
+                <!DOCTYPE html>
+                <html>
+                  <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #ffffff;">
+                    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                      
+                      <h1 style="color: #2A9D8F; margin-bottom: 25px;">Important: Shipping Restriction Notice</h1>
+                      
+                      <img src="https://obexcanada.com/OSlashLogo.png" alt="ØBEX Logo" style="width: 150px; margin-bottom: 30px; display: block; margin-left: auto; margin-right: auto;">
+
+                      <p style="font-size: 16px; margin-bottom: 20px;">Dear ${customerName || 'Valued Customer'},</p>
+                      
+                      <p style="font-size: 16px; margin-bottom: 25px;">Thank you for your interest in ØBEX Reflux Relief. We noticed that your shipping address is outside of Canada.</p>
+                      
+                      <div style="background-color: #fff3e0; border: 2px solid #ff9800; padding: 20px; border-radius: 8px; margin: 25px 0;">
+                        <p style="margin: 0; font-weight: bold; color: #ef6c00;">Currently, ØBEX products are only available for delivery within Canada.</p>
+                      </div>
+                      
+                      <p style="font-size: 16px; margin-bottom: 20px;">We apologize for any inconvenience this may cause. Your order will be reviewed by our team, and if it cannot be fulfilled, you will receive a full refund within 5-7 business days.</p>
+                      
+                      <p style="font-size: 16px; margin-bottom: 20px;">If you have a Canadian shipping address you'd like to use instead, or if you have any questions, please contact us immediately at:</p>
+                      
+                      <p style="font-size: 16px; margin-bottom: 30px;">
+                        Email: <a href="mailto:support@obexcanada.com" style="color: #2A9D8F; text-decoration: none;">support@obexcanada.com</a><br>
+                        Please reference Order ID: ${session.id}
+                      </p>
+                      
+                      <p style="font-size: 16px; margin-bottom: 20px;">We're actively working on expanding our shipping capabilities and hope to serve international customers in the future.</p>
+                      
+                      <p style="font-size: 16px;">Thank you for your understanding.</p>
+                      
+                      <p style="font-size: 16px; margin-top: 40px;">Best regards,<br>The ØBEX Team</p>
+                    </div>
+                  </body>
+                </html>
+              `
+            });
+          } catch (emailError) {
+            console.error('Failed to send customer notification about shipping restriction:', emailError);
+          }
+
+          // Send alert to admin
+          try {
+            await resend.emails.send({
+              from: 'ØBEX Orders <support@obexcanada.com>',
+              to: ['obexincorporated@gmail.com'],
+              subject: `🚨 URGENT: Non-Canadian Order Attempted - Manual Review Required`,
+              html: `
+                <!DOCTYPE html>
+                <html>
+                  <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #ffffff;">
+                    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                      <h1 style="color: #d32f2f; margin-bottom: 25px;">⚠️ Non-Canadian Shipping Address Detected</h1>
+                      
+                      <div style="background-color: #ffebee; border: 3px solid #f44336; padding: 20px; border-radius: 8px; margin: 25px 0;">
+                        <h2 style="color: #d32f2f; margin-top: 0;">Immediate Action Required</h2>
+                        <p style="margin: 10px 0;"><strong>Order ID:</strong> ${session.id}</p>
+                        <p style="margin: 10px 0;"><strong>Customer Email:</strong> ${customerEmail}</p>
+                        <p style="margin: 10px 0;"><strong>Customer Name:</strong> ${customerName || 'Not provided'}</p>
+                        <p style="margin: 10px 0;"><strong>Country:</strong> ${address.country}</p>
+                        <p style="margin: 10px 0;"><strong>Full Address:</strong><br>
+                          ${address.line1}<br>
+                          ${address.line2 ? address.line2 + '<br>' : ''}
+                          ${address.city}, ${address.state} ${address.postal_code}<br>
+                          ${address.country}
+                        </p>
+                      </div>
+                      
+                      <div style="background-color: #e3f2fd; border: 1px solid #2196f3; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                        <h3 style="color: #1976d2; margin-top: 0;">Required Actions:</h3>
+                        <ol style="margin: 10px 0; padding-left: 20px;">
+                          <li>Review this order in the Stripe Dashboard</li>
+                          <li>Contact the customer if they have a Canadian address available</li>
+                          <li>If order cannot be fulfilled, process a refund</li>
+                          <li>Update the customer on the order status</li>
+                        </ol>
+                      </div>
+                      
+                      <p style="font-size: 16px; color: #666;">The customer has been notified about the shipping restriction. The order will continue to be processed but requires manual intervention.</p>
+                    </div>
+                  </body>
+                </html>
+              `
+            });
+          } catch (emailError) {
+            console.error('Failed to send admin alert about shipping restriction:', emailError);
+          }
+
+          // Continue processing the order but flag it in the logs
+          // This allows for manual review rather than automatic cancellation
+          console.warn('🚨 Processing order with non-Canadian address for manual review');
+        }
+
         try {
           console.log('💫 Processing order for customer:', customerEmail);
 
