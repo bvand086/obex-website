@@ -198,6 +198,50 @@ export async function POST(req: NextRequest) {
         try {
           console.log('💫 Processing order for customer:', customerEmail);
 
+          // Find or create customer record
+          const { data: existingCustomer, error: customerLookupError } = await supabaseAdmin
+            .from('customers')
+            .select('id, email, name, created_at')
+            .eq('email', customerEmail)
+            .single();
+
+          let customerId: string;
+          let isNewCustomer = false;
+
+          if (customerLookupError && customerLookupError.code === 'PGRST116') {
+            // Customer doesn't exist, create new one
+            console.log('🆕 Creating new customer record for:', customerEmail);
+            const { data: newCustomer, error: createError } = await supabaseAdmin
+              .from('customers')
+              .insert({
+                email: customerEmail,
+                name: customerName || null,
+                metadata: {
+                  first_order_session: session.id,
+                  first_order_date: new Date().toISOString()
+                }
+              })
+              .select('id')
+              .single();
+
+            if (createError) {
+              console.error('❌ Error creating customer:', createError);
+              throw createError;
+            }
+
+            customerId = newCustomer.id;
+            isNewCustomer = true;
+            console.log('✅ Created new customer with ID:', customerId);
+          } else if (customerLookupError) {
+            console.error('❌ Error looking up customer:', customerLookupError);
+            throw customerLookupError;
+          } else {
+            // Customer exists
+            customerId = existingCustomer.id;
+            isNewCustomer = false;
+            console.log('🔍 Found existing customer with ID:', customerId, 'first seen:', existingCustomer.created_at);
+          }
+
           // Calculate amount (no need for Supabase)
           const amountTotal = session.amount_total != null ? session.amount_total / 100 : 34.99;
           
@@ -354,7 +398,10 @@ export async function POST(req: NextRequest) {
 
                     <p style="font-size: 16px; margin-bottom: 20px;">Dear ${customerName || 'Valued Customer'},</p>
                     
-                    <p style="font-size: 16px; margin-bottom: 25px;">We're excited to confirm your order for ØBEX Reflux Relief. Your natural solution for reflux relief is on its way!</p>
+                    <p style="font-size: 16px; margin-bottom: 25px;">
+                      We're excited to confirm your order for ØBEX Reflux Relief. Your natural solution for reflux relief is on its way!
+                      ${!isNewCustomer ? '<br><br><em>Welcome back! We appreciate your continued trust in ØBEX.</em>' : ''}
+                    </p>
                     
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
                       <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">Order Details</h2>
@@ -388,7 +435,26 @@ export async function POST(req: NextRequest) {
 
           // Extract flavor information using bulletproof function
           const flavorInfo = extractFlavorInformation(session, cartItems);
-          
+
+          // Check existing email history for returning customers first
+          let existingEmailTypes: string[] = [];
+          if (!isNewCustomer) {
+            console.log('🔍 Checking email history for returning customer:', customerEmail);
+            const { data: emailHistory, error: emailHistoryError } = await supabaseAdmin
+              .from('scheduled_emails')
+              .select('email_type, status')
+              .eq('customer_email', customerEmail)
+              .in('status', ['sent', 'pending']); // Include pending to avoid duplicates
+
+            if (emailHistoryError) {
+              console.error('❌ Error fetching email history:', emailHistoryError);
+              // Continue with scheduling all emails as fallback
+            } else {
+              existingEmailTypes = emailHistory.map(email => email.email_type);
+              console.log('📧 Customer has received/scheduled email types:', existingEmailTypes);
+            }
+          }
+
           // Create prominent flavor display for internal email
           const flavorDisplayHtml = `
             <div style="background-color: ${flavorInfo.source === 'none' ? '#ffebee' : '#e8f5e9'}; 
@@ -446,6 +512,15 @@ export async function POST(req: NextRequest) {
                       <h2 style="color: #2A9D8F; margin-top: 0; margin-bottom: 20px;">👤 Customer Information</h2>
                       <p style="margin: 10px 0;"><strong>Name:</strong> ${customerName || 'Not provided'}</p>
                       <p style="margin: 10px 0;"><strong>Email:</strong> ${customerEmail}</p>
+                      <p style="margin: 10px 0;"><strong>Customer Status:</strong> 
+                        <span style="color: ${isNewCustomer ? '#2e7d32' : '#1976d2'}; font-weight: bold;">
+                          ${isNewCustomer ? '🆕 NEW CUSTOMER' : '🔄 RETURNING CUSTOMER'}
+                        </span>
+                      </p>
+                      ${!isNewCustomer && existingEmailTypes.length > 0 ? 
+                        `<p style="margin: 10px 0;"><strong>Previous Emails Received:</strong> ${existingEmailTypes.join(', ')}</p>` : 
+                        ''
+                      }
                     </div>
                     
                     <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border: 1px solid #e9ecef;">
@@ -474,6 +549,70 @@ export async function POST(req: NextRequest) {
           });
 
           console.log('📧 Internal notification email sent');
+
+          // Create order record and shipping address
+          try {
+            // Create shipping address record if address exists
+            let shippingAddressId: string | null = null;
+            if (address) {
+              const { data: newAddress, error: addressError } = await supabaseAdmin
+                .from('addresses')
+                .insert({
+                  customer_id: customerId,
+                  type: 'shipping',
+                  line1: address.line1 || '',
+                  line2: address.line2 || null,
+                  city: address.city || '',
+                  state: address.state || null,
+                  postal_code: address.postal_code || '',
+                  country: address.country || 'CA',
+                  is_default: true // Make it default for now
+                })
+                .select('id')
+                .single();
+
+              if (addressError) {
+                console.error('❌ Error creating shipping address:', addressError);
+                // Continue without address ID
+              } else {
+                shippingAddressId = newAddress.id;
+                console.log('✅ Created shipping address with ID:', shippingAddressId);
+              }
+            }
+
+            // Create order record
+            const { data: newOrder, error: orderError } = await supabaseAdmin
+              .from('orders')
+              .insert({
+                customer_id: customerId,
+                stripe_session_id: session.id,
+                stripe_payment_intent_id: session.payment_intent as string || null,
+                status: 'pending',
+                total_amount: amountTotal,
+                currency: 'CAD',
+                shipping_address_id: shippingAddressId,
+                metadata: {
+                  cartItems: cartItems,
+                  flavorInfo: flavorInfo.displayText,
+                  shippingMethod: shippingMethod,
+                  shippingCost: shippingCost,
+                  webhook_processed_at: new Date().toISOString()
+                }
+              })
+              .select('id')
+              .single();
+
+            if (orderError) {
+              console.error('❌ Error creating order record:', orderError);
+              // Continue processing - this is for tracking only
+            } else {
+              console.log('✅ Created order record with ID:', newOrder.id);
+            }
+
+          } catch (recordError) {
+            console.error('❌ Error creating customer records:', recordError);
+            // Continue processing - the main functionality should still work
+          }
           
           // Updated email scheduling with new timing and order
           try {
@@ -485,40 +624,55 @@ export async function POST(req: NextRequest) {
               { type: 'welcome_4_community', days: 35 },     // Moved community to 4th position, day 35
             ];
 
-            const emailsToSchedule = schedule.map(item => {
-              const sendAt = new Date(now);
-              sendAt.setDate(now.getDate() + item.days);
-              return {
-                customer_email: customerEmail,
-                customer_name: customerName || null,
-                email_type: item.type as EmailType,
-                send_at: sendAt.toISOString(),
-                status: 'pending' as const,
-                metadata: {
-                  cartItems: cartItems,
-                  productName: productName,
-                  shippingMethod: shippingMethod,
-                  shippingCost: shippingCost.toFixed(2),
-                  amountTotal: amountTotal.toFixed(2),
-                  currency: 'CAD',
-                  shippingAddress: address,
-                  flavorInfo: flavorInfo.displayText,
-                  flavorSummary: flavorInfo.displayText
-                },
-                order_id: session.id,
-                attempt_count: 0,
-              };
-            });
+            // Filter out email types that customer has already received/scheduled
+            const emailsToSchedule = schedule
+              .filter(item => {
+                const shouldSchedule = !existingEmailTypes.includes(item.type);
+                if (!shouldSchedule) {
+                  console.log(`⏭️ Skipping ${item.type} - customer already received/scheduled this email`);
+                }
+                return shouldSchedule;
+              })
+              .map(item => {
+                const sendAt = new Date(now);
+                sendAt.setDate(now.getDate() + item.days);
+                return {
+                  customer_email: customerEmail,
+                  customer_name: customerName || null,
+                  email_type: item.type as EmailType,
+                  send_at: sendAt.toISOString(),
+                  status: 'pending' as const,
+                  metadata: {
+                    cartItems: cartItems,
+                    productName: productName,
+                    shippingMethod: shippingMethod,
+                    shippingCost: shippingCost.toFixed(2),
+                    amountTotal: amountTotal.toFixed(2),
+                    currency: 'CAD',
+                    shippingAddress: address,
+                    flavorInfo: flavorInfo.displayText,
+                    flavorSummary: flavorInfo.displayText,
+                    isNewCustomer: isNewCustomer,
+                    customerId: customerId
+                  },
+                  order_id: session.id,
+                  attempt_count: 0,
+                };
+              });
 
-            const { error: insertError } = await supabaseAdmin
-              .from('scheduled_emails')
-              .insert(emailsToSchedule);
+            if (emailsToSchedule.length > 0) {
+              const { error: insertError } = await supabaseAdmin
+                .from('scheduled_emails')
+                .insert(emailsToSchedule);
 
-            if (insertError) {
-              throw insertError;
+              if (insertError) {
+                throw insertError;
+              }
+
+              console.log(`📅 Scheduled ${emailsToSchedule.length} new follow-up emails for ${customerEmail} (skipped ${schedule.length - emailsToSchedule.length} duplicates)`);
+            } else {
+              console.log(`📭 No new emails to schedule for returning customer ${customerEmail} - all email types already sent/scheduled`);
             }
-
-            console.log(`📅 Scheduled ${emailsToSchedule.length} follow-up emails for ${customerEmail}`);
 
           } catch (scheduleError) {
             console.error(`❌ Error scheduling follow-up emails for ${customerEmail}:`, scheduleError);
